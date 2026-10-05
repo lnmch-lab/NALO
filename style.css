@@ -1,0 +1,33 @@
+body {
+  font-family: -apple-system, system-ui, sans-serif;
+  background: #0f1b2b;
+  color: #f4e9d8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: #d4a84b;
+  color: #0f1b2b;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e8bc5e;
+}
