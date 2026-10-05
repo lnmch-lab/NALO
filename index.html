@@ -4,60 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nalo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
-
-    <!-- Écran d'accueil -->
-    <section id="view-home" class="view">
-      <div class="mascot" id="mascot">🐟</div>
-      <h1>Nalo</h1>
-      <p class="stage-name" id="stage-name">Carpeau</p>
-      <p class="progress" id="progress">0 objet découvert</p>
-
-      <button id="btn-capture" class="btn-primary">📸 Photographier un objet</button>
-      <button id="btn-gallery" class="btn-secondary">📚 Ma collection</button>
-
-      <input type="file" id="file-input" accept="image/*" capture="environment" hidden>
-    </section>
-
-    <!-- Écran de chargement / identification -->
-    <section id="view-loading" class="view hidden">
-      <img id="loading-preview" class="preview" alt="Photo prise">
-      <p class="loading-text">Nalo observe l'objet...</p>
-      <div class="spinner"></div>
-    </section>
-
-    <!-- Écran résultat : la carte générée -->
-    <section id="view-card" class="view hidden">
-      <div class="card" id="result-card">
-        <img id="card-photo" class="card-photo" alt="Objet photographié">
-        <div class="card-body">
-          <span class="card-category" id="card-category"></span>
-          <h2 id="card-vn"></h2>
-          <p class="card-pronunciation" id="card-pronunciation"></p>
-          <p class="card-fr" id="card-fr"></p>
-        </div>
-      </div>
-      <p id="card-error" class="error hidden"></p>
-      <button id="btn-add" class="btn-primary">✨ Ajouter à la collection</button>
-      <button id="btn-retry" class="btn-secondary">🔄 Reprendre une photo</button>
-      <button id="btn-home" class="btn-link">Retour à l'accueil</button>
-    </section>
-
-    <!-- Écran collection -->
-    <section id="view-gallery" class="view hidden">
-      <h2>Ma collection</h2>
-      <p class="progress" id="gallery-progress"></p>
-      <div class="gallery-grid" id="gallery-grid"></div>
-      <button id="btn-gallery-back" class="btn-secondary">Retour à l'accueil</button>
-    </section>
-
-  </div>
-
+  <main>
+    <h1>Nalo 🐟</h1>
+    <p>Premier projet vibe coding. Ça tourne !</p>
+    <button id="evolve">Faire évoluer le carpeau</button>
+    <p id="status"></p>
+  </main>
   <script src="script.js"></script>
 </body>
 </html>
