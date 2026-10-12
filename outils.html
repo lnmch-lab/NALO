@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Outils · Nalo</title>
+  <meta name="description" content="Boîte à outils vibe coding : sites d'inspiration, composants UI, animations et agents de code, réunis pour un exercice de formation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .outils {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 1.5rem 1.1rem 4rem;
+    }
+
+    .outils-head {
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      margin-bottom: 0.9rem;
+    }
+
+    .back-link:hover { color: var(--jade-d); }
+
+    .outils-head .chip {
+      margin-bottom: 0.7rem;
+    }
+
+    .outils-head h1 {
+      font-size: 1.8rem;
+      margin: 0.2rem 0 0.5rem;
+    }
+
+    .outils-head .subtitle {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .outils-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 1.4rem 0 2.4rem;
+    }
+
+    .outils-nav a {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-decoration: none;
+      color: var(--ink);
+      background: var(--cream);
+      border-radius: 999px;
+      padding: 0.35rem 0.8rem;
+      box-shadow: 0 2px 6px rgba(59, 42, 32, 0.1);
+    }
+
+    .outils-source {
+      margin: 2.6rem 0 1.2rem;
+      padding-top: 0.2rem;
+    }
+
+    .outils-source:first-of-type { margin-top: 0; }
+
+    .source-tag {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-soft);
+    }
+
+    .outils-source h2 {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--ink);
+      margin: 0.2rem 0 1rem;
+    }
+
+    .cat-block { margin-bottom: 1.8rem; }
+
+    .cat-block h3 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin: 0 0 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .cat-block .cat-note {
+      color: var(--ink-soft);
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin: 0 0 0.8rem;
+      text-align: left;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 0.7rem;
+    }
+
+    .tool-card {
+      text-align: left;
+      background: var(--cream);
+      border-radius: 14px;
+      padding: 0.8rem 0.9rem;
+      box-shadow: 0 2px 8px rgba(59, 42, 32, 0.1);
+      border-left: 4px solid var(--jade);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .warm .tool-card { border-left-color: var(--lotus); }
+    .cool .tool-card { border-left-color: var(--bat); }
+
+    .tool-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.4rem;
+    }
+
+    .tool-name {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: var(--jade-d);
+      text-decoration: none;
+    }
+
+    .warm .tool-name { color: var(--lotus-d); }
+    .cool .tool-name { color: var(--bat); }
+
+    .tool-name:hover { text-decoration: underline; }
+
+    .tool-name.no-link {
+      color: var(--ink);
+      cursor: default;
+    }
+
+    .tool-tag {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--ink-soft);
+      background: var(--paper);
+      border-radius: 999px;
+      padding: 0.15rem 0.45rem;
+      white-space: nowrap;
+    }
+
+    .tool-desc {
+      font-size: 0.82rem;
+      line-height: 1.4;
+      margin: 0;
+      color: var(--ink);
+    }
+
+    .tool-meta {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+      margin: 0.15rem 0 0;
+    }
+
+    .tool-unreadable {
+      font-size: 0.68rem;
+      font-style: italic;
+      color: var(--ink-soft);
+      margin: 0.1rem 0 0;
+    }
+
+    .outils-foot {
+      margin-top: 3rem;
+      padding-top: 1.6rem;
+      border-top: 2px dashed #E4D5B6;
+      text-align: left;
+    }
+
+    .outils-foot h2 {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--ink);
+      margin: 0 0 0.8rem;
+    }
+
+    .outils-foot ul {
+      padding-left: 1.1rem;
+      margin: 0 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .outils-foot li {
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .outils-foot a { color: var(--jade-d); }
+
+    .outils-foot .small {
+      color: var(--ink-soft);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 480px) {
+      .outils-head h1 { font-size: 1.45rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="outils">
+
+    <header class="outils-head">
+      <a class="back-link" href="index.html">← Retour à Nalo</a>
+      <div><span class="chip">🧰 Exercice de formation</span></div>
+      <h1>Outils pour coder avec l'IA</h1>
+      <p class="subtitle">Une sélection construite à partir de deux sources : une capture d'écran de ressources design/UI, et <a href="https://github.com/Scap-Mehdi/awesome-vibecoding">awesome-vibecoding</a>, une liste d'agents de code vérifiée et datée.</p>
+    </header>
+
+    <nav class="outils-nav">
+      <a href="#inspiration">Inspiration</a>
+      <a href="#composants">Composants &amp; prompts</a>
+      <a href="#animations">Animations</a>
+      <a href="#code">Agents de code</a>
+      <a href="#apps">Prototypage d'apps</a>
+      <a href="#contexte">Contexte &amp; MCP</a>
+      <a href="#qualite">Tests &amp; sécurité</a>
+      <a href="#delivery">Déploiement</a>
+      <a href="#operations">Espaces de travail</a>
+    </nav>
+
+    <!-- ================= SOURCE A ================= -->
+    <section class="outils-source warm">
+      <span class="source-tag">Source A · capture d'écran transmise pour l'exercice</span>
+      <h2>Design, composants &amp; animations</h2>
+
+      <div class="cat-block" id="inspiration">
+        <h3>🖼️ Inspiration &amp; références</h3>
+        <p class="cat-note">Des sites à montrer à ton agent IA pour qu'il comprenne le niveau de finition visé.</p>
+        <div class="tool-grid warm">
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://minimal.gallery" target="_blank" rel="noopener">Minimal Gallery ↗</a></div>
+            <p class="tool-desc">Sites haut de gamme sélectionnés, à donner en référence à ton agent.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://godly.website" target="_blank" rel="noopener">Godly ↗</a></div>
+            <p class="tool-desc">Des sites choisis à la main pour le soin apporté à leur réalisation.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://states.refero.design" target="_blank" rel="noopener">Refero Styles ↗</a></div>
+            <p class="tool-desc">Plus de 2 000 styles réels de produits, avec leur typographie.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://component.gallery" target="_blank" rel="noopener">Component Gallery ↗</a></div>
+            <p class="tool-desc">Environ 3 600 exemples montrant comment les grands design systems résolvent le même composant.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://mobbin.com" target="_blank" rel="noopener">Mobbin ↗</a></div>
+            <p class="tool-desc">Des parcours d'application réels, tirés de vrais produits.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://designrnd.ai" target="_blank" rel="noopener">DESIGNrnd ↗</a></div>
+            <p class="tool-desc">Des design systems transformés en markdown, lisibles par ton agent.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://www.awwwards.com" target="_blank" rel="noopener">Awwwards ↗</a></div>
+            <p class="tool-desc">Les sites qui ont vraiment remporté des prix.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="cat-block" id="composants">
+        <h3>🧩 Composants &amp; prompts</h3>
+        <p class="cat-note">Des bibliothèques de composants à copier ou à brancher directement sur un agent.</p>
+        <div class="tool-grid warm">
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name no-link">Ressource n°1 de la capture</span></div>
+            <p class="tool-desc">600+ prompts primés et code source complet pour sites 3D et à défilement animé ; 100+ scènes 3D, 200+ dégradés interactifs, 200+ composants UI. Copier le prompt, le coller dans Claude, Cursor ou Lovable, publier directement.</p>
+            <p class="tool-unreadable">Nom de domaine illisible sur la capture d'origine — lien non ajouté volontairement.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://wireprompts.dev" target="_blank" rel="noopener">WirePrompt ↗</a></div>
+            <p class="tool-desc">Des prompts prêts à l'emploi pour dashboards et landing pages.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://21st.dev" target="_blank" rel="noopener">21st.dev ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Un registre de composants qui se branche sur les agents via MCP.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://ui.shadcn.com" target="_blank" rel="noopener">shadcn/ui ↗</a></div>
+            <p class="tool-desc">Toujours la référence pour une UI propre et réutilisable.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://ui.aceternity.com" target="_blank" rel="noopener">Aceternity UI ↗</a></div>
+            <p class="tool-desc">230+ composants React/Tailwind animés.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://magicui.design" target="_blank" rel="noopener">Magic UI ↗</a></div>
+            <p class="tool-desc">Des composants soignés pour des applis web modernes.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://www.shadcnblocks.com" target="_blank" rel="noopener">Shadcnblocks ↗</a></div>
+            <p class="tool-desc">Des blocs entiers tout faits, pas juste des boutons.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://mapox.dev" target="_blank" rel="noopener">mapox ↗</a></div>
+            <p class="tool-desc">Des composants de carte : marqueurs, itinéraires, popups.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="cat-block" id="animations">
+        <h3>✨ Animations &amp; effets</h3>
+        <p class="cat-note">Pour ajouter du mouvement et de la texture sans tout coder à la main.</p>
+        <div class="tool-grid warm">
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://kinetics.colorion.co" target="_blank" rel="noopener">Kinesics ↗</a></div>
+            <p class="tool-desc">150+ effets de mouvement avec code React et prompts.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://motion-primitives.com" target="_blank" rel="noopener">Motion Primitives ↗</a></div>
+            <p class="tool-desc">Des composants d'animation et d'interaction prêts à l'emploi.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://uiverse.io" target="_blank" rel="noopener">Uiverse ↗</a></div>
+            <p class="tool-desc">Des éléments UI et interactions construits par la communauté.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name no-link">Liquid Glass</span></div>
+            <p class="tool-desc">Des composants et effets de réfraction façon verre dépoli.</p>
+            <p class="tool-unreadable">Nom de domaine illisible sur la capture d'origine — lien non ajouté volontairement.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://text-effects.colorion.cc" target="_blank" rel="noopener">CSS Text Effects ↗</a></div>
+            <p class="tool-desc">Des animations et effets CSS créatifs pour le texte.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><span class="tool-name no-link">Circle Loaders</span></div>
+            <p class="tool-desc">Des animations de chargement créatives.</p>
+            <p class="tool-unreadable">Nom de domaine illisible sur la capture d'origine — lien non ajouté volontairement.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://gradientbuttons.colorion.cc" target="_blank" rel="noopener">Gradient Buttons ↗</a></div>
+            <p class="tool-desc">Des styles et effets de boutons en dégradé.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://www.shadertoy.com" target="_blank" rel="noopener">Shadertoy ↗</a></div>
+            <p class="tool-desc">Des shaders à étudier et à remixer.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://3dicons.co" target="_blank" rel="noopener">3dicons ↗</a></div>
+            <p class="tool-desc">Une bibliothèque d'icônes 3D gratuites pour interfaces modernes.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://animejs.com" target="_blank" rel="noopener">Anime.js ↗</a></div>
+            <p class="tool-desc">Une bibliothèque JavaScript légère pour l'animation web.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SOURCE B ================= -->
+    <section class="outils-source cool">
+      <span class="source-tag">Source B · <a href="https://github.com/Scap-Mehdi/awesome-vibecoding/blob/main/README.fr.md" style="color:inherit">awesome-vibecoding</a>, liste vérifiée au 18 septembre 2026</span>
+      <h2>Agents de code &amp; écosystème vibe coding</h2>
+
+      <div class="cat-block" id="code">
+        <h3>⌨️ Code &amp; édition</h3>
+        <p class="cat-note">Comprendre un dépôt, implémenter une fonctionnalité, refactorer.</p>
+        <div class="tool-grid cool">
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/Aider-AI/aider" target="_blank" rel="noopener">Aider ↗</a><span class="tool-tag">CLI</span></div>
+            <p class="tool-desc">Pair programming en terminal, modèles cloud ou locaux, intégration Git.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener">Claude Code ↗</a><span class="tool-tag">CLI</span></div>
+            <p class="tool-desc">Assistant de code agentique, workflows en terminal et par projet.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/cline/cline" target="_blank" rel="noopener">Cline ↗</a></div>
+            <p class="tool-desc">Agent de code pour IDE, terminal et desktop, avec outils fichiers, commandes et navigateur.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://www.cursor.com" target="_blank" rel="noopener">Cursor ↗</a><span class="tool-tag">IDE</span></div>
+            <p class="tool-desc">Éditeur et agent de code pour l'implémentation, le débogage et la revue.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/google-gemini/gemini-cli" target="_blank" rel="noopener">Gemini CLI ↗</a><span class="tool-tag">CLI</span></div>
+            <p class="tool-desc">Agent open source en terminal, accès par clé API, Vertex ou offre entreprise.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/features/copilot" target="_blank" rel="noopener">GitHub Copilot ↗</a></div>
+            <p class="tool-desc">Assistance au code et workflows d'agents dans GitHub et les IDE compatibles.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/aaif-goose/goose" target="_blank" rel="noopener">Goose ↗</a><span class="tool-tag">CLI</span></div>
+            <p class="tool-desc">Agent local extensible : workflows de code, interfaces desktop/CLI, outils MCP.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://kiro.dev" target="_blank" rel="noopener">Kiro ↗</a><span class="tool-tag">IDE</span></div>
+            <p class="tool-desc">Agent de code AWS, workflows IDE et CLI, spécifications et tests.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://openai.com/codex/" target="_blank" rel="noopener">OpenAI Codex CLI ↗</a><span class="tool-tag">CLI</span></div>
+            <p class="tool-desc">Agent de code OpenAI qui s'exécute localement dans le terminal.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/earendil-works/pi" target="_blank" rel="noopener">Pi ↗</a><span class="tool-tag">CLI</span></div>
+            <p class="tool-desc">Agent de code en terminal, extensible et intégrable comme harnais.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="cat-block" id="apps">
+        <h3>📱 Prototypage d'applications et d'interfaces</h3>
+        <p class="cat-note">Créer une première application ou interface à partir d'une description ou d'un design.</p>
+        <div class="tool-grid cool">
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://bolt.new" target="_blank" rel="noopener">Bolt.new ↗</a><span class="tool-tag">Web</span></div>
+            <p class="tool-desc">Création d'applications en langage naturel, par StackBlitz.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/dyad-sh/dyad" target="_blank" rel="noopener">Dyad ↗</a><span class="tool-tag">Desktop</span></div>
+            <p class="tool-desc">Créer des applications en local avec des fournisseurs de modèles configurables.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://lovable.dev" target="_blank" rel="noopener">Lovable ↗</a><span class="tool-tag">Web</span></div>
+            <p class="tool-desc">Génération d'applications full-stack avec Supabase.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://www.onlook.com" target="_blank" rel="noopener">Onlook ↗</a><span class="tool-tag">Web</span></div>
+            <p class="tool-desc">Modifier visuellement l'interface d'une application tout en travaillant sur le code.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://replit.com" target="_blank" rel="noopener">Replit ↗</a><span class="tool-tag">Web</span></div>
+            <p class="tool-desc">Créer et itérer sur des applications avec Replit Agent.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://v0.app" target="_blank" rel="noopener">v0 ↗</a><span class="tool-tag">Web</span></div>
+            <p class="tool-desc">L'IA de Vercel pour générer des UI et du React.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="cat-block" id="contexte">
+        <h3>🔌 Contexte, spécifications &amp; intégrations</h3>
+        <p class="cat-note">Donner aux agents des exigences, des règles, de la documentation et des données de projet connectées.</p>
+        <div class="tool-grid cool">
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/caliber-ai-org/ai-setup" target="_blank" rel="noopener">Caliber ↗</a></div>
+            <p class="tool-desc">CLI qui génère et synchronise les configurations d'agents IA pour Claude Code, Cursor et Codex.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/upstash/context7" target="_blank" rel="noopener">Context7 ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Récupérer la documentation des bibliothèques comme contexte de code.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem" target="_blank" rel="noopener">Filesystem MCP ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Donner aux agents un accès contrôlé aux fichiers du projet.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/github/github-mcp-server" target="_blank" rel="noopener">GitHub MCP ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Connecter les workflows de dépôts, d'issues et de pull requests.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/neondatabase/mcp-server-neon" target="_blank" rel="noopener">Neon ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Connecter les workflows de développement aux bases de données Neon.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://developers.notion.com/guides/mcp/overview" target="_blank" rel="noopener">Notion MCP ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">MCP officiel hébergé pour chercher, lire et mettre à jour du contenu Notion.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/Fission-AI/OpenSpec" target="_blank" rel="noopener">OpenSpec ↗</a></div>
+            <p class="tool-desc">Cadre de développement piloté par les spécifications pour assistants de code IA.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/supabase/mcp" target="_blank" rel="noopener">Supabase MCP ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">MCP officiel pour les schémas, requêtes et configurations de projet Supabase.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="cat-block" id="qualite">
+        <h3>✅ Tests, revue &amp; sécurité</h3>
+        <p class="cat-note">Vérifier le comportement, relire les changements générés, diagnostiquer les échecs.</p>
+        <div class="tool-grid cool">
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/vostride/agent-qa" target="_blank" rel="noopener">Agent QA ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Écrire et exécuter des tests web et mobile en langage naturel.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/microsoft/playwright-mcp" target="_blank" rel="noopener">Playwright MCP ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Automatisation officielle (Microsoft) du navigateur par instantanés structurés des pages.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/The-PR-Agent/pr-agent" target="_blank" rel="noopener">PR-Agent ↗</a></div>
+            <p class="tool-desc">Relecteur de pull requests maintenu par la communauté.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://getprbl.com" target="_blank" rel="noopener">Prbl ↗</a><span class="tool-tag">Web</span></div>
+            <p class="tool-desc">Scanner une appli en ligne ou un dépôt pour trouver les failles fréquentes du code généré par IA.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://www.qodo.ai" target="_blank" rel="noopener">Qodo ↗</a></div>
+            <p class="tool-desc">Moteur de revue de code par IA (anciennement CodiumAI).</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/semgrep/semgrep/tree/develop/cli/src/semgrep/mcp" target="_blank" rel="noopener">Semgrep MCP ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Analyse de sécurité via le CLI Semgrep maintenu.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/getsentry/sentry-mcp" target="_blank" rel="noopener">Sentry ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Inspecter les erreurs d'application et diagnostiquer les échecs.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="cat-block" id="delivery">
+        <h3>🚀 Déploiement &amp; exécution</h3>
+        <p class="cat-note">Construire, publier ou exécuter du code dans un environnement adapté — ce qui fera vivre cette page sur Cloudflare Pages.</p>
+        <div class="tool-grid cool">
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/cloudflare/mcp-server-cloudflare" target="_blank" rel="noopener">Cloudflare ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Gérer le déploiement d'applications et les ressources cloud.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/e2b-dev/E2B" target="_blank" rel="noopener">E2B ↗</a></div>
+            <p class="tool-desc">Sandbox cloud sécurisée pour agents IA de niveau entreprise.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://publish.my" target="_blank" rel="noopener">Publish.my ↗</a><span class="tool-tag">Web</span></div>
+            <p class="tool-desc">Publication de sites statiques pilotée par agents, avec activation par email.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/getsentry/XcodeBuildMCP" target="_blank" rel="noopener">XcodeBuildMCP ↗</a><span class="tool-tag">MCP</span></div>
+            <p class="tool-desc">Outils CLI et MCP pour compiler, exécuter et déboguer des projets Apple.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="cat-block" id="operations">
+        <h3>🗂️ Espaces de travail &amp; usage des agents</h3>
+        <p class="cat-note">Organiser les sessions, inspecter les exécutions, comprendre l'usage ou la disponibilité.</p>
+        <div class="tool-grid cool">
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://delta.dev" target="_blank" rel="noopener">Delta (Zed) ↗</a><span class="tool-tag">Desktop</span></div>
+            <p class="tool-desc">Lancer des fils d'agents et relire leurs changements dans un espace de travail multijoueur.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/MusicMaster4/Duckweed" target="_blank" rel="noopener">Duckweed ↗</a><span class="tool-tag">Desktop</span></div>
+            <p class="tool-desc">Exécuter agents de code, shells, diffs Git et sessions dans un espace de travail local multiplateforme.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/lanesket/llm.log" target="_blank" rel="noopener">llm.log ↗</a></div>
+            <p class="tool-desc">Inspecter les coûts, tokens et traces de requêtes des modèles via un proxy local.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/johannesjo/parallel-code" target="_blank" rel="noopener">Parallel Code ↗</a><span class="tool-tag">Desktop</span></div>
+            <p class="tool-desc">Exécuter des agents de code dans des worktrees Git isolés et relire leurs changements.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/shep-ai/shep" target="_blank" rel="noopener">Shep ↗</a><span class="tool-tag">CLI</span></div>
+            <p class="tool-desc">Orchestrer des agents de code en parallèle, jusqu'au commit, au push et aux brouillons de PR.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/pungme/superagent-desktop" target="_blank" rel="noopener">Superagent ↗</a><span class="tool-tag">Desktop</span></div>
+            <p class="tool-desc">Utiliser Claude Code ou Codex dans un espace de travail macOS avec outils navigateur et iOS.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://github.com/aqua5230/usage" target="_blank" rel="noopener">usage ↗</a><span class="tool-tag">Desktop</span></div>
+            <p class="tool-desc">Voir les quotas des agents de code depuis la barre de menu macOS ou la zone de notification Windows.</p>
+          </article>
+          <article class="tool-card">
+            <div class="tool-top"><a class="tool-name" href="https://www.warp.dev/terminal" target="_blank" rel="noopener">Warp Terminal ↗</a></div>
+            <p class="tool-desc">Un terminal orienté agents pour inspecter les workflows de code.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <footer class="outils-foot">
+      <h2>Sources</h2>
+      <ul>
+        <li><strong>Source A</strong> — une capture d'écran transmise pour cet exercice, listant 25 ressources de design et d'UI pour accélérer un projet vibe coding. Trois noms de domaine étaient illisibles sur l'image d'origine ; ils sont indiqués sans lien plutôt que devinés.</li>
+        <li><strong>Source B</strong> — <a href="https://github.com/Scap-Mehdi/awesome-vibecoding" target="_blank" rel="noopener">Scap-Mehdi/awesome-vibecoding</a> (fork de <a href="https://github.com/roboco-io/awesome-vibecoding" target="_blank" rel="noopener">roboco-io/awesome-vibecoding</a>), version <a href="https://github.com/Scap-Mehdi/awesome-vibecoding/blob/main/README.fr.md" target="_blank" rel="noopener">README.fr.md</a>. Liste vérifiée au 18 septembre 2026, avec quelques ajouts vérifiés jusqu'au 4 octobre 2026. Contenu sous licence <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0 1.0</a>.</li>
+      </ul>
+      <p class="small">Page générée pour la formation vibe coding (mairie de Paris) — les outils évoluent vite, pense à revérifier les liens avant de les partager plus largement.</p>
+    </footer>
+
+  </div>
+</body>
+</html>
