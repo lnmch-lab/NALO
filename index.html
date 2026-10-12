@@ -2,17 +2,163 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Nalo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main>
-    <h1>Nalo 🐟</h1>
-    <p>Premier projet vibe coding. Ça tourne !</p>
-    <button id="evolve">Faire évoluer le carpeau</button>
-    <p id="status"></p>
-  </main>
+  <div class="app">
+    <main class="screens">
+
+      <!-- COLLECTION -->
+      <section id="view-collection" class="view">
+        <div class="topbar">
+          <span class="chip">Ma collection</span>
+          <span class="chip" id="collection-count">0 carte</span>
+        </div>
+        <div class="collection-grid" id="collection-grid"></div>
+        <p class="empty-hint hidden" id="collection-empty">
+          Pas encore de carte. Touche le bouton photo pour capturer ton premier mot.
+        </p>
+      </section>
+
+      <!-- ÉTAPE 1 : PHOTO -->
+      <section id="view-photo" class="view hidden">
+        <p class="label">Nouvelle carte</p>
+        <h1>Prends ou choisis une photo</h1>
+        <div class="photo-drop" id="photo-drop">
+          <img id="photo-preview" class="hidden" alt="Photo choisie">
+          <span class="photo-drop-hint" id="photo-drop-hint">📷<br>Toucher pour ajouter une photo</span>
+        </div>
+        <input type="file" id="file-input" accept="image/*" capture="environment" hidden>
+        <button class="btn-primary" id="btn-photo-next" disabled>Continuer</button>
+        <button class="btn-text" id="btn-photo-cancel">Annuler</button>
+      </section>
+
+      <!-- ÉTAPE 2 : CHOIX DU MOT -->
+      <section id="view-word" class="view hidden">
+        <p class="label">Nouvelle carte</p>
+        <h1>C'est quoi, sur ta photo ?</h1>
+        <p class="subtitle">La reconnaissance automatique arrive bientôt — pour l'instant, choisis le mot toi-même.</p>
+
+        <input type="search" id="word-search" class="search-input" placeholder="Chercher un mot...">
+        <div class="theme-filters" id="theme-filters"></div>
+        <div class="word-list" id="word-list"></div>
+        <button class="btn-text" id="btn-word-back">← Retour à la photo</button>
+      </section>
+
+      <!-- ÉTAPE 3 : CARTE GÉNÉRÉE -->
+      <section id="view-card" class="view hidden">
+        <p class="newtag" id="card-newtag">Nouvelle carte !</p>
+
+        <div class="card-wrap">
+          <div class="card" id="card" role="button" tabindex="0" aria-label="Retourner la carte">
+            <div class="face front">
+              <div class="face-in">
+                <i class="corner tl"></i><i class="corner br"></i>
+                <div class="c-head">
+                  <span class="c-name" id="c-name"></span>
+                  <span class="stars" id="c-stars"></span>
+                </div>
+                <div class="art">
+                  <img id="art-photo" alt="">
+                </div>
+                <div class="vnline">
+                  <b id="c-vn"></b>
+                  <button class="speak" id="btn-speak" aria-label="Écouter le mot">
+                    <svg viewBox="0 0 24 24" width="15" height="15"><path d="M4 9v6h4l5 4V5L8 9z" fill="#3B2A20"/><path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="#3B2A20" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+                  </button>
+                </div>
+                <span class="kind" id="c-kind"></span>
+                <div class="swatches">
+                  <span class="dots" id="c-dots">
+                    <i style="--c:var(--p1)"></i><i style="--c:var(--p2)"></i><i style="--c:var(--p3)"></i><i style="--c:var(--p4)"></i><i style="--c:var(--p5)"></i>
+                  </span>
+                  <span class="num" id="c-num"></span>
+                </div>
+              </div>
+              <div class="holo" id="holo"></div>
+            </div>
+            <div class="face back">
+              <div class="face-in">
+                <div class="photo"><img id="photo-img" alt="Photo originale"></div>
+                <div class="meta">
+                  <div><small>Date</small><span id="m-date"></span></div>
+                  <div><small>Heure</small><span id="m-time"></span></div>
+                </div>
+                <textarea class="note" id="card-note" placeholder="Une note, un souvenir..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="hint">Touche la carte pour voir la photo originale</p>
+
+        <div class="card-actions">
+          <button class="btn-primary" id="btn-card-save">✨ Ajouter à ma collection</button>
+          <button class="btn-text" id="btn-card-retry">Reprendre</button>
+        </div>
+      </section>
+
+      <!-- CARTE EN LECTURE (depuis la collection) -->
+      <section id="view-view" class="view hidden">
+        <button class="btn-text btn-back-top" id="btn-view-back">← Ma collection</button>
+        <div class="card-wrap">
+          <div class="card" id="view-card-el" role="button" tabindex="0" aria-label="Retourner la carte">
+            <div class="face front">
+              <div class="face-in">
+                <i class="corner tl"></i><i class="corner br"></i>
+                <div class="c-head">
+                  <span class="c-name" id="v-name"></span>
+                  <span class="stars" id="v-stars"></span>
+                </div>
+                <div class="art"><img id="v-art-photo" alt=""></div>
+                <div class="vnline">
+                  <b id="v-vn"></b>
+                  <button class="speak" id="btn-view-speak" aria-label="Écouter le mot">
+                    <svg viewBox="0 0 24 24" width="15" height="15"><path d="M4 9v6h4l5 4V5L8 9z" fill="#3B2A20"/><path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="#3B2A20" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+                  </button>
+                </div>
+                <span class="kind" id="v-kind"></span>
+                <div class="swatches">
+                  <span class="dots" id="v-dots">
+                    <i style="--c:var(--p1)"></i><i style="--c:var(--p2)"></i><i style="--c:var(--p3)"></i><i style="--c:var(--p4)"></i><i style="--c:var(--p5)"></i>
+                  </span>
+                  <span class="num" id="v-num"></span>
+                </div>
+              </div>
+              <div class="holo" id="v-holo"></div>
+            </div>
+            <div class="face back">
+              <div class="face-in">
+                <div class="photo"><img id="v-photo-img" alt="Photo originale"></div>
+                <div class="meta">
+                  <div><small>Date</small><span id="v-date"></span></div>
+                  <div><small>Heure</small><span id="v-time"></span></div>
+                </div>
+                <textarea class="note" id="v-note" placeholder="Une note, un souvenir..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="hint">Touche la carte pour voir la photo originale</p>
+      </section>
+
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="navbtn" id="nav-collection" aria-label="Ma collection">
+        <svg width="22" height="22" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="10" rx="2" fill="#6CC3AE"/><rect x="13" y="3" width="8" height="10" rx="2" fill="#F7A8C4"/><rect x="3" y="15" width="8" height="6" rx="2" fill="#E8B545"/><rect x="13" y="15" width="8" height="6" rx="2" fill="#3C6FB6"/></svg>
+      </button>
+      <button class="cam" id="nav-new-card" aria-label="Nouvelle carte">
+        <svg width="30" height="30" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="13" rx="3.5" fill="#fff"/><path d="M8 7l1.6-3h4.8L16 7z" fill="#fff"/><circle cx="12" cy="13.5" r="3.8" fill="#B8861E"/><circle cx="12" cy="13.5" r="1.6" fill="#FFE08A"/></svg>
+      </button>
+    </nav>
+  </div>
+
+  <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
