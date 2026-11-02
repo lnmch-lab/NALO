@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Séance 9 — Développement mobile</title>
+<style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            background: #ffffff;
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            display: none;
+            position: relative;
+            overflow-y: auto;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            color: #ecf0f1;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            font-family: 'Yanone Kaffeesatz';
+        }
+
+        .title-slide h2, .title-slide h3, .title-slide p {
+            color: #e2e8f0;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+            color: #1e3a5f;
+        }
+
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; color: #0f766e; }
+        h3 { font-size: 1.4em; }
+
+        .highlight {
+            background-color: #0f766e;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .exercise {
+            background: #ecfdf5;
+            border-left: 5px solid #059669;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .code-block {
+            font-family: 'Ubuntu Mono', monospace;
+            background: #1e293b;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .stats {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #14b8a6;
+            transition: width 0.3s ease;
+            z-index: 1000;
+            width: 0%;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-button:hover { background: #0d9488; }
+        .nav-button:disabled { background: #7f8c8d; cursor: not-allowed; }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .lexique-btn {
+            position: fixed;
+            top: 20px;
+            right: 195px;
+            background: rgba(30, 58, 95, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .lexique-btn:hover { background: #1e3a5f; }
+
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 90px;
+            background: rgba(15, 118, 110, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .pdf-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        /* Tooltip Serhat Bek (https://codepen.io/serhatbek/pen/vYwKdaG) */
+        .tooltip-trigger {
+            position: relative;
+            display: inline;
+            cursor: help;
+            border-bottom: 2px dotted #0f766e;
+            color: inherit;
+            font-weight: inherit;
+            transition: color 0.15s ease;
+        }
+
+        .tooltip-trigger:hover,
+        .tooltip-trigger:focus-visible {
+            color: #0f766e;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background-color: #0f172a;
+            color: #f8fafc;
+            text-align: left;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: normal;
+            width: max-content;
+            max-width: 280px;
+            min-width: 170px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+
+        .tooltip.tooltip--bottom {
+            bottom: auto;
+            top: calc(100% + 8px);
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .tooltip.tooltip--bottom::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #0f172a transparent;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media print {
+            .fullscreen-btn, .home-btn, .pdf-btn, .lexique-btn, .navigation, .slide-counter, .progress-bar {
+                display: none !important;
+            }
+            body { background: white !important; overflow: visible !important; }
+            .slideshow-container { display: block !important; height: auto !important; }
+            .slide {
+                display: block !important;
+                page-break-after: always !important;
+                max-width: 100% !important;
+                height: auto !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="session8.html">← Séance 8</a><span class="local-nav-title">Séance 9 — Développement mobile</span><a href="session10.html">Séance 10 →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/session9.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slideshow-container">
+
+        <div class="slide title-slide active">
+            <h1>VIBE-CODING</h1>
+            <h2>Séance 9 : Développement mobile</h2>
+            <h3>Navigation, <span class="tooltip-trigger" data-tooltip="Règles définissant ce que chaque utilisateur a le droit de lire, modifier ou effacer.">permissions</span>, hors ligne</h3>
+            <p><strong>Durée :</strong> 3 h · Application web &amp; mobile avec IA</p>
+        </div>
+
+        <div class="slide">
+            <h1>Planning de la séance</h1>
+            <div class="highlight">
+                <strong>18h30 – 18h45</strong> : Cible <span class="tooltip-trigger" data-tooltip="Système d&#x27;exploitation mobile libre développé par Google équipant de nombreux téléphones.">Android</span> / <span class="tooltip-trigger" data-tooltip="Système d&#x27;exploitation mobile d&#x27;Apple faisant fonctionner les téléphones iPhone et tablettes iPad.">iOS</span> / les deux<br>
+<strong>18h45 – 19h30</strong> : <span class="tooltip-trigger" data-tooltip="Organisation d&#x27;ensemble d&#x27;une application séparant l&#x27;interface visible, les données et les calculs.">Architecture</span> d&#x27;écran<br>
+<strong>19h30 – 19h45</strong> : Pause<br>
+<strong>19h45 – 20h45</strong> : Implémentation et <span class="tooltip-trigger" data-tooltip="Règles définissant ce que chaque utilisateur a le droit de lire, modifier ou effacer.">permissions</span><br>
+<strong>20h45 – 21h30</strong> : Tests émulateur / simulateur
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Objectifs de la séance</h1>
+            <ul>
+                <li>Architecturer un écran mobile et sa navigation</li>
+<li>Gérer <span class="tooltip-trigger" data-tooltip="Règles définissant ce que chaque utilisateur a le droit de lire, modifier ou effacer.">permissions</span> et accès <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span></li>
+<li>Indiquer clairement l&#x27;absence de connexion</li>
+<li>Respecter <span class="tooltip-trigger" data-tooltip="Conception permettant aux personnes en situation de handicap d&#x27;utiliser l&#x27;application sans gêne.">accessibilité</span> mobile</li>
+            </ul>
+            <div class="stats">
+                <strong>Fil rouge :</strong> chaque séance alimente le même projet <span class="tooltip-trigger" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l&#x27;idée.">MVP</span>, versionné dès la séance 1.
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Règles mobiles</h1>
+            <ul>
+                <li>Pas de permission inutile.</li>
+<li>Ne collecter que les données indispensables.</li>
+<li>Respecter les conventions de plateforme.</li>
+<li>Adapter aux tailles d&#x27;écran.</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1><span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l&#x27;assistant IA pour fabriquer un élément.">Prompt</span> séance 9 — Mobile</h1>
+            <p>Copiez le <span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l&#x27;assistant IA pour fabriquer un élément.">prompt</span> dans votre <span class="tooltip-trigger" data-tooltip="Programme informatique dialoguant qui comprend vos demandes en français et propose du code.">assistant IA</span>. Remplacez les éléments entre crochets.</p>
+            <pre class="code-block">Agis comme un développeur mobile expérimenté.
+
+Je développe l&#x27;application mobile [nom] pour [Android/iOS/Android et iOS] avec [Kotlin/Jetpack Compose, Swift/SwiftUI, Flutter, React Native]. La fonctionnalité à réaliser est : [fonctionnalité].
+
+Aide-moi à l&#x27;implémenter en couvrant :
+1. L&#x27;architecture de l&#x27;écran et la navigation.
+2. Les modèles de données et l&#x27;accès à l&#x27;API.
+3. Les permissions nécessaires sur le téléphone et leur justification.
+4. La gestion hors ligne minimale ou l&#x27;indication claire d&#x27;absence de connexion.
+5. Les états de chargement, erreur et absence de données.
+6. L&#x27;adaptation aux différentes tailles d&#x27;écran.
+7. L&#x27;accessibilité mobile : libellés, lecteur d&#x27;écran, contraste, taille tactile.
+8. Le code des fichiers essentiels et les étapes de test sur émulateur/simulateur.
+
+Respecte les conventions de la plateforme. N&#x27;ajoute pas de permission inutile et évite de collecter des données personnelles qui ne sont pas indispensables à la fonctionnalité.</pre>
+        </div>
+
+        <div class="slide">
+            <h1>Cadre commun (à coller si besoin)</h1>
+            <div class="warning">
+                À ajouter en fin de <span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l&#x27;assistant IA pour fabriquer un élément.">prompt</span> pour ancrer le <span class="tooltip-trigger" data-tooltip="Espace de mémoire temporaire contenant les règles de votre projet et vos échanges récents.">contexte</span> formation et les contraintes de sécurité.
+            </div>
+            <pre class="code-block">Contexte : je suis en formation et je développe [nom du projet], une application [web/mobile] destinée à [public cible].
+
+Contraintes :
+- Explique chaque choix avec un vocabulaire accessible.
+- Procède étape par étape et attends ma validation entre les grandes étapes.
+- Ne génère pas de secret, clé API ou mot de passe dans le code.
+- Indique les prérequis, les commandes à exécuter et les fichiers à créer ou modifier.
+- Quand tu proposes du code, donne des blocs complets, testables, et précise où les placer.
+- Signale les risques de sécurité, de confidentialité et d&#x27;accessibilité.</pre>
+        </div>
+
+        <div class="slide">
+            <h1>Atelier pratique</h1>
+            <div class="exercise">
+                <ol>
+                    <li>Choisir une fonctionnalité Must mobile.</li>
+<li>Lancer sur émulateur ou appareil.</li>
+<li>Justifier chaque permission demandée.</li>
+<li><span class="tooltip-trigger" data-tooltip="Rédiger des notices claires pour expliquer le fonctionnement et l&#x27;utilisation d&#x27;une application.">Documenter</span> le test dans docs/mobile.md.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Livrables attendus</h1>
+            <ul>
+                <li>Écran mobile testé</li>
+<li>Liste des <span class="tooltip-trigger" data-tooltip="Règles définissant ce que chaque utilisateur a le droit de lire, modifier ou effacer.">permissions</span> justifiées</li>
+<li>Note hors ligne / absence de réseau</li>
+            </ul>
+            <div class="highlight">
+                <strong>Pour la suite :</strong> Séance 10 — Tests et <span class="tooltip-trigger" data-tooltip="Enquête méthodique pour identifier la cause exacte d&#x27;une panne et réparer la ligne fautive.">débogage</span>.
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Récapitulatif</h1>
+            <h2>Séance 9 — Développement mobile</h2>
+            <ul>
+                <li>Architecturer un écran mobile et sa navigation</li>
+<li>Gérer <span class="tooltip-trigger" data-tooltip="Règles définissant ce que chaque utilisateur a le droit de lire, modifier ou effacer.">permissions</span> et accès <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span></li>
+<li>Indiquer clairement l&#x27;absence de connexion</li>
+<li>Respecter <span class="tooltip-trigger" data-tooltip="Conception permettant aux personnes en situation de handicap d&#x27;utiliser l&#x27;application sans gêne.">accessibilité</span> mobile</li>
+            </ul>
+            <p>Conservez toutes les productions dans le <span class="tooltip-trigger" data-tooltip="Dossier surveillé par Git contenant tous les fichiers et l&#x27;historique complet du projet.">dépôt Git</span> dès maintenant.</p>
+        </div>
+    </div>
+
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Plein écran</button>
+    <a href="lexique.html" class="lexique-btn" title="Consulter le lexique FALC">Lexique</a>
+    <a href="index.html" class="home-btn">Sommaire</a>
+    <button class="pdf-btn" onclick="downloadPDF()">PDF</button>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">0</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prev-btn" onclick="changeSlide(-1)">Précédent</button>
+        <button class="nav-button" id="next-btn" onclick="changeSlide(1)">Suivant</button>
+        <span style="margin: 0 15px;">Flèches du clavier</span>
+    </div>
+
+    
+
+</body>
+</html>

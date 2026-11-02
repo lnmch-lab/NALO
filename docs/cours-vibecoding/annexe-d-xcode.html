@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annexe D — Xcode</title>
+<style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            background: #ffffff;
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            display: none;
+            position: relative;
+            overflow-y: auto;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            color: #ecf0f1;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            font-family: 'Yanone Kaffeesatz';
+        }
+
+        .title-slide h2, .title-slide h3, .title-slide p {
+            color: #e2e8f0;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+            color: #1e3a5f;
+        }
+
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; color: #0f766e; }
+        h3 { font-size: 1.4em; }
+
+        .highlight {
+            background-color: #0f766e;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .exercise {
+            background: #ecfdf5;
+            border-left: 5px solid #059669;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .code-block {
+            font-family: 'Ubuntu Mono', monospace;
+            background: #1e293b;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .stats {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #14b8a6;
+            transition: width 0.3s ease;
+            z-index: 1000;
+            width: 0%;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-button:hover { background: #0d9488; }
+        .nav-button:disabled { background: #7f8c8d; cursor: not-allowed; }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .lexique-btn {
+            position: fixed;
+            top: 20px;
+            right: 195px;
+            background: rgba(30, 58, 95, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .lexique-btn:hover { background: #1e3a5f; }
+
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 90px;
+            background: rgba(15, 118, 110, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .pdf-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        /* Tooltip Serhat Bek (https://codepen.io/serhatbek/pen/vYwKdaG) */
+        .tooltip-trigger {
+            position: relative;
+            display: inline;
+            cursor: help;
+            border-bottom: 2px dotted #0f766e;
+            color: inherit;
+            font-weight: inherit;
+            transition: color 0.15s ease;
+        }
+
+        .tooltip-trigger:hover,
+        .tooltip-trigger:focus-visible {
+            color: #0f766e;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background-color: #0f172a;
+            color: #f8fafc;
+            text-align: left;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: normal;
+            width: max-content;
+            max-width: 280px;
+            min-width: 170px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+
+        .tooltip.tooltip--bottom {
+            bottom: auto;
+            top: calc(100% + 8px);
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .tooltip.tooltip--bottom::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #0f172a transparent;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media print {
+            .fullscreen-btn, .home-btn, .pdf-btn, .lexique-btn, .navigation, .slide-counter, .progress-bar {
+                display: none !important;
+            }
+            body { background: white !important; overflow: visible !important; }
+            .slideshow-container { display: block !important; height: auto !important; }
+            .slide {
+                display: block !important;
+                page-break-after: always !important;
+                max-width: 100% !important;
+                height: auto !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="annexe-c-android-studio.html">← Annexe C</a><span class="local-nav-title">Annexe D — Xcode</span><a href="annexe-e-vm-linux.html">Annexe E →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/annexe-d-xcode.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slideshow-container">
+
+        <div class="slide title-slide active">
+            <h1>VIBE-CODING</h1>
+            <h2>Annexe D</h2>
+            <h3>Installer <span class="tooltip-trigger" data-tooltip="Logiciel officiel Apple pour concevoir et tester des applications iPhone sur ordinateur Mac.">Xcode</span></h3>
+            <p>Préparation des outils</p>
+        </div>
+
+        <div class="slide">
+            <h1>Objectif</h1>
+            <div class="stats">Installer l&#x27;environnement Apple pour développer et tester <span class="tooltip-trigger" data-tooltip="Système d&#x27;exploitation mobile d&#x27;Apple faisant fonctionner les téléphones iPhone et tablettes iPad.">iOS</span> (macOS uniquement).</div>
+            <div class="warning">
+                <strong>Sécurité :</strong> mot de passe unique, <span class="tooltip-trigger" data-tooltip="Double vérification d&#x27;identité demandant votre mot de passe habituel puis un code sur téléphone.">2FA</span> si disponible, jamais de <span class="tooltip-trigger" data-tooltip="Mots de passe exclusifs autorisant votre application à utiliser des services partenaires.">clés API</span>, <span class="tooltip-trigger" data-tooltip="Badges chiffrés temporaires prouvant que les utilisateurs sont connectés sans retaper leur mot de passe.">tokens</span>, mots de passe ou fichiers <span class="tooltip-trigger" data-tooltip="Fichier de configuration confidentiel qui contient les secrets et mots de passe du projet.">.env</span> dans un <span class="tooltip-trigger" data-tooltip="Dossier surveillé contenant tous les fichiers de votre projet et l&#x27;historique des versions.">dépôt</span> public. Utilisez une adresse e-mail durable pour les comptes de formation.
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Conditions</h1>
+            <ul>
+                <li><span class="tooltip-trigger" data-tooltip="Logiciel officiel Apple pour concevoir et tester des applications iPhone sur ordinateur Mac.">Xcode</span> sur macOS uniquement.</li>
+<li>macOS compatible avec la version de <span class="tooltip-trigger" data-tooltip="Logiciel officiel Apple pour concevoir et tester des applications iPhone sur ordinateur Mac.">Xcode</span>.</li>
+<li>Espace disque important (simulateurs inclus).</li>
+<li>Compte Apple : test local possible ; App Store/TestFlight → programme développeur.</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>Installation</h1>
+            <ul>
+                <li>Installer via App Store ou portail développeur.</li>
+<li>Ouvrir <span class="tooltip-trigger" data-tooltip="Logiciel officiel Apple pour concevoir et tester des applications iPhone sur ordinateur Mac.">Xcode</span>, accepter licences, <span class="tooltip-trigger" data-tooltip="Blocs réutilisables d&#x27;interface que vous pouvez afficher sur plusieurs pages sans les recréer.">composants</span> additionnels.</li>
+<li>Settings → Platforms : télécharger simulateur <span class="tooltip-trigger" data-tooltip="Système d&#x27;exploitation mobile d&#x27;Apple faisant fonctionner les téléphones iPhone et tablettes iPad.">iOS</span>.</li>
+<li>Créer un projet SwiftUI de test et le lancer (Run).</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1><span class="tooltip-trigger" data-tooltip="Interface textuelle où vous pilotez vos outils informatiques en tapant des lignes d&#x27;ordres.">CLI</span></h1>
+            <ul>
+                <li><span class="tooltip-trigger" data-tooltip="Logiciel officiel Apple pour concevoir et tester des applications iPhone sur ordinateur Mac.">xcode</span>-select -p</li>
+<li>xcodebuild -version</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>Checklist</h1>
+            <div class="exercise">
+                <ul>
+                    <li><span class="tooltip-trigger" data-tooltip="Logiciel officiel Apple pour concevoir et tester des applications iPhone sur ordinateur Mac.">Xcode</span> + <span class="tooltip-trigger" data-tooltip="Blocs réutilisables d&#x27;interface que vous pouvez afficher sur plusieurs pages sans les recréer.">composants</span> OK</li>
+<li>Simulateur <span class="tooltip-trigger" data-tooltip="Système d&#x27;exploitation mobile d&#x27;Apple faisant fonctionner les téléphones iPhone et tablettes iPad.">iOS</span> disponible</li>
+<li>Projet SwiftUI de test lancé</li>
+<li><span class="tooltip-trigger" data-tooltip="Logiciel officiel Apple pour concevoir et tester des applications iPhone sur ordinateur Mac.">xcode</span>-select / xcodebuild répondent</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Plein écran</button>
+    <a href="lexique.html" class="lexique-btn" title="Consulter le lexique FALC">Lexique</a>
+    <a href="index.html" class="home-btn">Sommaire</a>
+    <button class="pdf-btn" onclick="downloadPDF()">PDF</button>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">0</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prev-btn" onclick="changeSlide(-1)">Précédent</button>
+        <button class="nav-button" id="next-btn" onclick="changeSlide(1)">Suivant</button>
+        <span style="margin: 0 15px;">Flèches du clavier</span>
+    </div>
+
+    
+
+</body>
+</html>

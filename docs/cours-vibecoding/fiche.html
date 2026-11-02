@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiche cours</title>
+<style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background: #f8fafc; }
+        .container { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+        h1 { color: #134e4a; border-bottom: 2px solid #0f766e; padding-bottom: 10px; }
+        h2 { color: #1e3a5f; margin-top: 30px; }
+        h3 { color: #0f766e; }
+        .meta-info { background: #ecfdf5; padding: 15px; border-radius: 5px; margin-bottom: 20px; border-left: 5px solid #0f766e; }
+        .session { margin-bottom: 16px; padding-left: 15px; border-left: 3px solid #e2e8f0; }
+        .cta-button { display: inline-block; background: #0f766e; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px; font-weight: bold; }
+        .cta-button-secondary { background: #1e3a5f; margin-left: 10px; }
+
+        /* Tooltip Serhat Bek */
+        .tooltip-trigger {
+            position: relative;
+            display: inline;
+            cursor: help;
+            border-bottom: 2px dotted #0f766e;
+            color: inherit;
+            font-weight: inherit;
+            transition: color 0.15s ease;
+        }
+        .tooltip-trigger:hover,
+        .tooltip-trigger:focus-visible {
+            color: #0f766e;
+        }
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background-color: #0f172a;
+            color: #f8fafc;
+            text-align: left;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: normal;
+            width: max-content;
+            max-width: 280px;
+            min-width: 170px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+        .tooltip.tooltip--bottom {
+            bottom: auto;
+            top: calc(100% + 8px);
+            transform: translateX(-50%) translateY(-4px);
+        }
+        .tooltip.tooltip--bottom::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #0f172a transparent;
+        }
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="local-nav-title">Fiche cours</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/fiche.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+<div class="container">
+    <h1>Fiche cours — VIBE-CODING</h1>
+    <div class="meta-info">
+        <p><strong>Durée :</strong> 45 heures (15 séances de 3 heures)</p>
+        <p><strong>Modalité :</strong> Hybride / Distanciel / Présentiel</p>
+        <p><strong>Niveau :</strong> Débutant à intermédiaire</p>
+    </div>
+    <h2>Description</h2>
+    <p>Concevoir et livrer un <span class="tooltip-trigger" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l&#x27;idée.">MVP</span> d&#x27;application web et/ou mobile en s&#x27;appuyant sur des <span class="tooltip-trigger" data-tooltip="Programmes informatiques dialoguants qui comprennent vos demandes en français et proposent du code.">assistants IA</span>, des <span class="tooltip-trigger" data-tooltip="Consignes écrites précises données à l&#x27;assistant IA pour fabriquer un élément.">prompts</span> structurés et les bonnes pratiques (<span class="tooltip-trigger" data-tooltip="Étape où vous définissez l&#x27;objectif de l&#x27;application, les usagers et les priorités avant de coder.">cadrage</span>, <span class="tooltip-trigger" data-tooltip="Organisation d&#x27;ensemble d&#x27;une application séparant l&#x27;interface visible, les données et les calculs.">architecture</span>, UX, données, <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span>, <span class="tooltip-trigger" data-tooltip="Procédure vérifiant l&#x27;identité d&#x27;un membre avant d&#x27;ouvrir l&#x27;accès aux pages réservées.">auth</span>, tests, sécurité, <span class="tooltip-trigger" data-tooltip="Installation de votre application sur un serveur connecté pour l&#x27;ouvrir à tous sur Internet.">déploiement</span> <span class="tooltip-trigger" data-tooltip="Réseau mondial qui héberge votre site sur Internet, l&#x27;accélère et repousse les pirates.">Cloudflare</span>, <span class="tooltip-trigger" data-tooltip="Système d&#x27;exploitation libre et sécurisé qui fait fonctionner la grande majorité des serveurs web.">Linux</span>/<span class="tooltip-trigger" data-tooltip="Boîtes logicielles autonomes emportant vos applications pour fonctionner partout.">conteneurs</span>, <span class="tooltip-trigger" data-tooltip="Notice explicative écrite décrivant comment installer, utiliser et réparer une application.">documentation</span>).</p>
+    <h3>Objectifs</h3>
+    <ul>
+        <li><span class="tooltip-trigger" data-tooltip="Définir l&#x27;objectif de votre application, les usagers et les priorités avant de coder.">Cadrer</span> un projet <span class="tooltip-trigger" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l&#x27;idée.">MVP</span> (<span class="tooltip-trigger" data-tooltip="Profils d&#x27;utilisateurs imaginaires créés pour concevoir l&#x27;application selon leurs besoins réels.">personas</span>, <span class="tooltip-trigger" data-tooltip="Liste ordonnée de toutes les tâches à réaliser pour construire votre application.">backlog</span>, risques).</li>
+        <li>Choisir une <span class="tooltip-trigger" data-tooltip="Organisation d&#x27;ensemble d&#x27;une application séparant l&#x27;interface visible, les données et les calculs.">architecture</span> simple et maintenable.</li>
+        <li>Implémenter <span class="tooltip-trigger" data-tooltip="Ensemble des éléments visuels affichés à l&#x27;écran permettant à l&#x27;utilisateur d&#x27;interagir.">interface</span>, données, <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span> et <span class="tooltip-trigger" data-tooltip="Vérification stricte de l&#x27;identité d&#x27;un utilisateur par son identifiant et son mot de passe.">authentification</span>.</li>
+        <li>Couvrir tests, sécurité et confidentialité de façon proportionnée.</li>
+        <li><span class="tooltip-trigger" data-tooltip="Installer et activer votre application sur un serveur distant connecté à Internet.">Déployer</span> (<span class="tooltip-trigger" data-tooltip="Réseau mondial qui héberge votre site sur Internet, l&#x27;accélère et repousse les pirates.">Cloudflare</span>) et simuler un <span class="tooltip-trigger" data-tooltip="Compartiment de serveur virtuel privé fonctionnant sous Linux, connecté en continu au web.">VPS Linux</span>.</li>
+        <li><span class="tooltip-trigger" data-tooltip="Rédiger des notices claires pour expliquer le fonctionnement et l&#x27;utilisation d&#x27;une application.">Documenter</span> et présenter le projet devant un jury.</li>
+    </ul>
+    <h3>Programme (aperçu)</h3>
+
+    <div class="session"><h4>Séances 1–4</h4><p><span class="tooltip-trigger" data-tooltip="Étape où vous définissez l&#x27;objectif de l&#x27;application, les usagers et les priorités avant de coder.">Cadrage</span>, <span class="tooltip-trigger" data-tooltip="Organisation d&#x27;ensemble d&#x27;une application séparant l&#x27;interface visible, les données et les calculs.">architecture</span>, UX, socle <span class="tooltip-trigger" data-tooltip="Outil qui mémorise tout l&#x27;historique de votre code pour remonter le temps en cas d&#x27;erreur.">Git</span>/qualité.</p></div>
+    <div class="session"><h4>Séances 5–9</h4><p>Données, <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span>, <span class="tooltip-trigger" data-tooltip="Procédure vérifiant l&#x27;identité d&#x27;un membre avant d&#x27;ouvrir l&#x27;accès aux pages réservées.">auth</span>, <span class="tooltip-trigger" data-tooltip="Partie visible de l&#x27;application affichée sur l&#x27;écran : textes, couleurs, boutons et formulaires.">front-end</span>, mobile.</p></div>
+    <div class="session"><h4>Séances 10–13</h4><p>Tests, sécurité, <span class="tooltip-trigger" data-tooltip="Réseau mondial qui héberge votre site sur Internet, l&#x27;accélère et repousse les pirates.">Cloudflare</span>, <span class="tooltip-trigger" data-tooltip="Système d&#x27;exploitation libre et sécurisé qui fait fonctionner la grande majorité des serveurs web.">Linux</span>/<span class="tooltip-trigger" data-tooltip="Boîte logicielle étanche faisant tourner votre application sans rien dérégler sur votre machine.">Docker</span>.</p></div>
+    <div class="session"><h4>Séances 14–15</h4><p><span class="tooltip-trigger" data-tooltip="Notice explicative écrite décrivant comment installer, utiliser et réparer une application.">Documentation</span>, démo, revue finale.</p></div>
+    
+    <h3>Annexes outils &amp; Lexique</h3>
+    <p><span class="tooltip-trigger" data-tooltip="Plateforme en ligne qui héberge vos dépôts Git, sauvegarde votre code et facilite le partage.">GitHub</span>/<span class="tooltip-trigger" data-tooltip="Plateforme en ligne pour héberger vos dépôts Git et automatiser la fabrication du projet.">GitLab</span>, <span class="tooltip-trigger" data-tooltip="Réseau mondial qui héberge votre site sur Internet, l&#x27;accélère et repousse les pirates.">Cloudflare</span>, <span class="tooltip-trigger" data-tooltip="Logiciel officiel pour créer et tester des applications sur téléphones Android virtuels.">Android Studio</span>, <span class="tooltip-trigger" data-tooltip="Logiciel officiel Apple pour concevoir et tester des applications iPhone sur ordinateur Mac.">Xcode</span>, <span class="tooltip-trigger" data-tooltip="Ordinateur simulé par logiciel dans votre machine pour vous entraîner sans aucun risque.">VM</span> <span class="tooltip-trigger" data-tooltip="Système d&#x27;exploitation libre et sécurisé qui fait fonctionner la grande majorité des serveurs web.">Linux</span>, Hébergement Cloud (S3, VPS, Pages).</p>
+    <p>Un lexique en français facile à lire et à comprendre (FALC) est à disposition pour lever les doutes sur le vocabulaire technique.</p>
+    <a class="cta-button" href="index.html">Accéder aux séances</a>
+    <a class="cta-button cta-button-secondary" href="lexique.html">Consulter le lexique FALC</a>
+</div>
+
+
+</body>
+</html>

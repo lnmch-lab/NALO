@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Séance 4 — Cloudflare, formulaires et stockage</title>
+<style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            background: #ffffff;
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            display: none;
+            position: relative;
+            overflow-y: auto;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            color: #ecf0f1;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            font-family: 'Yanone Kaffeesatz';
+        }
+
+        .title-slide h2, .title-slide h3, .title-slide p {
+            color: #e2e8f0;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+            color: #1e3a5f;
+        }
+
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; color: #0f766e; }
+        h3 { font-size: 1.4em; }
+
+        .highlight {
+            background-color: #0f766e;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .exercise {
+            background: #ecfdf5;
+            border-left: 5px solid #059669;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .code-block {
+            font-family: 'Ubuntu Mono', monospace;
+            background: #1e293b;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .stats {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #14b8a6;
+            transition: width 0.3s ease;
+            z-index: 1000;
+            width: 0%;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-button:hover { background: #0d9488; }
+        .nav-button:disabled { background: #7f8c8d; cursor: not-allowed; }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .lexique-btn {
+            position: fixed;
+            top: 20px;
+            right: 195px;
+            background: rgba(30, 58, 95, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .lexique-btn:hover { background: #1e3a5f; }
+
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 90px;
+            background: rgba(15, 118, 110, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .pdf-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        /* Tooltip Serhat Bek (https://codepen.io/serhatbek/pen/vYwKdaG) */
+        .tooltip-trigger {
+            position: relative;
+            display: inline;
+            cursor: help;
+            border-bottom: 2px dotted #0f766e;
+            color: inherit;
+            font-weight: inherit;
+            transition: color 0.15s ease;
+        }
+
+        .tooltip-trigger:hover,
+        .tooltip-trigger:focus-visible {
+            color: #0f766e;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background-color: #0f172a;
+            color: #f8fafc;
+            text-align: left;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: normal;
+            width: max-content;
+            max-width: 280px;
+            min-width: 170px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+
+        .tooltip.tooltip--bottom {
+            bottom: auto;
+            top: calc(100% + 8px);
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .tooltip.tooltip--bottom::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #0f172a transparent;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media print {
+            .fullscreen-btn, .home-btn, .pdf-btn, .lexique-btn, .navigation, .slide-counter, .progress-bar {
+                display: none !important;
+            }
+            body { background: white !important; overflow: visible !important; }
+            .slideshow-container { display: block !important; height: auto !important; }
+            .slide {
+                display: block !important;
+                page-break-after: always !important;
+                max-width: 100% !important;
+                height: auto !important;
+                box-shadow: none !important;
+            }
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 15px; }
+        th, td { text-align: left; vertical-align: top; border-bottom: 1px solid #cbd5e1; padding: 8px; }
+        summary { cursor: pointer; font-weight: bold; padding: 12px; background: #ecfdf5; }
+        details[open] { border-left: 4px solid #0f766e; padding: 10px; }
+        a { overflow-wrap: anywhere; }
+        @media (max-width: 600px) { .slide { padding: 20px; box-sizing: border-box; font-size: 16px; } table { font-size: 12px; } }
+        [hidden] { display: none !important; }
+        .answer-gate { background: #f1f5f9; border: 1px solid #94a3b8; padding: 16px; border-radius: 8px; margin: 16px 0; }
+        .answer-gate label { display: block; font-weight: bold; margin-bottom: 8px; }
+        .answer-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+        .answer-controls input { min-width: 0; max-width: 100%; box-sizing: border-box; font: inherit; padding: 8px; border: 1px solid #64748b; border-radius: 4px; }
+        .answer-status { margin-bottom: 0; }
+        .answer-unlocked { color: #134e4a; font-size: 15px; margin: 12px 0; }
+        .flow-figure { margin: 18px 0; background: #f1f5f9; padding: 18px; border-radius: 12px; }
+        .flow-row { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); align-items: center; gap: 10px; }
+        .flow-node { border: 2px solid #64748b; background: white; border-radius: 9px; padding: 15px 10px; text-align: center; overflow-wrap: anywhere; }
+        .flow-node strong, .flow-node span, .flow-node small { display: block; }
+        .flow-node strong { color: #1e3a5f; }
+        .flow-node span { margin-top: 8px; font-size: 15px; }
+        .flow-node small { margin-top: 8px; font-size: 12px; }
+        .storage-node { border: 3px solid #0f766e; background: #ccfbf1; }
+        .flow-arrow { text-align: center; color: #0f766e; font-size: 26px; }
+        .flow-arrow small { display: block; font-size: 11px; color: #334155; }
+        figcaption { margin-top: 12px; font-size: 14px; }
+        .return-flow { border-top: 2px dashed #0f766e; margin-top: 16px; padding-top: 10px; color: #134e4a; font-size: 14px; }
+        .storage-timeline { padding-left: 24px; }
+        .storage-timeline li { padding: 7px 12px; margin-bottom: 10px; border-left: 4px solid #0f766e; background: #f1f5f9; }
+        .storage-timeline span { display: block; font-size: 16px; }
+        .api-example { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around; gap: 12px; padding: 16px; border: 2px solid #0f766e; border-radius: 8px; background: #ecfdf5; font-size: 15px; text-align: center; }
+        .format-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; }
+        .format-grid h3 { font-size: 22px; }
+        .data-card { display: grid; gap: 6px; border-left: 4px solid #0f766e; padding: 12px; background: #ecfdf5; font-size: 15px; }
+        .source-note { font-size: 13px; }
+        td, th { overflow-wrap: anywhere; }
+        @media (max-width: 700px) {
+            .flow-row, .format-grid { grid-template-columns: minmax(0,1fr); }
+            .flow-arrow > span { display: inline-block; transform: rotate(90deg); }
+            .compact-flow .flow-arrow { transform: rotate(90deg); }
+            .flow-node { padding: 10px; }
+        }
+        @media print {
+            .answer-gate, .answer-unlocked { display: none !important; }
+            .protected-answer:not([hidden]) > :not(summary) { display: block !important; }
+            .flow-figure, .format-grid, .storage-timeline li { break-inside: avoid; }
+        }
+        .sequence-scroll { overflow-x: auto; }
+        .sequence-diagram { display: block; width: 100%; min-width: 860px; height: auto; font-family: system-ui, sans-serif; fill: #0f172a; }
+        .sequence-scroll:focus-visible { outline: 3px solid #0f766e; outline-offset: 4px; }
+        @media print { .sequence-diagram { min-width: 0; } .sequence-scroll { overflow: visible; } }
+
+        /* Projection: short foreground content; optional reference material below. */
+        .slide { box-sizing: border-box; width: calc(100% - 64px); max-width: 1120px; height: calc(100dvh - 140px); padding: 28px 36px; font-family: system-ui, -apple-system, sans-serif; font-size: 20px; line-height: 1.45; }
+        .slide h1 { margin: 0 0 20px; font-size: 2em; line-height: 1.1; }
+        .slide h2 { font-size: 1.35em; }
+        .slide p { margin: 12px 0; }
+        .key-message { font-size: 1.12em; font-weight: 650; color: #134e4a; }
+        .small-note { font-size: 15px; color: #475569; }
+        .lesson-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 20px 0; }
+        .lesson-card { border-left: 4px solid #0f766e; background: #f1f5f9; border-radius: 6px; padding: 14px 16px; min-width: 0; overflow-wrap: anywhere; }
+        .lesson-card strong { display: block; color: #134e4a; }
+        .lesson-card p { margin-bottom: 0; font-size: 18px; }
+        .visual-path { display: flex; align-items: stretch; gap: 8px; margin: 24px 0; }
+        .path-node { flex: 1; min-width: 0; padding: 16px 10px; background: #ecfdf5; border: 2px solid #0f766e; border-radius: 8px; text-align: center; overflow-wrap: anywhere; }
+        .path-node strong, .path-node span { display: block; }
+        .path-node span { font-size: 17px; margin-top: 8px; }
+        .path-arrow { align-self: center; color: #0f766e; font-size: 24px; }
+        .mini-timeline { display: flex; flex-wrap: wrap; gap: 12px; font-size: 17px; padding: 12px; background: #ecfdf5; border-radius: 6px; }
+        .lesson-detail { margin: 12px 0; font-size: 17px; }
+        .lesson-detail > summary { padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #134e4a; }
+        .lesson-detail[open] { padding: 0; border-left: 0; }
+        .lesson-detail-body { padding: 12px 16px; background: #f8fafc; }
+        .lesson-detail table { font-size: 16px; }
+        .lesson-detail pre { font-size: 15px; }
+        .lesson-link { display: inline-block; padding: 10px 14px; background: #0f766e; color: white; border-radius: 6px; text-decoration: none; }
+        .sequence-compact { min-width: 800px; width: 90%; margin: 0 auto; }
+        @media (max-width: 700px) {
+            .slide { width: calc(100% - 24px); padding: 22px 18px; font-size: 18px; height: calc(100dvh - 150px); }
+            .slide h1 { font-size: 1.7em; }
+            .lesson-cards { grid-template-columns: minmax(0,1fr); }
+            .visual-path { flex-direction: column; }
+            .path-arrow { transform: rotate(90deg); }
+        }
+        @media print {
+            .slide { height: auto !important; overflow: visible !important; font-size: 16px; }
+            .lesson-detail-body { display: block !important; }
+            .lesson-detail { break-inside: auto; }
+            .sequence-compact { min-width: 0; }
+        }
+    </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="session3.html">← Séance 3</a><span class="local-nav-title">Séance 4 — Cloudflare, formulaires et stockage</span><a href="session5.html">Séance 5 →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/session4.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slideshow-container">
+
+<section class="slide title-slide active"><h1>VIBE-CODING</h1><h2>Séance 4 : Cloudflare, formulaires et stockage R2 ou OVH</h2><p>Passer d’une maquette à un formulaire qui enregistre réellement des informations et des commentaires.</p><p><strong>3 h · 18 h 30–21 h 30 · Reprise après les vacances</strong></p></section>
+
+<section class="slide "><h1>Dès l’ouverture : combien de projets accompagner ?</h1><p class="key-message">Inscrivez votre projet et votre besoin d’aide dans le pad.</p><p><a class="lesson-link" href="https://pad.mehdiguiraud.info/p/projets_Fil_Rouge" target="_blank" rel="noopener noreferrer">Ouvrir le pad des projets fil rouge ↗</a></p><div class="lesson-cards"><div class="lesson-card"><strong>Une ligne par projet</strong><p>Nom · membres · lien · blocage du soir.</p></div><div class="lesson-card"><strong>Dernière heure réservée</strong><p>50 minutes d’accompagnement ÷ nombre de projets.</p></div></div><p><strong>Comptes :</strong> Cloudflare pour tout le monde ; OVH pour le parcours payant. Sans activation R2, repli GitHub + Pages.</p><p>AWS, GCP et Azure : comparaison aujourd’hui, configuration aux cours suivants.</p><details class="lesson-detail"><summary>Préparer les comptes et organiser les passages</summary><div class="lesson-detail-body"><div class="exercise"><strong>Comptes à préparer dès maintenant :</strong> créez votre compte Cloudflare et vérifiez votre adresse électronique. Pour le parcours OVH, créez aussi un compte sur <a href="https://www.ovhcloud.com/fr/">OVHcloud</a> : l’activation d’un projet Public Cloud demande un moyen de paiement et engage une facturation à l’usage. Celles et ceux qui ne peuvent pas payer suivent le parcours Cloudflare R2 dans sa franchise gratuite, ou le repli GitHub + Pages si l’activation est impossible. Aucun achat OVH n’est nécessaire pour participer.</div><p><strong>Aujourd’hui :</strong> configuration de Cloudflare R2 ou d’OVH, au choix. Nous verrons dans les cours suivants comment configurer AWS, Google Cloud et Azure ; aujourd’hui, ces trois services servent uniquement à l’exercice de comparaison des tarifs.</p><blockquote class="highlight">« Combien de projets fil rouge ont besoin de mon aide ce soir ? Pour chacun : qui porte le projet, quel blocage et quel résultat attendre ? »</blockquote><div class="exercise"><strong>À faire maintenant, par les étudiant·es :</strong> ajoutez votre projet à la liste dans le pad <a href="https://pad.mehdiguiraud.info/p/projets_Fil_Rouge" target="_blank" rel="noopener noreferrer">Projets fil rouge</a>.<br>Indiquez le nom du projet, les membres du groupe, le lien du projet et le besoin d’accompagnement de ce soir. Une ligne par projet.</div><p>Compter les <strong>projets inscrits dans le pad</strong>, puis noter l’ordre de passage et le besoin de chacun au tableau. Réserver la dernière heure entière.</p><p>Sur 60 min : 5 min de lancement, 50 min d’accompagnement, 5 min de bilan. Pour N projets : <strong>50 ÷ N minutes par projet</strong>.</p><p>Exemples : 2 projets → 25 min ; 4 → 12 min 30 s ; 5 → 10 min. Si aucun projet ne demande d’aide, utiliser les 50 min en atelier autonome avec revue croisée.</p></div></details></section>
+
+<section class="slide "><h1>Reprise : ce que nous avons travaillé en séance 3</h1><ul><li>Cartographier les écrans du MVP et décrire trois écrans prioritaires dans <code>docs/ux.md</code>.</li><li>Prévoir les états vide, chargement, erreur et confirmation ; vérifier clavier, contrastes et libellés.</li><li>Comparer la capture et le dépôt awesome-vibecoding avec un regard critique.</li><li>Vérifier les prix, conditions d’accès et usages des données de trois outils, avec date et sources officielles.</li><li>Publier <code>outils.html</code> avec filtre : branche, commit, pull request relue, fusion et contrôle de l’URL Cloudflare Pages.</li></ul><p>Ces éléments sont les objectifs du support précédent : nous vérifions maintenant ce qui a effectivement été terminé.</p></section>
+
+<section class="slide "><h1>Quiz de reprise · 1/6</h1><h2>À quoi sert un wireframe ?</h2><ol><li>À décrire la structure d’un écran et l’action principale avant les détails visuels.</li><li>À stocker les mots de passe.</li><li>À remplacer les tests utilisateurs.</li></ol><form class="answer-gate" data-answer-gate>
+<label for="answer-password-4">Mot de passe pour afficher les corrections</label>
+<div class="answer-controls"><input id="answer-password-4" type="password" autocomplete="off" required maxlength="256" aria-describedby="answer-status-4"><button class="nav-button" type="submit">Déverrouiller les corrections</button></div>
+<p id="answer-status-4" class="answer-status" role="status" aria-live="polite"></p>
+</form><div class="answer-unlocked" hidden><span>Corrections déverrouillées pour cette ouverture du support.</span> <button type="button" class="nav-button" data-lock-answers>Masquer et verrouiller</button></div><details class="protected-answer" open><summary>✓ Correction</summary><p><strong>Réponse 1.</strong> Un wireframe décrit les blocs et le parcours ; une belle image ne prouve pas que l’action fonctionne.</p></details><p>Vote individuel, puis explication en binôme. Compter un point par bonne réponse.</p></section>
+
+<section class="slide "><h1>Quiz de reprise · 2/6</h1><h2>Quels états prévoir pour un formulaire ?</h2><ol><li>Uniquement la confirmation.</li><li>Vide, saisie, chargement, erreur et confirmation.</li><li>Seulement une animation.</li></ol><form class="answer-gate" data-answer-gate>
+<label for="answer-password-5">Mot de passe pour afficher les corrections</label>
+<div class="answer-controls"><input id="answer-password-5" type="password" autocomplete="off" required maxlength="256" aria-describedby="answer-status-5"><button class="nav-button" type="submit">Déverrouiller les corrections</button></div>
+<p id="answer-status-5" class="answer-status" role="status" aria-live="polite"></p>
+</form><div class="answer-unlocked" hidden><span>Corrections déverrouillées pour cette ouverture du support.</span> <button type="button" class="nav-button" data-lock-answers>Masquer et verrouiller</button></div><details class="protected-answer" open><summary>✓ Correction</summary><p><strong>Réponse 2.</strong> Le parcours doit rester compréhensible en cas d’attente, de données invalides ou de panne.</p></details><p>Vote individuel, puis explication en binôme. Compter un point par bonne réponse.</p></section>
+
+<section class="slide "><h1>Quiz de reprise · 3/6</h1><h2>Quel contrôle d’accessibilité est pertinent ?</h2><ol><li>Masquer les libellés pour gagner de la place.</li><li>Différencier les erreurs uniquement par du rouge.</li><li>Parcourir le formulaire au clavier et associer chaque champ à un libellé.</li></ol><form class="answer-gate" data-answer-gate>
+<label for="answer-password-6">Mot de passe pour afficher les corrections</label>
+<div class="answer-controls"><input id="answer-password-6" type="password" autocomplete="off" required maxlength="256" aria-describedby="answer-status-6"><button class="nav-button" type="submit">Déverrouiller les corrections</button></div>
+<p id="answer-status-6" class="answer-status" role="status" aria-live="polite"></p>
+</form><div class="answer-unlocked" hidden><span>Corrections déverrouillées pour cette ouverture du support.</span> <button type="button" class="nav-button" data-lock-answers>Masquer et verrouiller</button></div><details class="protected-answer" open><summary>✓ Correction</summary><p><strong>Réponse 3.</strong> Le clavier, les libellés et les messages explicites rendent le formulaire utilisable.</p></details><p>Vote individuel, puis explication en binôme. Compter un point par bonne réponse.</p></section>
+
+<section class="slide "><h1>Quiz de reprise · 4/6</h1><h2>Comment vérifier une liste d’outils trouvée en ligne ?</h2><ol><li>Consulter les pages officielles, dater les prix et vérifier les conditions et intérêts de la source.</li><li>Recopier le classement le plus populaire.</li><li>Considérer que tous les outils sont gratuits.</li></ol><form class="answer-gate" data-answer-gate>
+<label for="answer-password-7">Mot de passe pour afficher les corrections</label>
+<div class="answer-controls"><input id="answer-password-7" type="password" autocomplete="off" required maxlength="256" aria-describedby="answer-status-7"><button class="nav-button" type="submit">Déverrouiller les corrections</button></div>
+<p id="answer-status-7" class="answer-status" role="status" aria-live="polite"></p>
+</form><div class="answer-unlocked" hidden><span>Corrections déverrouillées pour cette ouverture du support.</span> <button type="button" class="nav-button" data-lock-answers>Masquer et verrouiller</button></div><details class="protected-answer" open><summary>✓ Correction</summary><p><strong>Réponse 1.</strong> La séance 3 demandait une comparaison critique et trois fiches datées et sourcées.</p></details><p>Vote individuel, puis explication en binôme. Compter un point par bonne réponse.</p></section>
+
+<section class="slide "><h1>Quiz de reprise · 5/6</h1><h2>Comment publier outils.html avec relecture ?</h2><ol><li>Modifier directement la production sans contrôle.</li><li>Branche → commit et push → aperçu → pull request relue → fusion → vérification en production.</li><li>Une maquette locale suffit.</li></ol><form class="answer-gate" data-answer-gate>
+<label for="answer-password-8">Mot de passe pour afficher les corrections</label>
+<div class="answer-controls"><input id="answer-password-8" type="password" autocomplete="off" required maxlength="256" aria-describedby="answer-status-8"><button class="nav-button" type="submit">Déverrouiller les corrections</button></div>
+<p id="answer-status-8" class="answer-status" role="status" aria-live="polite"></p>
+</form><div class="answer-unlocked" hidden><span>Corrections déverrouillées pour cette ouverture du support.</span> <button type="button" class="nav-button" data-lock-answers>Masquer et verrouiller</button></div><details class="protected-answer" open><summary>✓ Correction</summary><p><strong>Réponse 2.</strong> Un aperçu permet de contrôler le changement avant sa fusion ; vérifier aussi le résultat publié.</p></details><p>Vote individuel, puis explication en binôme. Compter un point par bonne réponse.</p></section>
+
+<section class="slide "><h1>Quiz de reprise · 6/6</h1><h2>Un formulaire sur un site statique conserve-t-il automatiquement les réponses ?</h2><ol><li>Oui, grâce au bouton Envoyer.</li><li>Oui, un dépôt privé suffit.</li><li>Non : il faut un traitement serveur et un stockage ; les secrets restent côté serveur.</li></ol><form class="answer-gate" data-answer-gate>
+<label for="answer-password-9">Mot de passe pour afficher les corrections</label>
+<div class="answer-controls"><input id="answer-password-9" type="password" autocomplete="off" required maxlength="256" aria-describedby="answer-status-9"><button class="nav-button" type="submit">Déverrouiller les corrections</button></div>
+<p id="answer-status-9" class="answer-status" role="status" aria-live="polite"></p>
+</form><div class="answer-unlocked" hidden><span>Corrections déverrouillées pour cette ouverture du support.</span> <button type="button" class="nav-button" data-lock-answers>Masquer et verrouiller</button></div><details class="protected-answer" open><summary>✓ Correction</summary><p><strong>Réponse 3.</strong> C’est le pont vers aujourd’hui : Pages affiche, un Worker traite, le stockage conserve.</p></details><p>Vote individuel, puis explication en binôme. Compter un point par bonne réponse.</p></section>
+
+<section class="slide "><h1>Bilan du quiz et travaux à reprendre</h1><form class="answer-gate" data-answer-gate>
+<label for="answer-password-10">Mot de passe pour afficher les corrections</label>
+<div class="answer-controls"><input id="answer-password-10" type="password" autocomplete="off" required maxlength="256" aria-describedby="answer-status-10"><button class="nav-button" type="submit">Déverrouiller les corrections</button></div>
+<p id="answer-status-10" class="answer-status" role="status" aria-live="polite"></p>
+</form><div class="answer-unlocked" hidden><span>Corrections déverrouillées pour cette ouverture du support.</span> <button type="button" class="nav-button" data-lock-answers>Masquer et verrouiller</button></div><div class="protected-answer" open><p>5–6 bonnes réponses : poursuivre ; 3–4 : reprendre les notions hésitantes ; 0–2 : démonstration guidée avec un binôme.</p><table><thead><tr><th>À vérifier avec le groupe</th><th>État à annoncer</th><th>Suite</th></tr></thead><tbody><tr><td>docs/ux.md et trois écrans</td><td>Fait / à reprendre / bloqué</td><td>Choisir l’écran de saisie</td></tr><tr><td>Trois fiches outils et comparaison</td><td>Fait / à reprendre / bloqué</td><td>Compléter les sources manquantes</td></tr><tr><td>outils.html et URL Pages</td><td>Fait / à reprendre / bloqué</td><td>Ouvrir l’URL et tester le filtre</td></tr><tr><td>Dépôt, aperçu et relecture</td><td>Fait / à reprendre / bloqué</td><td>Vérifier les accès avant l’atelier</td></tr></tbody></table><p>Noter les reprises dans une issue avec responsable et prochaine action. Les blocages propres aux projets rejoignent l’heure fil rouge.</p></div></section>
+
+<section class="slide "><h1>Déroulé : garder une heure pour les projets</h1><div class="highlight">18 h 30–18 h 35 · Recensement des projets et des besoins (5 min)<br>18 h 35–18 h 50 · Rappel, quiz et bilan de reprise (15 min)<br>18 h 50–19 h 10 · Devis de stockage en groupes, avec schémas et repères en ressources (20 min)<br>19 h 10–19 h 30 · Installation de KeePassXC, jeton Cloudflare et choix du stockage (20 min)<br>19 h 30–19 h 45 · Pause (15 min)<br>19 h 45–20 h 20 · Atelier formulaire → Worker → OVH (35 min)<br>20 h 20–20 h 30 · Tests et livrables (10 min)<br>20 h 30–21 h 30 · Projets fil rouge (60 min)</div><p>Si les accès bloquent, suivre la démonstration du formateur avec des données fictives et garder le diagnostic individuel pour le fil rouge.</p></section>
+
+<section class="slide "><h1>Objectif : prouver un enregistrement</h1><figure class="flow-figure" aria-label="Chaîne d’enregistrement : saisir dans le formulaire, vérifier sur le serveur, conserver dans le stockage OVH ou R2, puis confirmer au navigateur.">
+<div class="flow-row compact-flow"><div class="flow-node"><strong>1. Formulaire</strong><span>La personne saisit</span></div><div class="flow-arrow" aria-hidden="true">→</div><div class="flow-node"><strong>2. Worker</strong><span>Le serveur vérifie</span></div><div class="flow-arrow" aria-hidden="true">→</div><div class="flow-node storage-node"><strong>3. Stockage OVH ou R2</strong><span>Le fichier est conservé</span></div></div>
+<figcaption>Le stockage se place <strong>après la validation serveur</strong>. La confirmation remonte au formulaire uniquement après une écriture réussie.</figcaption></figure><ul><li>Créer un jeton Cloudflare limité au besoin de déploiement et vérifier sa validité.</li><li>Choisir R2 Standard avec sa franchise gratuite ou OVH payant ; relier le stockage au Worker sans exposer de clés.</li><li>Envoyer un titre, une information et un commentaire depuis un formulaire accessible.</li><li>Retrouver un objet JSON privé dans le bucket choisi ; n’afficher « enregistré » qu’après confirmation du stockage.</li><li>Comparer AWS S3, Google Cloud Storage, Azure Blob et OVH avec leurs limites de compatibilité et de tarification.</li></ul></section>
+
+<section class="slide "><h1>Qui fait quoi ?</h1><div class="visual-path" role="group" aria-label="Étapes du parcours"><div class="path-node"><strong>Navigateur</strong><span>Formulaire sur Pages</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Worker</strong><span>Vérifier et traiter</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>R2 ou OVH</strong><span>Conserver le fichier</span></div></div><div class="lesson-cards"><div class="lesson-card"><strong>Déploiement</strong><p>Jeton API Cloudflare → autorise la mise à jour du Worker.</p></div><div class="lesson-card"><strong>Enregistrement</strong><p>R2 → liaison DATA.<br>OVH → clés S3 conservées dans le Worker.</p></div></div><p class="key-message">Le navigateur ne reçoit aucune clé secrète.</p><details class="lesson-detail"><summary>Voir les responsabilités et le trajet détaillé</summary><div class="lesson-detail-body"><figure class="flow-figure detailed-flow" aria-label="Du navigateur au Worker puis au bucket OVH privé, avec retour de confirmation après stockage.">
+<div class="flow-row"><div class="flow-node"><strong>[ Navigateur ]</strong><span>Formulaire sur Pages</span><small>Titre · information · commentaire</small></div><div class="flow-arrow"><span aria-hidden="true">→</span><small>POST HTTPS<br>Contenu JSON</small></div><div class="flow-node"><strong>[ Worker Cloudflare ]</strong><span>Validation des champs<br>Contrôle anti-abus</span><small>OVH : clés ici · R2 : liaison</small></div><div class="flow-arrow"><span aria-hidden="true">→</span><small>S3 signé (OVH)<br>ou liaison R2</small></div><div class="flow-node storage-node"><strong>[ Bucket privé OVH ou R2 ]</strong><span>Un fichier JSON par envoi</span><small>soumissions/date/identifiant.json</small></div></div>
+<div class="return-flow">← Retour : Le stockage confirme l’écriture → le Worker renvoie HTTP 201 → le navigateur affiche « Enregistré ».</div>
+<figcaption>Pages présente le formulaire ; le Worker traite la demande ; le bucket conserve les données après la fermeture de la page.</figcaption></figure><ul><li>Le jeton API Cloudflare autorise l’administration ou le déploiement du Worker. Il ne donne aucun droit sur OVH.</li><li>Les identifiants S3 OVH (Access Key ID + Secret Access Key) autorisent l’écriture dans le stockage.</li><li>Les visiteurs ne reçoivent aucune de ces clés. Un jeton API n’est ni une base de données ni une connexion utilisateur.</li><li>Pour l’atelier, les objets se vérifient dans la console du stockage choisi. La lecture publique des commentaires et leur modération viendront plus tard.</li></ul><p><strong>Avec R2 :</strong> une liaison interne au compte Cloudflare donne accès au bucket depuis le Worker, sans clés S3. Avec OVH, le Worker signe ses appels avec les clés OVH.</p></div></details></section>
+
+<section class="slide "><h1>S3, API, XML et JSON : les repères</h1><div class="mini-timeline"><span><strong>2006</strong> · lancement S3</span><span><strong>2020</strong> · cohérence forte chez AWS</span><span><strong>Aujourd’hui</strong> · AWS et services compatibles</span></div><div class="lesson-cards"><div class="lesson-card"><strong>API</strong><p>Le contrat pour dialoguer entre logiciels.<br><code>POST /api/soumissions</code></p></div><div class="lesson-card"><strong>XML</strong><p>Des données organisées avec des balises.<br><code>&lt;titre&gt;Mon projet&lt;/titre&gt;</code></p></div><div class="lesson-card"><strong>JSON</strong><p>Des données organisées en clés et valeurs.<br><code>{"titre": "Mon projet"}</code></p></div></div><p class="key-message">API = comment dialoguer. XML et JSON = comment écrire les données.</p><details class="lesson-detail"><summary>Développer les sigles, comparer les formats et retrouver les sources</summary><div class="lesson-detail-body"><h2>Une courte histoire du stockage S3</h2>
+<ol class="storage-timeline"><li><strong>14 mars 2006 · Naissance d’Amazon S3</strong><span>Amazon lance Simple Storage Service : déposer et récupérer des objets dans des buckets par des appels web, sans administrer les disques.</span></li><li><strong>1er décembre 2020 · Une évolution chez AWS</strong><span>Amazon S3 annonce la cohérence forte après écriture : les lectures et listes reflètent les écritures réussies. Cette propriété AWS ne se généralise pas automatiquement à tous les services compatibles.</span></li><li><strong>Aujourd’hui · Des usages au-delà d’AWS</strong><span>OVH propose une API compatible S3 ; Google offre une interopérabilité XML avec certains outils ; Azure Blob utilise une autre API. On stocke documents, images, vidéos, sauvegardes et fichiers de données.</span></li></ol>
+<p class="source-note">Sources : <a href="https://press.aboutamazon.com/2006/3/amazon-web-services-launches">lancement de S3</a> · <a href="https://aws.amazon.com/about-aws/whats-new/2020/12/amazon-s3-now-delivers-strong-read-after-write-consistency-automatically-for-all-applications/">cohérence forte, AWS 2020</a>.</p>
+<h2>API : la porte d’entrée entre deux logiciels</h2>
+<p><strong>Application Programming Interface</strong>, ou <strong>interface de programmation d’application</strong> : un contrat qui précise quelles demandes un programme peut envoyer à un autre et quelles réponses attendre. Une API web définit notamment des adresses, méthodes, données et codes de réponse.</p>
+<div class="api-example"><div><strong>[ Formulaire ]</strong><br>« Enregistrer mon commentaire »</div><div><code>POST /api/soumissions</code><br>→ demande en JSON →<br>← <code>201</code> + identifiant ←</div><div><strong>[ API du Worker ]</strong><br>Vérifier et enregistrer</div></div>
+<h2>XML et JSON : deux façons d’écrire les mêmes données</h2>
+<p><strong>XML</strong> signifie <em>Extensible Markup Language</em> : langage de balisage extensible. Les balises nomment les informations et leur organisation. <strong>JSON</strong> signifie <em>JavaScript Object Notation</em> : notation d’objets issue de JavaScript, utilisée pour échanger des données aussi avec d’autres langages.</p>
+<div class="format-grid"><div><h3>XML · balises ouvrantes et fermantes</h3><pre class="code-block">&lt;soumission&gt;
+  &lt;titre&gt;Bibliothèque&lt;/titre&gt;
+  &lt;commentaire&gt;Très utile !&lt;/commentaire&gt;
+&lt;/soumission&gt;</pre></div><div><h3>JSON · paires « clé : valeur »</h3><pre class="code-block">{
+  &quot;titre&quot;: &quot;Bibliothèque&quot;,
+  &quot;commentaire&quot;: &quot;Très utile !&quot;
+}</pre></div></div>
+<div class="data-card"><strong>Les deux exemples décrivent la même fiche</strong><span>Titre → Bibliothèque</span><span>Commentaire → Très utile !</span></div>
+<p>Une API est un moyen d’interagir ; XML et JSON sont des formats de données. Le nom « API XML » de Google ne signifie pas que les fichiers stockés doivent être en XML : un objet S3 peut contenir une image, une vidéo ou notre fichier JSON.</p>
+<p class="source-note">Sources : <a href="https://developer.mozilla.org/en-US/docs/Glossary/API">définition API</a> · <a href="https://www.w3.org/TR/xml/">XML, W3C</a> · <a href="https://www.rfc-editor.org/rfc/rfc8259">JSON, RFC 8259</a>.</p>
+<h2>Quels stockages peut-on utiliser ?</h2><table><thead><tr><th>Service</th><th>Utilisation depuis Cloudflare</th><th>Identité et adaptation</th></tr></thead><tbody><tr><td>AWS S3</td><td>API S3 native, requêtes signées SigV4</td><td>Identité IAM limitée au bucket</td></tr><tr><td>OVH Object Storage</td><td>API compatible S3 ; endpoint et région OVH</td><td>Utilisateur S3 dédié ; vérifier les fonctions prises en charge</td></tr><tr><td>Google Cloud Storage</td><td>API XML interopérable avec certains outils S3</td><td>Clés HMAC et endpoint GCS ; tester la compatibilité</td></tr><tr><td>Azure Blob Storage</td><td>API Blob / SDK Azure ; adaptation de l’application</td><td>Microsoft Entra ou SAS limité ; passerelle S3 éventuelle à exploiter et facturer</td></tr></tbody></table><p>Sources : <a href="https://docs.cloud.google.com/storage/docs/interoperability">interopérabilité Google</a> · <a href="https://devblogs.microsoft.com/ise/2016/05/22/access-azure-blob-storage-from-your-apps-using-s3-api/">adaptation Azure avec une passerelle</a>. Changer de fournisseur peut demander d’adapter le code.</p></div></details></section>
+
+<section class="slide "><h1>Tarifs de stockage : repères vérifiés le 2 novembre 2026</h1><p class="key-message">Un gigaoctet = un milliard d’octets. Stockage et trafic se comptent séparément.</p><div class="lesson-cards"><div class="lesson-card"><strong>Images de 2 mégaoctets</strong><p>≈ 500 téléchargements pour un gigaoctet transféré.</p></div><div class="lesson-card"><strong>PDF de 5 mégaoctets</strong><p>≈ 200 téléchargements.</p></div><div class="lesson-card"><strong>Livres de 1 mégaoctet</strong><p>≈ 1 000 téléchargements.</p></div><div class="lesson-card"><strong>Vidéos de 100 mégaoctets</strong><p>≈ 10 téléchargements.</p></div><div class="lesson-card"><strong>Streaming vidéo à 5 mégabits/s</strong><p>≈ 27 minutes pour une personne.</p></div><div class="lesson-card"><strong>Streaming audio à 128 kilobits/s</strong><p>≈ 17 h 20 min pour une personne.</p></div></div><p class="small-note">Estimations en unités décimales, hors surcoûts de transfert. Les tailles dépendent de la qualité et de la compression.</p><details class="lesson-detail"><summary>Ouvrir les tarifs sourcés, les unités et les calculs</summary><div class="lesson-detail-body"><p>Stockage chaud, premier palier, à la demande, hors taxes, crédits et remises. <strong>Régions et réplications différentes : ces repères ne constituent pas un classement à service égal.</strong></p><table><thead><tr><th>Offre et localisation</th><th>Prix par mois et unité publiée</th><th>100 unités stockées</th></tr></thead><tbody><tr><td>AWS S3 Standard · Virginie du Nord, us-east-1 · plusieurs AZ</td><td>0,023 USD par gibioctet/mois<br>(« GB » chez AWS)</td><td>2,30 USD</td></tr><tr><td>GCS Standard · Iowa, us-central1 · régional</td><td>≈ 0,020 USD par gibioctet/mois (730 h)</td><td>≈ 2,00 USD</td></tr><tr><td>Azure General Block Blob v2 · West Europe · Hot LRS, réplication locale</td><td>0,0196 USD par unité « GB »/mois<br>(compteur Azure)</td><td>1,96 USD</td></tr><tr><td>OVH Standard · Multi Zone · vérifier la région disponible</td><td>≈ 0,0139941 EUR par gibioctet/mois (730 h)</td><td>≈ 1,40 EUR</td></tr><tr><td>OVH Standard · offre mono-zone / Local Zone selon disponibilité</td><td>≈ 0,0070956 EUR par gibioctet/mois (730 h)</td><td>≈ 0,71 EUR</td></tr></tbody></table><p>Les colonnes reprennent les unités fournisseurs : vérifier leur définition avant de normaliser. <strong>Un gigaoctet</strong> (Go, « giga octet » en toutes lettres) = 1 000 000 000 octets. <strong>Un gibioctet</strong> (Gio) = 1 073 741 824 octets. Attention : AWS nomme « GB » une unité binaire ; conserver la définition propre à chaque fournisseur pour comparer. Ne pas assimiler EUR et USD.</p><p>Sources : <a href="https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonS3/current/us-east-1/index.json">catalogue AWS us-east-1</a> · <a href="https://cloud.google.com/storage/pricing">GCS, région Iowa affichée</a> · <a href="https://prices.azure.com/api/retail/prices?$filter=serviceName%20eq%20%27Storage%27%20and%20armRegionName%20eq%20%27westeurope%27%20and%20skuName%20eq%20%27Hot%20LRS%27%20and%20priceType%20eq%20%27Consumption%27">catalogue Azure filtré</a> · <a href="https://www.ovhcloud.com/fr/public-cloud/prices/">OVH, rubrique Object Storage</a>.</p><h2>Un gigaoctet de trafic, cela représente quoi ?</h2>
+<p><strong>Le stockage</strong> mesure ce qui reste dans le bucket ; <strong>le trafic</strong> mesure ce qui est transféré. Une image de deux mégaoctets conservée une fois puis téléchargée 500 fois génère environ un gigaoctet sortant, même si elle n’occupe que deux mégaoctets stockés.</p>
+<table class="traffic-examples"><thead><tr><th>Contenu</th><th>Hypothèse choisie</th><th>Pour un gigaoctet transféré</th></tr></thead><tbody>
+<tr><td>🖼 Images</td><td>Deux mégaoctets par image</td><td>≈ 500 téléchargements</td></tr>
+<tr><td>📄 Documents PDF</td><td>Cinq mégaoctets par document</td><td>≈ 200 téléchargements</td></tr>
+<tr><td>📚 Livres numériques EPUB</td><td>Un mégaoctet par livre</td><td>≈ 1 000 téléchargements</td></tr>
+<tr><td>🎬 Vidéos à télécharger</td><td>100 mégaoctets par vidéo</td><td>≈ 10 téléchargements</td></tr>
+<tr><td>▶ Vidéo en streaming</td><td>Cinq mégabits par seconde</td><td>≈ 27 minutes pour une personne</td></tr>
+<tr><td>🎧 Audio en streaming</td><td>128 kilobits par seconde</td><td>≈ 17 h 20 min pour une personne</td></tr>
+</tbody></table><p>Ordres de grandeur pédagogiques, calculés en unités décimales, hors en-têtes et retransmissions. Les tailles réelles dépendent de la compression et de la qualité. Un octet = huit bits ; pour une vidéo à cinq mégabits/s : 1 000 000 000 × 8 ÷ 5 000 000 ≈ 1 600 s, soit 27 min.</p>
+<p><strong>À retenir :</strong> dix personnes regardant chacune dix minutes au même débit représentent environ 3,75 gigaoctets transférés. Un cache Cloudflare peut réduire le trafic lu depuis S3 ; il ne réduit pas le volume regardé par les personnes.</p></div></details></section>
+
+<section class="slide "><h1>Exercice en groupes : établir un devis de stockage</h1><blockquote class="highlight">Pourquoi est-ce important de vérifier un tarif ?</blockquote><p><strong>Quatre ou cinq groupes de deux à trois personnes.</strong> Un devis sourcé par fournisseur.</p><div class="lesson-cards"><div class="lesson-card"><strong>Groupe 1</strong><p>AWS S3</p></div><div class="lesson-card"><strong>Groupe 2</strong><p>Google Cloud Storage</p></div><div class="lesson-card"><strong>Groupe 3</strong><p>Azure Blob</p></div><div class="lesson-card"><strong>Groupe 4</strong><p>OVH Object Storage</p></div><div class="lesson-card"><strong>Groupe 5</strong><p>Cloudflare R2</p></div></div><p><strong>Besoin commun :</strong> 100 gibioctets stockés · 10 000 écritures · 100 000 lectures · 20 gibioctets sortants par mois.</p><p><strong>À rendre :</strong> total mensuel, hypothèses, franchises et sources datées. À quatre groupes, le groupe 4 compare OVH et R2.</p><p class="small-note">20 min : 2 min de discussion · 10 min de recherche · 5 min de restitution · 3 min de comparaison.</p><details class="lesson-detail"><summary>Ouvrir la consigne complète et les liens tarifaires</summary><div class="lesson-detail-body">
+<blockquote class="highlight"><strong>Première question : pourquoi est-ce important de vérifier ?</strong><br>Avant de chercher un prix, chaque groupe propose un risque concret si l’on se fie à un tarif ancien, à une réponse d’IA ou à la seule mention « gratuit ».</blockquote>
+<p><strong>Organisation :</strong> quatre ou cinq groupes de deux à trois personnes. Répartissez les rôles : recherche des sources officielles, calcul du devis et restitution ; à deux, cumulez les deux derniers rôles.</p>
+<table><thead><tr><th>Groupe</th><th>Fournisseur et offre à étudier</th></tr></thead><tbody>
+<tr><td>1</td><td>AWS · Amazon S3 Standard</td></tr>
+<tr><td>2</td><td>GCS · Google Cloud Storage Standard</td></tr>
+<tr><td>3</td><td>Azure · Blob Storage Hot</td></tr>
+<tr><td>4</td><td>OVHcloud · Object Storage Standard</td></tr>
+<tr><td>5</td><td>Cloudflare · R2 Standard</td></tr>
+</tbody></table>
+<p><strong>Si nous sommes quatre groupes :</strong> le groupe 4 compare OVH et Cloudflare R2. Les cinq fournisseurs doivent apparaître dans le bilan collectif.</p>
+<h2>Le même besoin pour tout le monde</h2>
+<div class="exercise">Sur un mois : <strong>100 gibioctets stockés en moyenne</strong>, <strong>10 000 écritures d’objets</strong>, <strong>100 000 lectures</strong> et <strong>20 gibioctets sortants vers un Worker Cloudflare</strong>. Une écriture = un PUT ; une lecture = un GET. Pas d’archivage ni de restauration.</div>
+<ol>
+<li>Choisissez une localisation européenne et indiquez la réplication. Pour R2, relevez la possibilité de localisation ou de juridiction européenne et ses limites. Signalez toute différence qui empêche de comparer à service égal.</li>
+<li>Relevez les prix du stockage, des écritures, des lectures et du trafic sortant. Convertissez les unités si nécessaire : ne confondez pas gigaoctets et gibioctets.</li>
+<li>Calculez le total mensuel hors taxes, <strong>avant puis après les franchises récurrentes</strong>. Distinguez-les des crédits promotionnels ; vérifiez paliers, arrondis et éventuels minimums de facturation.</li>
+<li>Indiquez la devise, la date, les hypothèses et les liens officiels. Si vous convertissez en euros, citez le taux de change et sa date. Inscrivez « à vérifier » plutôt qu’un chiffre inventé.</li>
+<li>Présentez en une minute votre total et <strong>le point de vigilance le plus important</strong>. La classe et la réplication choisies répondent-elles au besoin ?</li>
+</ol>
+<div class="stats"><strong>Fiche à rendre :</strong> fournisseur · offre · région/juridiction · réplication · unité · stockage · écritures · lectures · sortie réseau · total brut · franchises · total estimé · devise · date · sources · réserves.</div>
+<p><strong>Périmètre :</strong> le devis porte sur le stockage objet. Le traitement par le Worker commun à toutes les solutions est à chiffrer sur une ligne séparée ; une éventuelle adaptation ou passerelle Azure doit être signalée. Ne créez aucune ressource payante pour cet exercice.</p>
+<p>Les diapositives 12 à 15 servent de ressources à consulter pendant la recherche : schémas, vocabulaire et repères tarifaires. Leur lecture est comprise dans le temps de l’exercice.</p>
+<p><strong>Durée : 20 min</strong> · 2 min de discussion introductive, 10 min de recherche et calcul, 5 min de restitutions, 3 min de comparaison collective.</p>
+<p class="source-note">Points de départ : <a href="https://aws.amazon.com/s3/pricing/">AWS S3</a> · <a href="https://cloud.google.com/storage/pricing">GCS</a> · <a href="https://azure.microsoft.com/en-us/pricing/details/storage/blobs/">Azure Blob</a> · <a href="https://www.ovhcloud.com/fr/public-cloud/prices/">OVHcloud</a> · <a href="https://developers.cloudflare.com/r2/pricing/">Cloudflare R2</a> · <a href="https://developers.cloudflare.com/r2/reference/data-location/">localisation R2</a>.</p>
+</div></details></section>
+
+<section class="slide "><h1>Installer le gestionnaire de secrets et créer le jeton</h1><div class="visual-path" role="group" aria-label="Étapes du parcours"><div class="path-node"><strong>Installer KeePassXC</strong><span>macOS · Windows · Linux</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Créer un coffre</strong><span>Formation.kdbx</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Créer le jeton</strong><span>Cloudflare → API Tokens</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Conserver le jeton</strong><span>Entrée dédiée dans le coffre</span></div></div><p class="key-message">Un coffre personnel ; un jeton limité ; aucune clé dans la conversation.</p><p><a href="https://keepassxc.org/download/">Téléchargement officiel de KeePassXC ↗</a></p><details class="lesson-detail"><summary>Ouvrir les installations par système et la création du jeton</summary><div class="lesson-detail-body"><h2>Avant de créer le jeton : installer KeePassXC</h2>
+<p>Pour ce cours, nous utilisons <strong>KeePassXC</strong>, un gestionnaire de mots de passe de la famille KeePass disponible sur macOS, Windows et Linux. Il conserve les secrets dans un coffre chiffré.</p>
+<p>Ouvrez la <a href="https://keepassxc.org/download/" target="_blank" rel="noopener noreferrer">page officielle de téléchargement KeePassXC</a> et choisissez votre système.</p>
+<table><colgroup><col style="width: 25%"><col style="width: 75%"></colgroup><thead><tr><th>Système</th><th>Installation guidée</th></tr></thead><tbody>
+<tr><td>macOS</td><td>Choisissez Apple Silicon ou Intel selon votre Mac. Téléchargez le fichier <code>.dmg</code>, ouvrez-le et glissez KeePassXC dans Applications.</td></tr>
+<tr><td>Windows</td><td>Choisissez l’installateur adapté à votre ordinateur (x64 ou ARM64), ouvrez-le et suivez l’assistant. Lancez ensuite KeePassXC depuis le menu Démarrer.</td></tr>
+<tr><td>Linux</td><td>Depuis la rubrique Linux officielle, suivez le lien vers le paquet Flatpak recommandé. Utilisez votre gestionnaire de logiciels si Flatpak/Flathub y est déjà disponible ; sinon, suivez les commandes de la page officielle ou faites-vous accompagner.</td></tr>
+</tbody></table>
+<h3>À faire individuellement : préparer le coffre</h3>
+<ol>
+<li>Créez une base nommée <code>Formation</code> et enregistrez le fichier <code>Formation.kdbx</code> dans votre espace personnel, en dehors du dépôt Git.</li>
+<li>Choisissez une phrase de passe maîtresse longue, unique et mémorisable. Gardez les réglages de chiffrement proposés. Ne partagez pas votre phrase de passe.</li>
+<li>Créez le groupe <code>Formation / Cloudflare</code>, puis une entrée <code>Jeton API – séance 4</code>. Après sa création, placez le jeton dans le champ mot de passe ; notez le compte, l’usage et l’expiration sans recopier sa valeur dans les notes.</li>
+<li>Enregistrez, verrouillez le coffre, puis vérifiez que vous savez le rouvrir. Conservez une sauvegarde du fichier chiffré dans un autre emplacement personnel sûr ; le coffre et sa phrase de passe sont tous deux nécessaires pour retrouver les secrets.</li>
+</ol>
+<p><strong>Critère de réussite :</strong> KeePassXC démarre et vous savez créer, enregistrer, verrouiller et rouvrir votre coffre. Le fichier <code>.kdbx</code>, la phrase de passe et les clés ne sont ni publiés ni envoyés à l’IA.</p>
+<p class="source-note">Aide : <a href="https://keepassxc.org/docs/KeePassXC_GettingStarted">guide officiel de prise en main</a>.</p>
+<h2>Ensuite : créer le jeton API Cloudflare</h2><ol><li>Ouvrir le tableau de bord Cloudflare : profil → <strong>My Profile → API Tokens → Create Token</strong>. Choisir un jeton utilisateur pour l’exercice.</li><li>Nommer le jeton <code>formation-s4-deploiement</code>. Partir d’un jeton personnalisé ou réduire le modèle <code>Edit Cloudflare Workers</code>.</li><li>Pour un Worker déjà créé : limiter le rôle à <strong>Workers Editor</strong> sur ce Worker lorsque cette granularité est proposée. Dans l’interface historique : <strong>Account → Workers Scripts → Edit</strong>, limité au seul compte de formation.</li><li>La création d’un Worker demande un rôle <strong>Admin</strong> au niveau Workers : la faire dans le tableau de bord avant l’exercice, puis utiliser le jeton restreint pour les mises à jour. Ne pas ajouter DNS, R2 ou KV si non utilisés.</li><li>Fixer une expiration courte, par exemple la fin de l’atelier. Vérifier le compte et les permissions dans le récapitulatif, puis créer le jeton.</li><li>Copier la valeur une seule fois dans l’entrée KeePassXC préparée. Ne générez pas de nouveau mot de passe à la place du jeton fourni par Cloudflare. Ne jamais la mettre dans le formulaire, une capture, un dépôt ou une conversation avec l’IA.</li></ol><p>Les libellés évoluent ; se référer aux <a href="https://developers.cloudflare.com/fundamentals/api/get-started/create-token/">étapes officielles</a> et aux <a href="https://developers.cloudflare.com/workers/authorization/workers/">rôles Workers</a>.</p></div></details></section>
+
+<section class="slide "><h1>GitHub / GitLab : utiliser les secrets pour déployer</h1><div class="visual-path" role="group" aria-label="Étapes du parcours"><div class="path-node"><strong>Créer le secret</strong><span>Réglages du dépôt</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Ajouter le workflow</strong><span>GitHub ou GitLab</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Faire relire</strong><span>Branche → fusion</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Lancer et vérifier</strong><span>Déploiement manuel</span></div></div><div class="lesson-cards"><div class="lesson-card"><strong>Dans GitHub / GitLab</strong><p>CLOUDFLARE_API_TOKEN → déployer.</p></div><div class="lesson-card"><strong>Dans le Worker</strong><p>Clés OVH / Turnstile → faire fonctionner le service.</p></div></div><details class="lesson-detail"><summary>Avant de commencer : fichiers, droits et variables</summary><div class="lesson-detail-body">
+<div class="highlight">Choisissez le parcours correspondant à votre dépôt. Vous saisissez la valeur du jeton dans les réglages du service ; l’IA prépare seulement le code qui référence son nom.</div>
+<h2>1. Préparer le dépôt et répartir les secrets</h2>
+<ol><li>Disposer des droits de gestion du dépôt, d’un Worker de formation existant et du jeton limité créé à la diapo 17. Retrouvez ce jeton dans KeePassXC ; ne le collez pas dans une conversation.</li>
+<li>Dans le tableau de bord Cloudflare, relever l’identifiant du compte (<code>Account ID</code>). Ce n’est pas une clé secrète.</li>
+<li>Les exemples supposent un dossier <code>worker/</code> contenant le code du Worker, <code>package.json</code>, <code>package-lock.json</code> et sa configuration Wrangler (<code>wrangler.jsonc</code> ou <code>wrangler.toml</code>). Wrangler doit être une dépendance du projet ; vérifier que le nom configuré cible le Worker de formation. Si le Worker est à la racine, adapter les chemins. Comme les variables non secrètes seront saisies dans le tableau de bord à la diapo 21, ajouter <code>"keep_vars": true</code> dans la configuration JSONC, ou <code>keep_vars = true</code> au niveau principal du TOML, pour les conserver lors des redéploiements.</li>
+<li>Utiliser une branche principale protégée et relire les changements avant leur fusion. Les exemples lancent le déploiement <strong>manuellement</strong>, depuis cette branche, pour choisir le moment de l’essai.</li></ol>
+<table><thead><tr><th>Valeur</th><th>Emplacement pour cet atelier</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><code>CLOUDFLARE_API_TOKEN</code></td><td>Secret GitHub ou variable secrète GitLab</td><td>Autoriser le déploiement</td></tr>
+<tr><td><code>CLOUDFLARE_ACCOUNT_ID</code></td><td>Variable GitHub / GitLab</td><td>Cibler le compte</td></tr>
+<tr><td>Clés S3 OVH et clé secrète Turnstile</td><td>Secrets du Worker Cloudflare, renseignés aux étapes suivantes</td><td>Fonctionner après le déploiement</td></tr></tbody></table>
+<p><strong>Important :</strong> les secrets du dépôt ne sont pas automatiquement installés dans le Worker. Ici, le déploiement utilise seulement le jeton Cloudflare ; la configuration des secrets S3 suit à la diapo 21.</p>
+</div></details><details class="lesson-detail"><summary>Pas à pas GitHub et fichier de déploiement</summary><div class="lesson-detail-body"><h2>2A. Parcours GitHub : créer le secret et la variable</h2>
+<ol><li>Ouvrir le dépôt → <strong>Settings → Secrets and variables → Actions</strong>.</li>
+<li>Onglet <strong>Secrets → New repository secret</strong> : nom <code>CLOUDFLARE_API_TOKEN</code>, valeur copiée depuis KeePassXC, puis <strong>Add secret</strong>. La valeur ne doit jamais figurer dans le fichier YAML.</li>
+<li>Onglet <strong>Variables → New repository variable</strong> : nom <code>CLOUDFLARE_ACCOUNT_ID</code>, valeur = identifiant du compte, puis enregistrer.</li>
+<li>Dans <strong>Settings → Environments</strong>, créer <code>formation</code>. Si les protections sont disponibles pour votre dépôt, limiter le déploiement à <code>main</code> et ajouter une validation. Protéger aussi la branche principale dans les règles du dépôt.</li>
+<li>Ajouter le fichier <code>.github/workflows/deploy-worker.yml</code> ci-dessous dans une branche de travail. Faire relire puis fusionner sur <code>main</code>. Adapter <code>main</code> si votre branche principale porte un autre nom.</li></ol><pre class="code-block">name: Déployer le Worker de formation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  deploy:
+    if: github.ref == &#x27;refs/heads/main&#x27;
+    runs-on: ubuntu-latest
+    environment: formation
+    defaults:
+      run:
+        working-directory: worker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: &#x27;22&#x27;
+      - name: Installer les dépendances du Worker
+        run: npm ci
+      - name: Déployer sur Cloudflare
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n &quot;$CLOUDFLARE_API_TOKEN&quot;
+          test -n &quot;$CLOUDFLARE_ACCOUNT_ID&quot;
+          npx --no-install wrangler deploy
+</pre>
+<h3>2B. GitHub : lancer et contrôler</h3>
+<ol><li>Ouvrir <strong>Actions → Déployer le Worker de formation → Run workflow</strong>, choisir <code>main</code> puis confirmer. Le bouton apparaît quand le fichier est présent sur la branche par défaut. Autoriser Actions dans les réglages si nécessaire.</li>
+<li>Ouvrir l’exécution : l’installation puis le déploiement doivent réussir. Si une validation d’environnement est configurée, l’effectuer. Le code référence <code>secrets.CLOUDFLARE_API_TOKEN</code> et <code>vars.CLOUDFLARE_ACCOUNT_ID</code> ; ces expressions ne contiennent pas les valeurs réelles.</li>
+<li>Dans Cloudflare, vérifier la nouvelle version du Worker et son adresse. Une réponse de test doit confirmer la version déployée ; le formulaire complet ne fonctionnera qu’une fois ses secrets S3 et Turnstile configurés.</li></ol>
+<p class="source-note">Sources : <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets">secrets GitHub Actions</a> · <a href="https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/">déploiement Cloudflare depuis GitHub</a>.</p>
+</div></details><details class="lesson-detail"><summary>Pas à pas GitLab et fichier de déploiement</summary><div class="lesson-detail-body"><h2>3A. Parcours GitLab : protéger la branche et créer les variables</h2>
+<ol><li>Ouvrir le projet → <strong>Settings → Repository → Branch rules</strong> (ou Protected branches selon la version). Protéger la branche par défaut et limiter qui peut y pousser ou fusionner.</li>
+<li>Aller dans <strong>Settings → CI/CD → Variables → Add variable</strong>. Choisir le type <strong>Variable</strong> : clé <code>CLOUDFLARE_API_TOKEN</code>, valeur copiée depuis KeePassXC.</li>
+<li>Choisir la visibilité <strong>Masked and hidden</strong>, cocher <strong>Protect variable</strong>, désactiver l’expansion de la valeur si l’option est proposée et choisir la portée d’environnement <code>formation</code>. Enregistrer. Sur une ancienne version, masquer la variable avec les options disponibles ; « hidden » dépend de la version.</li>
+<li>Ajouter <code>CLOUDFLARE_ACCOUNT_ID</code>, avec l’identifiant du compte. La valeur peut être visible ; la protéger et lui donner la même portée <code>formation</code>.</li>
+<li>Vérifier qu’un runner de confiance est disponible pour le projet et autorisé sur la branche protégée. Ajouter le bloc ci-dessous au <code>.gitlab-ci.yml</code> existant, sans remplacer les tâches de publication Pages. Faire relire puis fusionner.</li></ol><pre class="code-block">deploy_worker_formation:
+  stage: deploy
+  image: node:22
+  environment:
+    name: formation
+  rules:
+    - if: &#x27;$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH&#x27;
+      when: manual
+    - when: never
+  script:
+    - cd worker
+    - test -n &quot;$CLOUDFLARE_API_TOKEN&quot;
+    - test -n &quot;$CLOUDFLARE_ACCOUNT_ID&quot;
+    - npm ci
+    - npx --no-install wrangler deploy
+</pre>
+<p>Le nom <code>formation</code> doit correspondre exactement à la portée des variables. Si le fichier déclare déjà une liste <code>stages:</code>, y ajouter <code>deploy</code> après les étapes de construction si elle est absente, sans supprimer les étapes existantes. Sans liste explicite, GitLab fournit notamment l’étape <code>deploy</code> par défaut. Les variables sont fournies au job par GitLab ; aucune valeur secrète ne figure dans le YAML.</p>
+<h3>3B. GitLab : lancer et contrôler</h3>
+<ol><li>Ouvrir <strong>Build → Pipelines</strong> (ou CI/CD → Pipelines), puis le pipeline de la branche principale après la fusion. Si nécessaire, créer un pipeline depuis cette branche.</li>
+<li>Quand les étapes précédentes sont terminées, cliquer sur le bouton de lancement du job manuel <code>deploy_worker_formation</code>. Contrôler son journal puis la version du Worker dans Cloudflare.</li>
+<li>Si le jeton semble absent, vérifier le nom, la branche protégée et la portée <code>formation</code>. Un job bloqué en attente peut indiquer qu’aucun runner compatible n’est disponible.</li></ol>
+<p class="source-note">Sources : <a href="https://docs.gitlab.com/ci/variables/">variables GitLab</a> · <a href="https://developers.cloudflare.com/workers/ci-cd/external-cicd/gitlab-cicd/">déploiement Cloudflare depuis GitLab</a>.</p>
+</div></details><details class="lesson-detail"><summary>Vérifications, erreurs et fin de l’essai</summary><div class="lesson-detail-body"><h2>4. Valider et terminer l’essai</h2>
+<ul><li><strong>Preuve attendue :</strong> un déploiement réussi et une nouvelle version visible dans Cloudflare. Aucun jeton affiché dans les journaux, captures ou livrables.</li>
+<li><strong>Ne pas afficher les valeurs pour déboguer :</strong> éviter <code>env</code>, <code>printenv</code>, les traces détaillées et les commandes qui impriment les clés. Le masquage ne bloque pas un programme malveillant : relire le code du pipeline et les dépendances avant d’exécuter.</li>
+<li><strong>En fin d’atelier :</strong> si l’accès était temporaire, révoquer le jeton chez Cloudflare puis retirer sa copie des secrets GitHub/GitLab. Pour un projet qui continue, convenir de sa durée et de son remplacement avec le formateur.</li>
+<li><strong>Si une clé fuit :</strong> la révoquer et la remplacer. Retirer ensuite les copies exposées ; effacer un message ou un journal ne révoque pas une clé.</li></ul>
+</div></details></section>
+
+<section class="slide "><h1>Configurer le stockage : R2 ou OVH, au choix</h1><div class="lesson-cards"><div class="lesson-card"><strong>R2 Standard · franchise gratuite</strong><p>10 GB-mois · 1 million d’opérations A · 10 millions d’opérations B par mois.</p></div><div class="lesson-card"><strong>OVH · facturation à l’usage</strong><p>Compte + projet Public Cloud + moyen de paiement.</p></div></div><div class="visual-path" role="group" aria-label="Étapes du parcours"><div class="path-node"><strong>Bucket images</strong><span>Image publique de test</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>GitHub</strong><span>Modifier la page et faire relire</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Pages</strong><span>Vérifier l’image publiée</span></div></div><p><strong>Commentaires :</strong> autre bucket, toujours privé. Avec R2, le Worker utilise la liaison DATA.</p><p class="small-note">R2 peut demander un moyen de paiement et facture les dépassements. Sans activation possible : image statique GitHub + Pages. Les quotas sont partagés par compte.</p><details class="lesson-detail"><summary>R2 : créer les buckets et déposer une image</summary><div class="lesson-detail-body">
+<h2>A. Sans dépense prévue : Cloudflare R2 Standard</h2>
+<div class="highlight"><strong>Franchise gratuite mensuelle, vérifiée le 2 novembre 2026 :</strong> 10 GB-mois de stockage (unité Cloudflare, soit environ dix gigaoctets conservés sur un mois), un million d’opérations de classe A et dix millions de classe B. Le trafic sortant R2 est gratuit ; les requêtes et le traitement du Worker ont leurs propres limites. La franchise est partagée à l’échelle du compte et concerne uniquement la classe Standard.</div>
+<p>À titre indicatif, dix gigaoctets correspondent à environ 5 000 images de deux mégaoctets, avant prise en compte des autres fichiers. Les opérations incluent aussi les outils et visites : ce n’est pas un quota de photos garanti.</p>
+<ol><li>Connectez-vous au tableau de bord Cloudflare → <strong>R2 Object Storage</strong>. Démarrez l’activation et examinez les conditions de facturation. Si un moyen de paiement est demandé et que vous ne pouvez pas en fournir, utilisez le repli GitHub + Pages décrit ci-dessous.</li>
+<li>Choisissez <strong>Create bucket</strong>. Nommez le premier bucket <code>formation-s4-donnees-identifiant</code> et sélectionnez la classe <strong>Standard</strong>. Relevez le nom exact ; gardez ce bucket privé pour les commentaires.</li>
+<li>Créez un second bucket Standard <code>formation-s4-images-identifiant</code>, réservé aux images. Les deux buckets se partagent les mêmes quotas du compte.</li>
+<li>Dans le bucket d’images, ouvrez <strong>Objects → Upload</strong>, choisissez une image PNG ou JPEG fictive ou libre de droits, inférieure à cinq mégaoctets, puis confirmez. Vérifiez son nom, sa taille et son aperçu : c’est la première preuve de stockage.</li>
+<li>Pour l’afficher dans le site pendant l’exercice, ouvrez uniquement les réglages du bucket <strong>d’images</strong> → <strong>Public Development URL</strong> → activer l’accès. Copiez l’adresse de développement et ajoutez le nom exact du fichier, par exemple <code>https://pub-….r2.dev/photo.jpg</code>. Ce mode public est limité et destiné aux essais ; un domaine personnalisé sera à prévoir pour la production.</li>
+<li>Ajoutez cette URL dans une balise image du site, avec un texte alternatif. N’activez jamais cet accès public sur le bucket des commentaires. Reliez ensuite le bucket privé au Worker à la diapo 21.</li>
+<li>Consultez les métriques R2 et la facturation. Gardez l’essai à quelques fichiers et requêtes ; supprimez les images inutiles et désactivez l’URL publique à la fin. La franchise n’est pas un plafond qui garantit le blocage avant facturation.</li></ol>
+<p class="source-note">Sources : <a href="https://developers.cloudflare.com/r2/pricing/">quotas R2</a> · <a href="https://developers.cloudflare.com/r2/buckets/create-buckets/">création des buckets</a> · <a href="https://developers.cloudflare.com/r2/objects/upload-objects/">ajout d’objets</a> · <a href="https://developers.cloudflare.com/r2/buckets/public-buckets/">accès public de développement</a>.</p>
+</div></details><details class="lesson-detail"><summary>R2 + GitHub : afficher l’image sans terminal local</summary><div class="lesson-detail-body"><h3>Exemple concret : afficher une image R2 avec GitHub, sans terminal local</h3>
+<p><strong>Résultat attendu :</strong> une image <code>photo-atelier.jpg</code> stockée dans R2 et affichée sur votre site Cloudflare Pages. Tout se fait dans les interfaces web Cloudflare et GitHub. Pour cette lecture d’image publique, aucun Worker ni aucune clé S3 ne sont nécessaires.</p>
+<ol><li><strong>Vérifier la connexion du site :</strong> dans Cloudflare → <strong>Workers &amp; Pages → votre projet Pages → Settings → Builds &amp; deployments</strong>, repérez le dépôt GitHub relié et la branche de production. Les libellés peuvent varier ; relevez ces deux informations. Si le site n’est pas encore relié, créez un projet Pages avec <strong>Connect to Git</strong>, autorisez le dépôt et conservez les réglages de construction adaptés au projet.</li>
+<li><strong>Ajouter l’image :</strong> dans Cloudflare R2, ouvrez uniquement le bucket d’images créé ci-dessus → <strong>Objects → Upload</strong>. Déposez <code>photo-atelier.jpg</code>, puis vérifiez sa présence. L’image choisie doit pouvoir être diffusée publiquement.</li>
+<li><strong>Obtenir son adresse :</strong> dans les réglages de ce bucket d’images, activez <strong>Public Development URL</strong>. Copiez le domaine <code>https://pub-….r2.dev</code> et ajoutez <code>/photo-atelier.jpg</code>. Ouvrez l’adresse complète dans un autre onglet : l’image doit apparaître. Ne faites pas cette opération sur le bucket de commentaires.</li>
+<li><strong>Ouvrir le dépôt GitHub :</strong> dans votre navigateur, ouvrez le fichier HTML de la page à modifier, puis cliquez sur le crayon <strong>Edit this file</strong>. Dans un projet React/Next.js, ouvrez plutôt le composant de la page et adaptez sa syntaxe ; ne modifiez pas un export généré.</li>
+<li><strong>Insérer l’image :</strong> collez l’exemple ci-dessous dans le contenu de la page, en remplaçant l’adresse entière par la vôtre. L’URL est publique et peut figurer dans le code ; aucune clé ne doit l’accompagner.</li></ol>
+<pre class="code-block">&lt;!-- Exemple pour une page HTML --&gt;
+&lt;img
+  src=&quot;https://pub-VOTRE-IDENTIFIANT.r2.dev/photo-atelier.jpg&quot;
+  alt=&quot;Présentation du projet pendant l’atelier&quot;
+  width=&quot;640&quot;
+  style=&quot;max-width: 100%; height: auto;&quot;
+&gt;</pre>
+<ol start="6"><li><strong>Enregistrer avec relecture :</strong> cliquez sur <strong>Commit changes</strong>, décrivez la modification et choisissez une nouvelle branche, par exemple <code>seance-4-image-r2</code>. Ouvrez une pull request. Faites vérifier l’URL, le texte alternatif et l’absence de secret par une autre personne.</li>
+<li><strong>Contrôler l’aperçu et publier :</strong> si les aperçus Pages sont activés, ouvrez celui de la pull request. Sinon, relisez le changement avant la fusion. Fusionnez vers la branche de production : la connexion Git déclenche le déploiement Pages. Dans Cloudflare, attendez le statut de réussite puis ouvrez le site.</li>
+<li><strong>Prouver le résultat :</strong> vérifiez l’image sur le site et sa présence dans R2. Si elle manque, contrôlez le nom exact et sa casse, l’URL publique et le résultat du déploiement. Une simple balise image ne demande pas de réglage CORS supplémentaire pour son affichage. Consultez ensuite l’usage R2.</li></ol>
+<div class="stats"><strong>Et le formulaire privé ?</strong> Il suit un parcours distinct : ajoutez la liaison DATA dans le fichier Wrangler via le crayon GitHub (diapo 21), faites relire et fusionnez, puis lancez le workflow avec <strong>Actions → Run workflow</strong> (diapo 18). Les commandes sont exécutées par GitHub Actions sur son serveur, pas sur votre ordinateur. Ce parcours suppose les fichiers du Worker et son fichier de dépendances verrouillées déjà présents.</div>
+<p class="source-note">Aide : <a href="https://docs.github.com/en/repositories/working-with-files/managing-files/editing-files">modifier un fichier dans GitHub</a> · <a href="https://developers.cloudflare.com/pages/configuration/git-integration/">connexion Git de Cloudflare Pages</a>.</p>
+</div></details><details class="lesson-detail"><summary>Sans activation R2 : repli GitHub + Pages</summary><div class="lesson-detail-body"><h3>Sans activation R2 et sans carte : repli GitHub + Pages, toujours sans terminal</h3>
+<ol><li>Dans le dépôt GitHub du site, ouvrez le dossier public adapté au projet : par exemple <code>public/images/</code> avec Next.js, ou <code>images/</code> dans un site HTML simple.</li>
+<li>Cliquez sur <strong>Add file → Upload files</strong>, déposez l’image de démonstration et enregistrez-la dans une branche de travail. Si le dossier n’existe pas, créez d’abord son chemin avec <strong>Add file → Create new file</strong>, par exemple <code>public/images/.gitkeep</code>, puis ajoutez l’image dans cette même branche.</li>
+<li>Modifiez la page avec le crayon GitHub : utilisez <code>src="/images/photo-atelier.jpg"</code> pour un site à la racine du domaine. Faites relire la pull request, fusionnez et attendez le déploiement Pages.</li>
+<li>Vérifiez l’image sur le site. Indiquez dans votre livrable <strong>« image statique publiée avec Pages ; R2 non activé »</strong>.</li></ol>
+<p>Ce repli publie les fichiers du projet, sans stockage objet R2 et sans sauvegarde des commentaires du formulaire. Il sert à travailler l’affichage d’une image sans activer de service facturable. Pour observer un vrai enregistrement distant, suivez la démonstration du formateur depuis son compte, sans partager ses clés.</p>
+<p class="source-note">Aide : <a href="https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository">ajouter un fichier dans GitHub</a>.</p>
+</div></details><details class="lesson-detail"><summary>OVH : créer le compte, les buckets et les accès</summary><div class="lesson-detail-body"><h2>B. Avec un budget : OVH Object Storage Standard</h2>
+<ol><li>Créez ou ouvrez votre compte OVHcloud, confirmez votre adresse et connectez-vous au Manager. Conservez l’accès dans KeePassXC.</li>
+<li>Ouvrez <strong>Public Cloud → Créer un projet</strong>, nommez-le <code>Formation</code>, renseignez les informations demandées et vérifiez le moyen de paiement ainsi que les conditions avant de valider l’activation.</li>
+<li>Dans le projet → <strong>Object Storage → créer un bucket</strong>, choisissez une région disponible et la classe <strong>Standard</strong>. Vérifiez le tarif et la réplication choisis ; ne sélectionnez pas le service Swift ni une classe d’archivage.</li>
+<li>Créez un bucket <strong>privé</strong> de données, puis un bucket privé d’images, avec des noms uniques. Notez pour chacun le nom, la région et l’endpoint HTTPS exact affiché.</li>
+<li>Dans la console du bucket d’images, utilisez l’ajout d’objet pour déposer une image de démonstration. Vérifiez sa taille et retrouvez-la avec votre compte administrateur. L’accès reste privé ; l’affichage public via une route de lecture contrôlée sera une extension ultérieure.</li>
+<li>Créez un utilisateur S3 dédié à l’application, <strong>différent du propriétaire</strong> des buckets. Copiez Access Key ID et Secret Access Key dans KeePassXC. Le compte propriétaire reste réservé à l’administration.</li>
+<li>Dans <strong>Object Storage Policy Users</strong>, importez la politique de la diapo 20 pour autoriser uniquement l’écriture des soumissions. Vérifiez réellement que lecture, suppression et écriture hors préfixe sont refusées. Ne donnez pas de droits sur le bucket d’images à cet utilisateur si le formulaire n’en a pas besoin.</li>
+<li>Placez les identifiants dans les secrets du Worker et les paramètres dans ses variables (diapo 21). Après un envoi fictif, retrouvez le JSON privé dans OVH ; vérifiez enfin la consommation et supprimez les ressources inutiles.</li></ol>
+<p class="source-note">Sources : <a href="https://docs.ovhcloud.com/en/guides/public-cloud/cross-functional/create-a-public-cloud-project">création du projet OVH</a> · <a href="https://docs.ovhcloud.com/en/guides/storage-and-backup/object-storage/s3-identity-and-access-management">utilisateurs et droits S3</a> · <a href="https://www.ovhcloud.com/fr/public-cloud/prices/">tarifs OVH</a>.</p>
+</div></details></section>
+
+<section class="slide "><h1>Parcours OVH : limiter les droits d’écriture</h1><div class="visual-path" role="group" aria-label="Étapes du parcours"><div class="path-node"><strong>Utilisateur dédié</strong><span>Différent du propriétaire</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Droit PutObject</strong><span>Seulement soumissions/*</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Tester les refus</strong><span>Lecture · suppression · autre chemin</span></div></div><p class="key-message">Pour OVH : autoriser seulement ce dont le formulaire a besoin.</p><p>Avec R2, passer à la liaison DATA de la diapo suivante.</p><details class="lesson-detail"><summary>Afficher la politique JSON et les points de vigilance</summary><div class="lesson-detail-body"><p><strong>Si vous utilisez R2 :</strong> cette politique IAM concerne uniquement OVH. Passez à la liaison R2 de la diapo suivante. Le bucket R2 de commentaires doit lui aussi rester privé.</p><pre class="code-block">{
+  &quot;Version&quot;: &quot;2012-10-17&quot;,
+  &quot;Statement&quot;: [{
+    &quot;Effect&quot;: &quot;Allow&quot;,
+    &quot;Action&quot;: [&quot;s3:PutObject&quot;],
+    &quot;Resource&quot;: [&quot;arn:aws:s3:::NOM-DU-BUCKET/soumissions/*&quot;]
+  }]
+}</pre><p>Remplacer <code>NOM-DU-BUCKET</code> ; importer comme politique de l’utilisateur S3 dédié. Le code n’a besoin ni de lister le bucket ni de lire les objets.</p><div class="warning">Chez OVH, le propriétaire conserve des droits via ses ACL : une simple absence d’autorisation dans une politique ne réduit pas nécessairement ses droits. Utiliser un utilisateur non propriétaire et vérifier réellement les refus.</div><p><code>PutObject</code> permet aussi de remplacer un objet connu dans ce préfixe. Le Worker génère donc des clés imprévisibles ; ce droit ne constitue pas une garantie de stockage immuable.</p></div></details></section>
+
+<section class="slide "><h1>Configurer le Worker sans exposer les clés</h1><div class="lesson-cards"><div class="lesson-card"><strong>R2 → liaison DATA</strong><p>Le Worker accède au bucket sans clé S3.</p></div><div class="lesson-card"><strong>OVH → secrets S3</strong><p>Access Key ID + Secret Access Key restent côté serveur.</p></div><div class="lesson-card"><strong>Commun aux deux parcours</strong><p>Origine autorisée + clé secrète Turnstile.</p></div></div><div class="visual-path" role="group" aria-label="Étapes du parcours"><div class="path-node"><strong>Configurer</strong><span>Tableau de bord + Wrangler</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Déployer</strong><span>GitHub / GitLab</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Vérifier</strong><span>Un objet privé apparaît</span></div></div><details class="lesson-detail"><summary>Ouvrir les réglages, la liaison R2 et les commandes de référence</summary><div class="lesson-detail-body"><h2>Parcours R2 : une liaison au bucket privé</h2><ol><li>Dans <strong>Workers &amp; Pages → votre Worker → Bindings → Add binding → R2 bucket</strong>, choisissez le bucket privé de données et nommez la liaison <code>DATA</code>. Enregistrez et déployez.</li><li>Si vous déployez avec Wrangler ou GitHub/GitLab, ajoutez aussi cette liaison dans la configuration versionnée : un réglage du tableau de bord seul ne suffit pas à décrire le prochain déploiement. Ajoutez le bloc ci-dessous aux autres réglages sans remplacer tout le fichier.</li><li>Dans le code du Worker, utilisez <code>env.DATA.put(cle, contenu)</code> après les contrôles. Aucune clé S3 et aucune signature manuelle ne sont nécessaires pour cette liaison interne.</li><li>Gardez <code>ALLOWED_ORIGIN</code> en variable et <code>TURNSTILE_SECRET_KEY</code> en secret. Vérifiez l’objet dans la console R2 après un test distant. En mode local, vérifiez uniquement l’écriture locale.</li></ol><pre class="code-block">// À fusionner dans wrangler.jsonc, en adaptant le nom réel du bucket :
+&quot;r2_buckets&quot;: [
+  { &quot;binding&quot;: &quot;DATA&quot;, &quot;bucket_name&quot;: &quot;formation-s4-donnees-identifiant&quot; }
+]
+// Pour un bucket créé avec juridiction UE, ajouter &quot;jurisdiction&quot;: &quot;eu&quot;.
+</pre><pre class="code-block">// Extrait après validation, dans la fonction fetch(request, env) :
+await env.DATA.put(cle, JSON.stringify(soumission), {
+  httpMetadata: { contentType: &quot;application/json&quot; }
+});
+// Confirmer au navigateur seulement si l’écriture réussit.
+</pre><p>La liaison DATA donne au Worker des droits sur le bucket ; le code doit limiter les chemins et opérations. Ne fournissez aucune route publique pour lire ou lister les commentaires. Pour un déploiement refusé, vérifiez les droits précis du jeton sur les ressources ciblées, sans lui donner tous les droits du compte.</p><p class="source-note">Source : <a href="https://developers.cloudflare.com/r2/api/workers/workers-api-usage/">utiliser R2 depuis un Worker</a>.</p><h2>Parcours OVH : clés S3 côté serveur</h2><p>Dans Workers &amp; Pages, ouvrir le Worker existant → Settings → Variables and Secrets.</p><table><thead><tr><th>Type</th><th>Noms</th><th>Contenu</th></tr></thead><tbody><tr><td>Secrets</td><td>S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY</td><td>Identifiants de l’utilisateur OVH</td></tr><tr><td>Secret</td><td>TURNSTILE_SECRET_KEY</td><td>Clé serveur de protection du formulaire</td></tr><tr><td>Variables</td><td>S3_ENDPOINT, S3_REGION, S3_BUCKET</td><td>Valeurs exactes du bucket</td></tr><tr><td>Variable</td><td>ALLOWED_ORIGIN</td><td>Origine Pages exacte, sans chemin ni barre finale</td></tr></tbody></table><p>Alternative depuis le dossier du Worker :</p><pre class="code-block">npx wrangler secret put S3_ACCESS_KEY_ID
+npx wrangler secret put S3_SECRET_ACCESS_KEY
+npx wrangler secret put TURNSTILE_SECRET_KEY</pre><p>Les commandes demandent les valeurs à saisir. Ignorer dans Git les fichiers locaux <code>.dev.vars</code> et <code>.env*</code>, en conservant uniquement un modèle sans valeur réelle. Sources : <a href="https://developers.cloudflare.com/workers/configuration/secrets/">secrets Workers</a>.</p></div></details></section>
+
+<section class="slide "><h1>Définir les informations à enregistrer</h1><p>Un formulaire unique pour la première version : titre, information et commentaire. Aucune donnée personnelle réelle pendant l’atelier.</p><pre class="code-block">{
+  &quot;titre&quot;: &quot;Bibliothèque de quartier&quot;,
+  &quot;information&quot;: &quot;Ouverture le samedi matin&quot;,
+  &quot;commentaire&quot;: &quot;Prévoir un accès au clavier&quot;
+}</pre><p>Le serveur ajoute <code>id</code> et <code>createdAt</code> (UTC). Il écrit un objet indépendant :</p><pre class="code-block">soumissions/2026-11-02/UUID-GENERE-PAR-LE-SERVEUR.json</pre><p>Un objet par envoi évite que deux personnes réécrivent en même temps un unique <code>commentaires.json</code>. Pour rechercher, relier ou modérer de nombreux commentaires, nous étudierons une base de données en séance 5.</p></section>
+
+<section class="slide "><h1>De la page web au stockage : la séquence</h1><p class="small-note">Le site est déjà chargé depuis Pages. Lire les échanges de haut en bas.</p><div class="sequence-scroll" data-sequence-scroll tabindex="0" role="region" aria-label="Schéma séquentiel, défilement horizontal sur petit écran"><svg class="sequence-diagram sequence-compact" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 530" role="img" aria-labelledby="sequence-title sequence-desc"><title id="sequence-title">Séquence du formulaire vers le stockage</title><desc id="sequence-desc">Le formulaire est déjà affiché dans le navigateur depuis Pages. Le navigateur envoie les données au Worker, qui les valide et vérifie Turnstile. Le Worker enregistre dans R2 ou OVH, attend la réussite puis confirme au navigateur.</desc><defs><marker id="sequence-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#0f766e"/></marker></defs><rect x="18" y="8" width="224" height="60" rx="8" fill="#ccfbf1" stroke="#0f766e"/><text x="130" y="33" text-anchor="middle" font-size="19" font-weight="700">Site + formulaire</text><text x="130" y="54" text-anchor="middle" font-size="15">Dans le navigateur</text><path d="M130 68 V490" stroke="#94a3b8" stroke-dasharray="6 6"/><rect x="288" y="8" width="224" height="60" rx="8" fill="#ccfbf1" stroke="#0f766e"/><text x="400" y="33" text-anchor="middle" font-size="19" font-weight="700">Worker</text><text x="400" y="54" text-anchor="middle" font-size="15">Contrôles serveur</text><path d="M400 68 V490" stroke="#94a3b8" stroke-dasharray="6 6"/><rect x="548" y="8" width="224" height="60" rx="8" fill="#ccfbf1" stroke="#0f766e"/><text x="660" y="33" text-anchor="middle" font-size="19" font-weight="700">Turnstile</text><text x="660" y="54" text-anchor="middle" font-size="15">Anti-robot</text><path d="M660 68 V490" stroke="#94a3b8" stroke-dasharray="6 6"/><rect x="798" y="8" width="224" height="60" rx="8" fill="#ccfbf1" stroke="#0f766e"/><text x="910" y="33" text-anchor="middle" font-size="19" font-weight="700">R2 ou OVH</text><text x="910" y="54" text-anchor="middle" font-size="15">Stockage privé</text><path d="M910 68 V490" stroke="#94a3b8" stroke-dasharray="6 6"/><path d="M130 125 H400" stroke="#0f766e" stroke-width="2" marker-end="url(#sequence-arrow)"/><text x="265.0" y="115" text-anchor="middle" font-size="17">1. Envoyer les champs + jeton</text><rect x="315" y="145" width="170" height="34" rx="5" fill="#ecfdf5"/><text x="400" y="168" text-anchor="middle" font-size="17">2. Valider les champs</text><path d="M400 220 H660" stroke="#0f766e" stroke-width="2" marker-end="url(#sequence-arrow)"/><text x="530.0" y="210" text-anchor="middle" font-size="17">3. Vérifier le jeton</text><path d="M660 270 H400" stroke="#0f766e" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#sequence-arrow)"/><text x="530.0" y="260" text-anchor="middle" font-size="17">4. Résultat du contrôle</text><path d="M400 330 H910" stroke="#0f766e" stroke-width="2" marker-end="url(#sequence-arrow)"/><text x="655.0" y="320" text-anchor="middle" font-size="17">5. Si valide : écrire un JSON</text><path d="M910 390 H400" stroke="#0f766e" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#sequence-arrow)"/><text x="655.0" y="380" text-anchor="middle" font-size="17">6. Écriture réussie</text><path d="M400 450 H130" stroke="#0f766e" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#sequence-arrow)"/><text x="265.0" y="440" text-anchor="middle" font-size="17">7. Réponse 201 + identifiant</text><text x="130" y="493" text-anchor="middle" font-size="17" font-weight="700">8. Afficher « Enregistré »</text></svg></div><p class="key-message">Pas d’écriture réussie → pas de confirmation.</p><details class="lesson-detail"><summary>Détails techniques : CORS, formats, limites et erreurs</summary><div class="lesson-detail-body"><h2>Contrat du formulaire et contrôles serveur</h2><ul><li><code>POST /api/soumissions</code>, JSON uniquement ; titre 1–120 caractères, information 1–2 000, commentaire 1–1 000, espaces retirés avant validation. Corps limité à 16 Kio en lecture réelle.</li><li>Le Worker valide les types et longueurs, génère l’identifiant et la date, puis écrit via S3 <code>PutObject</code> (OVH) ou <code>env.DATA.put</code> (R2) avec <code>Content-Type: application/json</code>.</li><li>Réponse <code>201</code> et identifiant uniquement si le stockage confirme l’écriture ; <code>400</code> pour contenu invalide, <code>413</code> si trop gros, <code>415</code> si mauvais format, <code>502</code> si le stockage échoue.</li><li>Prévoir <code>OPTIONS</code> pour le navigateur ; autoriser seulement l’origine Pages attendue et les méthodes/en-têtes utiles. CORS ne constitue pas une authentification.</li><li>Ne jamais transmettre un chemin de stockage choisi par le navigateur. Ne jamais retourner les clés ni les erreurs internes d’OVH.</li></ul></div></details></section>
+
+<section class="slide "><h1>Rendre le formulaire public avec une protection</h1><p class="key-message">Turnstile aide à bloquer les envois automatisés de robots.</p><div class="visual-path" role="group" aria-label="Le formulaire envoie au Worker, qui vérifie Turnstile puis écrit dans le stockage"><div class="path-node"><strong>Formulaire</strong><span>Envoie le jeton temporaire</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Worker</strong><span>Vérifie le jeton auprès de Turnstile</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>R2 ou OVH</strong><span>Le Worker écrit si les contrôles réussissent</span></div></div><div class="lesson-cards"><div class="lesson-card"><strong>Clé de site</strong><p>Publique, dans le formulaire.</p></div><div class="lesson-card"><strong>Clé secrète</strong><p>Privée, dans le Worker.</p></div><div class="lesson-card"><strong>Jeton temporaire</strong><p>Accompagne un seul envoi.</p></div></div><p>Le widget seul ne suffit pas. Ce contrôle ne remplace pas une connexion utilisateur.</p><details class="lesson-detail"><summary>Configurer le widget et la vérification serveur</summary><div class="lesson-detail-body"><div class="exercise"><strong>Cloudflare Turnstile, qu’est-ce que c’est ?</strong> Un service qui aide à repérer les envois automatisés et à limiter les formulaires remplis par des robots. C’est une alternative au CAPTCHA, généralement sans puzzle d’images à résoudre. Le mot anglais <em>turnstile</em> signifie « tourniquet » : il évoque un contrôle de passage.</div>
+<p>Un <strong>widget</strong> est le petit composant intégré au formulaire. Il fournit un <strong>jeton temporaire</strong>, que le Worker fait vérifier par le service <strong>Siteverify</strong> avant d’autoriser l’enregistrement. Afficher le widget seul ne suffit pas.</p><div class="highlight">Formulaire + widget → jeton temporaire → Worker → vérification Turnstile → écriture dans R2 ou OVH si les contrôles réussissent.</div><p><strong>Trois éléments différents :</strong> la clé de site est publique ; la clé secrète reste dans le Worker ; le jeton temporaire accompagne un envoi. Aucun ne remplace le jeton API de déploiement ni une connexion utilisateur.</p><ol><li>Dans Cloudflare Turnstile, créer un widget autorisant le domaine Pages de l’exercice. La clé de site est publique ; la clé secrète reste dans le Worker.</li><li>Afficher le widget dans le formulaire et envoyer le jeton éphémère reçu avec les champs. Ce jeton Turnstile est distinct du jeton API Cloudflare.</li><li>Avant toute écriture dans R2 ou OVH, le Worker appelle Siteverify côté serveur et contrôle <code>success</code>, le <code>hostname</code> attendu et l’action choisie. Refuser les jetons absents, invalides ou rejoués.</li><li>Ajouter une limitation de débit adaptée avant l’ouverture publique. Ne pas remplacer cette protection par une clé partagée placée dans le JavaScript du navigateur.</li><li>Ce contrôle anti-robot ne prouve pas l’identité d’un auteur. Un espace personnel nécessitera une authentification et des autorisations propres.</li></ol></div></details></section>
+
+<section class="slide "><h1>Atelier : adapter un exemple en 35 minutes</h1><div class="visual-path" role="group" aria-label="Étapes de l’atelier"><div class="path-node"><strong>0–5 min</strong><span>Ouvrir le kit</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>5–15 min</strong><span>Adapter les réglages</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>15–25 min</strong><span>Envoyer et vérifier</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>25–35 min</strong><span>Tester le refus</span></div></div><p class="key-message">On adapte un exemple ; on ne reconstruit pas toute l’application.</p><p>Parcours court : kit R2 de la diapo suivante. Pour OVH, partir d’une version déjà configurée avec le formateur.</p><p><strong>Blocage de plus de cinq minutes ?</strong> Passer à la démonstration ou à la simulation, puis noter le blocage pour le fil rouge.</p><details class="lesson-detail"><summary>Ouvrir les consignes de l’atelier</summary><div class="lesson-detail-body"><ol><li><strong>0–5 min :</strong> ouvrir le site Pages et le bucket privé ; vérifier l’accès au Worker et les secrets avec le formateur.</li><li><strong>5–15 min :</strong> dans une branche <code>seance-4-formulaire</code>, ouvrir l’exemple fourni à la diapo 26 et adapter les réglages non secrets. Relire le trajet des données avant le déploiement.</li><li><strong>15–25 min :</strong> déployer le Worker, reporter son URL publique dans le formulaire, configurer l’origine autorisée et tester un envoi fictif.</li><li><strong>25–35 min :</strong> retrouver le fichier JSON dans le stockage choisi (ou vérifier l’image publiée sur Pages et observer la démonstration du formateur si R2 n’est pas activé), tester les refus, faire relire la modification en binôme et ouvrir une pull request.</li></ol><p>Le site de formation reste statique : le Worker de l’exercice est un service séparé. On ne tente pas d’ajouter une route serveur au simple export HTML.</p><p><strong>Images :</strong> le dépôt d’image se fait séparément, depuis la console du stockage (diapo 19). Le formulaire JSON de commentaires conserve sa limite de 16 Kio ; il ne transporte pas de fichier image.</p></div></details></section>
+
+<section class="slide "><h1>Un exemple prêt à adapter</h1><p><a class="lesson-link" href="exemples/seance4-demarrage.zip" download>Télécharger le kit R2</a> <a href="exemples/seance4-demarrage/README.md" target="_blank" rel="noopener noreferrer">Ouvrir le mode d’emploi ↗</a></p><div class="lesson-cards"><div class="lesson-card"><strong>Déjà fourni</strong><p>Formulaire + Worker R2 + tests + workflow GitHub.</p></div><div class="lesson-card"><strong>À personnaliser</strong><p>Nom du Worker · bucket · origine Pages · widget Turnstile.</p></div></div><p><strong>Dans le navigateur :</strong> ajouter les fichiers au dépôt GitHub, renseigner les secrets dans Cloudflare/GitHub, puis lancer Actions.</p><p class="small-note">Code testé avec des services simulés ; votre déploiement et l’écriture réelle restent à vérifier. Aucun secret réel n’est fourni.</p><details class="lesson-detail"><summary>Extension : adapter le kit avec l’IA ou préparer le parcours OVH</summary><div class="lesson-detail-body"><p>Choisir [R2 ou OVH]. Copier la consigne, remplacer le nom et fournir uniquement la configuration non secrète.</p><pre class="code-block">Je reprends mon projet [nom], site statique déjà publié sur Cloudflare Pages.
+Pars de l’exemple fourni et adapte la collecte : titre, information et commentaire, avec un Worker Cloudflare séparé et un bucket privé [R2 ou OVH]. Si R2 n’est pas activé, limiter mon livrable au repli image statique GitHub + Pages, sans prétendre enregistrer des commentaires ; suivre la démonstration du formateur pour le stockage distant.
+Commence par lire le dépôt et propose les fichiers à modifier. Ne me demande aucune clé réelle.
+
+Livrer :
+- Un formulaire accessible (labels, clavier, erreurs textuelles, état d’attente, confirmation après stockage), avec Turnstile.
+- Un Worker JavaScript de type module, avec configuration Wrangler et dépendances explicites ; pour OVH, utilise une bibliothèque compatible Workers pour signer les appels S3 SigV4, par exemple aws4fetch ; pour R2, utilise une liaison DATA versionnée dans Wrangler, sans clés S3.
+- POST /api/soumissions : JSON, corps limité à 16 Kio pendant sa lecture, titre 1–120, information 1–2000, commentaire 1–1000 caractères après trim ; refuser les types inattendus.
+- Vérifier Turnstile côté serveur (success, hostname, action) et prévoir une limitation de débit avant publication.
+- OPTIONS et CORS limités à ALLOWED_ORIGIN ; refuser les autres origines. Ne pas présenter CORS comme une authentification.
+- Le serveur génère UUID et date UTC, écrit un objet soumissions/AAAA-MM-JJ/UUID.json via un PUT S3 signé pour OVH ou env.DATA.put pour R2, sans ACL publique. Aucun fichier commun à réécrire.
+- Pour R2 : liaison DATA au bucket privé, ALLOWED_ORIGIN en variable et TURNSTILE_SECRET_KEY en secret. Pour OVH : lire S3_ACCESS_KEY_ID et S3_SECRET_ACCESS_KEY uniquement dans les secrets du Worker ; S3_ENDPOINT, S3_REGION, S3_BUCKET et ALLOWED_ORIGIN en configuration.
+- 201 avec identifiant seulement après succès du stockage ; 400/403/413/415/405 selon le cas, 502 en cas de panne S3 ; réponse générique sans secret.
+- Pas d’API publique pour lister ou lire les soumissions. Les objets se vérifient dans la console OVH/R2, ou dans la démonstration du formateur si seul le repli Pages est possible. Les images sont ajoutées séparément dans un autre bucket ; aucun upload d’image dans ce formulaire JSON.
+- README : configuration, création des secrets, déploiement, tests positifs et négatifs, suppression des données de démonstration ; .gitignore et modèles sans secrets.
+Explique les étapes et fournis des fichiers complets. Vérifie la documentation actuelle ; ne prétends pas avoir testé un accès cloud indisponible. Limite-toi à ce parcours.</pre></div></details></section>
+
+<section class="slide "><h1>Réussir l’envoi, puis prouver un refus</h1><div class="visual-path" role="group" aria-label="Étapes de l’atelier"><div class="path-node"><strong>Envoi valide</strong><span>201 + identifiant</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Preuve dans R2</strong><span>Un objet privé retrouvé</span></div><span class="path-arrow" aria-hidden="true">→</span><div class="path-node"><strong>Test de refus</strong><span>400 + aucun nouvel objet</span></div></div><p class="key-message">Le bouton « Tester un refus serveur » envoie volontairement un titre vide.</p><p>Ne pas se limiter au message du navigateur : vérifier le contenu du bucket avant et après.</p><details class="lesson-detail"><summary>Ouvrir la recette détaillée et les résultats attendus</summary><div class="lesson-detail-body"><ol><li>Ouvrir le formulaire déployé et envoyer la fiche fictive préremplie. Relever l’identifiant renvoyé après <code>201</code>.</li><li>Dans R2, retrouver <code>soumissions/date/identifiant.json</code> et vérifier les champs. Une simple confirmation à l’écran ne suffit pas.</li><li>Noter les objets présents, puis cliquer sur <strong>Tester un refus serveur</strong>. Le bouton envoie un titre vide au Worker, même si les champs de la page sont valides.</li><li>Attendu : <code>400</code>, message de refus et aucun nouvel objet après actualisation de R2. Cela vérifie le contrôle serveur, au-delà de la validation HTML.</li><li>Ouvrir le journal GitHub Actions : les tests du kit vérifient aussi le rejet des jetons absents ou invalides et les pannes de stockage, avec des services simulés.</li></ol><p>Les tests plus complets ci-dessous peuvent être poursuivis pendant le fil rouge.</p><table><thead><tr><th>Test</th><th>Résultat attendu</th></tr></thead><tbody><tr><td>Envoi fictif valide</td><td>201, confirmation et nouvel objet JSON privé, champs et date vérifiés dans OVH ou R2</td></tr><tr><td>Champ vide, type invalide ou commentaire trop long</td><td>400, message compréhensible, aucun objet créé</td></tr><tr><td>Corps supérieur à 16 Kio / format non JSON</td><td>413 / 415, aucun objet créé</td></tr><tr><td>Jeton Turnstile absent ou rejoué</td><td>Refus, aucun objet créé</td></tr><tr><td>Origine étrangère / mauvaise méthode</td><td>Refus sans autorisation CORS / 405</td></tr><tr><td>OVH : clé S3 de test invalide ; R2 : liaison de test absente</td><td>502, pas de fausse confirmation ni de détail secret ; restaurer ensuite</td></tr><tr><td>Deux envois successifs ou concurrents</td><td>Deux objets distincts ; aucun écrasement</td></tr><tr><td>Lecture anonyme de l’objet / pour OVH, lecture avec utilisateur d’écriture</td><td>Accès refusé ; vérification distincte avec le compte formateur</td></tr></tbody></table><p>Inspecter aussi les fichiers publiés et l’onglet Réseau : aucune clé Cloudflare ou S3. Tester l’accès au clavier et l’annonce des erreurs.</p></div></details></section>
+
+<section class="slide "><h1>Cinq minutes de blocage : passer au secours</h1><p class="key-message">Continuer à comprendre le parcours, même si l’infrastructure bloque.</p><div class="lesson-cards"><div class="lesson-card"><strong>Compte ou activation bloqués</strong><p>Observer la collecte du formateur, sans partager ses clés.</p></div><div class="lesson-card"><strong>Service indisponible</strong><p>Utiliser la simulation : succès, refus et panne.</p></div><div class="lesson-card"><strong>Pas d’Internet</strong><p>Ouvrir la page de secours enregistrée avant le cours.</p></div></div><p><a class="lesson-link" href="exemples/seance4-demarrage/secours.html" target="_blank" rel="noopener noreferrer">Ouvrir la simulation de secours ↗</a> <a href="exemples/seance4-demarrage/secours.html" download="secours-seance4.html">Enregistrer pour un usage hors connexion</a></p><p class="small-note">La simulation n’enregistre rien. Noter le résultat observé et le blocage à reprendre.</p><details class="lesson-detail"><summary>Voir le diagnostic détaillé</summary><div class="lesson-detail-body"><ul><li><strong>Cloudflare refuse le déploiement :</strong> vérifier expiration, compte ciblé et permissions du jeton ; validité et autorisation sont deux contrôles différents.</li><li><strong>Le navigateur bloque l’envoi :</strong> comparer exactement l’origine Pages et ALLOWED_ORIGIN ; vérifier OPTIONS, l’URL du Worker et les domaines Turnstile.</li><li><strong>Signature S3 refusée :</strong> contrôler endpoint, région, clés et signature ; ne pas exposer ces valeurs dans une capture publique.</li><li><strong>Accès S3 refusé :</strong> vérifier bucket, préfixe soumissions/, utilisateur non propriétaire, politique et ACL.</li><li><strong>Le message est affiché mais rien n’est stocké :</strong> vérifier que le code attend le succès du stockage avant de confirmer.</li><li><strong>La soumission existe mais ne s’affiche pas sur le site :</strong> c’est attendu ici ; le bucket reste privé et aucune lecture publique n’a été développée.</li></ul><p><strong>Parcours R2 :</strong> si la liaison DATA est absente, vérifier son nom et le bucket dans Wrangler. Si aucun objet distant n’apparaît avec <code>wrangler dev</code>, c’est normal en mode local : les écritures restent sur l’ordinateur.</p></div></details></section>
+
+<section class="slide "><h1>Bilan de sortie : cinq questions</h1><ol><li>À quoi sert mon jeton Cloudflare ?</li><li>Quelles ressources peut-il atteindre ?</li><li>Où les secrets doivent-ils rester ?</li><li>Pourquoi les téléchargements peuvent-ils coûter cher ?</li><li>Comment rendre mon jeton inutilisable ?</li></ol><p class="key-message">Une preuve d’envoi, une preuve de refus, puis le nettoyage.</p><p><strong>Avant de terminer :</strong> révoquer les accès temporaires, supprimer les fichiers inutiles et vérifier la consommation.</p><details class="lesson-detail"><summary>Vérifier les livrables, les réponses et le nettoyage</summary><div class="lesson-detail-body"><p><strong>Repères de correction :</strong> déployer le Worker ; ressources autorisées par le jeton ; secrets dans le coffre et les services concernés, jamais dans le navigateur ; trafic et opérations s’ajoutent au stockage ; révoquer chez Cloudflare puis retirer la copie GitHub/GitLab. Effacer la copie seule ne révoque rien.</p><ul><li>URL Pages avec formulaire et URL du Worker ; aucun secret dans les livrables.</li><li>Une soumission fictive retrouvée dans OVH ou R2 avec son identifiant et sa date ; si l’activation est impossible, une image publiée sur Pages et une observation de la démonstration d’enregistrement du formateur, sans prétendre avoir réalisé cette collecte.</li><li>README décrivant le flux, les permissions, les variables et la configuration sans valeurs secrètes.</li><li>Compte rendu des tests : succès, validation, refus d’accès, panne et absence d’écrasement.</li><li>Comparatif tarifaire daté avec région, réplication, unité, devise et frais complémentaires.</li><li>Pull request relue ; liste des points à terminer pendant le fil rouge.</li><li>Une image de démonstration retrouvée dans le stockage ; pour R2, son affichage public de test reste séparé des commentaires privés. Si l’activation est impossible, livrer l’URL de l’image statique Pages en indiquant « R2 non activé ; commentaires non collectés dans mon projet ».</li></ul><p>En fin d’atelier : révoquer le jeton de déploiement temporaire. Décider avec le formateur si le service reste actif pour le projet ; sinon désactiver la collecte et supprimer les données fictives et ressources de démonstration inutiles.</p></div></details></section>
+
+<section class="slide "><h1>20 h 30–21 h 30 : projets fil rouge</h1><p><strong>5 min :</strong> confirmer l’ordre annoncé au début et l’objectif concret de chaque passage.</p><p><strong>50 min :</strong> accompagner chaque projet pendant 50 ÷ N minutes. Les autres groupes avancent avec la checklist et préparent une question précise.</p><ul><li>Montrer le problème avec une URL, un écran ou un test reproductible.</li><li>Choisir une seule action utile : finir le parcours UX, débloquer le déploiement, connecter le formulaire ou vérifier le stockage.</li><li>Noter la décision et la prochaine tâche dans le dépôt ; ne pas consommer le créneau suivant.</li></ul><p><strong>5 dernières minutes :</strong> un résultat obtenu et une prochaine action par projet.</p><div class="highlight">Séance 5 : modéliser les données et les relations. Aujourd’hui, nous avons prouvé qu’un formulaire peut enregistrer des informations et des commentaires sans publier les clés.</div></section>
+    </div>
+
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Plein écran</button>
+    <a href="lexique.html" class="lexique-btn" title="Consulter le lexique FALC">Lexique</a>
+    <a href="index.html" class="home-btn">Sommaire</a>
+    <button class="pdf-btn" onclick="downloadPDF()">PDF</button>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">0</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prev-btn" onclick="changeSlide(-1)">Précédent</button>
+        <button class="nav-button" id="next-btn" onclick="changeSlide(1)">Suivant</button>
+        <span style="margin: 0 15px;">Flèches du clavier</span>
+    </div>
+
+    
+    
+    
+
+</body>
+</html>

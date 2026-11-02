@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annexe F — Comparatif hébergement</title>
+<style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif', Georgia, serif;
+            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            background: #ffffff;
+            width: 90%;
+            max-width: 1040px;
+            height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            display: none;
+            position: relative;
+            overflow-y: auto;
+            font-size: 17px;
+            line-height: 1.6;
+            box-sizing: border-box;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.4s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-slide h1 {
+            color: #ecf0f1;
+            font-size: 2.6em;
+            margin-bottom: 0.2em;
+            font-family: 'Yanone Kaffeesatz', sans-serif;
+        }
+
+        .title-slide h2 {
+            color: #5eead4;
+            font-size: 2em;
+            margin-top: 0;
+            margin-bottom: 0.3em;
+        }
+
+        .title-slide h3 {
+            color: #f1f5f9;
+            font-size: 1.6em;
+            margin-top: 0.2em;
+            font-weight: normal;
+        }
+
+        .title-slide p {
+            color: #cbd5e1;
+            font-size: 1.1em;
+            margin-top: 0.5em;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz', sans-serif;
+            font-weight: normal;
+            color: #1e3a5f;
+            margin-top: 0;
+        }
+
+        h1 { font-size: 2.2em; margin-bottom: 0.3em; }
+        h2 { font-size: 1.7em; color: #0f766e; margin-bottom: 0.3em; }
+        h3 { font-size: 1.3em; color: #1e3a5f; }
+
+        .highlight {
+            background-color: #0f766e;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 14px 0;
+        }
+
+        .highlight strong { color: #ccfbf1; }
+
+        .exercise {
+            background: #ecfdf5;
+            border-left: 5px solid #059669;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 14px 0;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 14px 0;
+        }
+
+        .code-block {
+            font-family: 'Ubuntu Mono', monospace;
+            background: #1e293b;
+            color: #f8f8f2;
+            padding: 12px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.45;
+        }
+
+        .stats {
+            background: #f1f5f9;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 14px 0;
+            border-left: 4px solid #0284c7;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px;
+            margin: 15px 0;
+        }
+
+        .card {
+            background: #f8fafc;
+            border-top: 4px solid #0f766e;
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-size: 0.94em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            margin: 0 0 8px;
+            color: #0f766e;
+            font-size: 1.25em;
+        }
+
+        .card p {
+            margin: 0 0 6px;
+            line-height: 1.5;
+        }
+
+        .card ul {
+            margin: 6px 0 0;
+            padding-left: 20px;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+            margin: 14px 0;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84em;
+            min-width: 680px;
+            background: #ffffff;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 9px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        thead th {
+            background: #1e3a5f;
+            color: #ffffff;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 0.95em;
+        }
+
+        tbody th {
+            background: #f1f5f9;
+            color: #1e3a5f;
+            font-weight: 600;
+        }
+
+        tbody tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        tbody tr:hover td {
+            background: #f0fdfa;
+        }
+
+        .badge-green {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .badge-orange {
+            display: inline-block;
+            background: #ffedd5;
+            color: #9a3412;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .badge-red {
+            display: inline-block;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #14b8a6;
+            transition: width 0.3s ease;
+            z-index: 1000;
+            width: 0%;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-button {
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            margin: 0 5px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .nav-button:hover { background: #0d9488; }
+        .nav-button:disabled { background: #64748b; cursor: not-allowed; }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.85);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            transition: background 0.2s ease;
+        }
+        .fullscreen-btn:hover { background: rgba(0,0,0,0.95); }
+
+        .lexique-btn {
+            position: fixed;
+            top: 20px;
+            right: 215px;
+            background: rgba(30, 58, 95, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .lexique-btn:hover { background: #1e3a5f; }
+
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 105px;
+            background: rgba(15, 118, 110, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .home-btn:hover { background: #0f766e; }
+
+        .pdf-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            transition: background 0.2s ease;
+        }
+        .pdf-btn:hover { background: #b91c1c; }
+
+        /* Tooltip Serhat Bek */
+        .tooltip-trigger {
+            position: relative;
+            display: inline;
+            cursor: help;
+            border-bottom: 2px dotted #0f766e;
+            color: inherit;
+            font-weight: inherit;
+            transition: color 0.15s ease;
+        }
+
+        .tooltip-trigger:hover,
+        .tooltip-trigger:focus-visible {
+            color: #0f766e;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background-color: #0f172a;
+            color: #f8fafc;
+            text-align: left;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: normal;
+            width: max-content;
+            max-width: 290px;
+            min-width: 170px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+
+        .tooltip.tooltip--bottom {
+            bottom: auto;
+            top: calc(100% + 8px);
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .tooltip.tooltip--bottom::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #0f172a transparent;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media print {
+            .fullscreen-btn, .home-btn, .pdf-btn, .lexique-btn, .navigation, .slide-counter, .progress-bar {
+                display: none !important;
+            }
+            body { background: white !important; overflow: visible !important; }
+            .slideshow-container { display: block !important; height: auto !important; }
+            .slide {
+                display: block !important;
+                page-break-after: always !important;
+                max-width: 100% !important;
+                height: auto !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                padding: 20px !important;
+            }
+        }
+    </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="annexe-e-vm-linux.html">← Annexe E</a><span class="local-nav-title">Annexe F — Comparatif hébergement</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/annexe-f-cloud-s3-vps-pages.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slideshow-container">
+
+        <!-- Slide 1 : Titre -->
+        <div class="slide title-slide active">
+            <h1>VIBE-CODING</h1>
+            <h2>Annexe F</h2>
+            <h3>Comparatif Hébergement Cloud : S3, VPS &amp; Pages</h3>
+            <p>Architecture moderne · Coûts réels &amp; pièges de facturation · Souveraineté · Sobriété énergétique (Green IT)</p>
+        </div>
+
+        <!-- Slide 2 : Objectif et Triptyque architectural -->
+        <div class="slide">
+            <h1>1. Objectif &amp; Triptyque d'architecture moderne</h1>
+            <div class="stats">
+                <strong>Objectif :</strong> Maîtriser le triptyque moderne d'infrastructure (Pages + VPS + S3) pour déployer rapidement un MVP en <em>vibe-coding</em>, sans risquer de surcoûts imprévus et en privilégiant la souveraineté européenne et la sobriété écologique.
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>1. Pages (Frontend Edge)</h3>
+                    <p>Distribution de l'interface utilisateur statique (Vite, React, Astro, Next export) sur un réseau mondial de diffusion (<span class="tooltip-trigger" data-tooltip="Réseau mondial de serveurs relais qui met vos fichiers en cache au plus près des visiteurs pour un affichage instantané.">CDN</span>).</p>
+                    <p><strong>Rôle :</strong> Vitesse maximale, coût zéro, zéro serveur web à administrer.</p>
+                </div>
+                <div class="card">
+                    <h3>2. VPS / Compute (API &amp; Backend)</h3>
+                    <p>Serveur virtuel Linux hébergeant la logique métier (FastAPI, Node.js, Express, conteneurs <span class="tooltip-trigger" data-tooltip="Boîte logicielle étanche faisant tourner votre application sans rien dérégler sur votre machine.">Docker</span>, base de données SQLite ou PostgreSQL).</p>
+                    <p><strong>Rôle :</strong> Traitements dynamiques, calculs et gestion sécurisée des sessions.</p>
+                </div>
+                <div class="card">
+                    <h3>3. Stockage Objet compatible S3</h3>
+                    <p>Espace de <span class="tooltip-trigger" data-tooltip="Espace de stockage en ligne permettant de conserver des volumes massifs de fichiers (images, vidéos, sauvegardes) sans limite de taille.">stockage objet</span> illimité pour conserver fichiers lourds, médias (photos, audios, vidéos), exports et sauvegardes chiffrées.</p>
+                    <p><strong>Rôle :</strong> Décharger le serveur VPS et stocker à la demande à moindre coût.</p>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>Règle d'or de sécurité :</strong> Ne placez jamais de secrets, clés d'accès S3 ou mots de passe dans votre code ou dépôt <span class="tooltip-trigger" data-tooltip="Outil qui mémorise tout l'historique de votre code pour remonter le temps en cas d'erreur.">Git</span>. Vos <span class="tooltip-trigger" data-tooltip="Mots de passe exclusifs autorisant votre application à utiliser des services partenaires.">clés API</span> et identifiants doivent rester dans des variables d'environnement (<span class="tooltip-trigger" data-tooltip="Fichier de configuration confidentiel qui contient les secrets et mots de passe du projet.">.env</span> local ou tableau de bord sécurisé).
+            </div>
+        </div>
+
+        <!-- Slide 3 : Qu'est-ce que le Stockage Objet S3 ? -->
+        <div class="slide">
+            <h1>2. Comprendre le Stockage Objet compatible S3</h1>
+            <div class="highlight">
+                Contrairement à un disque dur traditionnel (fichiers dans des dossiers arborescents), le <strong>stockage objet</strong> enregistre chaque fichier comme un objet indépendant doté d'un identifiant unique, de métadonnées et accessible directement via une <span class="tooltip-trigger" data-tooltip="Adresse web unique tapée dans votre navigateur pour accéder directement à une page sur Internet.">URL</span> ou une <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span>.
+            </div>
+
+            <ul>
+                <li><strong>Le standard universel S3 :</strong> Créé par Amazon en 2006 (Simple Storage Service), son protocole est devenu la norme industrielle mondiale. Presque tous les hébergeurs (OVHcloud, Scaleway, Hetzner, Infomaniak, Cloudflare R2) proposent une compatibilité S3 native.</li>
+                <li><strong>Les conteneurs de stockage (Buckets) :</strong> Vos fichiers sont déposés dans des compartiments appelés <em>buckets</em>. Un bucket peut être configuré en accès public (pour afficher des images sur votre site) ou privé (sauvegardes, documents confidentiels).</li>
+                <li><strong>Capacité virtuellement illimitée :</strong> Vous ne payez que le volume réellement consommé au mégaoctet près, sans devoir dimensionner ni partitionner un disque rigide.</li>
+                <li><strong>Accès sécurisé par paires de clés :</strong> Chaque application s'authentifie grâce à un <code>Access Key ID</code> et un <code>Secret Access Key</code>, avec la possibilité de générer des URL pré-signées temporaires pour téléverser ou télécharger un fichier en toute sécurité.</li>
+            </ul>
+
+            <div class="exercise">
+                <strong>En vibe-coding :</strong> Toute bibliothèque cliente S3 (ex. <code>boto3</code> en Python, <code>@aws-sdk/client-s3</code> en JavaScript) fonctionne avec n'importe quel hébergeur compatible S3 en changeant simplement le paramètre <code>endpoint_url</code>.
+            </div>
+        </div>
+
+        <!-- Slide 4 : Grille tarifaire unifiée -->
+        <div class="slide">
+            <h1>3. Grille tarifaire unifiée : Stockage Objet S3 (Octobre 2026)</h1>
+            <p>Comparatif des tarifs indicatifs hors taxes (HT) constatés pour les régions France / Europe :</p>
+
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Tableau comparatif S3 défilable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Fournisseur</th>
+                            <th scope="col">Pays / Juridiction</th>
+                            <th scope="col">Prix / Go / mois</th>
+                            <th scope="col">Prix / To / mois</th>
+                            <th scope="col">Trafic sortant (<span class="tooltip-trigger" data-tooltip="Trafic de données qui sort du centre de données pour aller vers les utilisateurs sur Internet (souvent facturé au gigaoctet chez les géants américains).">Egress</span>)</th>
+                            <th scope="col">Requêtes API</th>
+                            <th scope="col">Profil &amp; Atouts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Hetzner</th>
+                            <td>🇩🇪 Allemagne</td>
+                            <td><strong>~0,0052 €</strong></td>
+                            <td><strong>~5,20 €</strong></td>
+                            <td><span class="badge-green">Inclus (1 To+)</span></td>
+                            <td><span class="badge-green">Gratuites</span></td>
+                            <td>Tarifs les plus bas d'Europe, idéal stockage brut et sauvegardes.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Infomaniak (Swiss Backup S3)</th>
+                            <td>🇨🇭 Suisse</td>
+                            <td><strong>~0,0045 €</strong></td>
+                            <td><strong>~4,40 €</strong> (4,18 CHF)</td>
+                            <td><span class="badge-green">Inclus (gratuit)</span></td>
+                            <td><span class="badge-green">Gratuites</span></td>
+                            <td>100% renouvelable, données en Suisse. (+1,84 CHF/mois par appareil).</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">OVHcloud (Object Storage)</th>
+                            <td>🇫🇷 France</td>
+                            <td><strong>~0,0071 €</strong></td>
+                            <td><strong>~7,10 €</strong></td>
+                            <td><span class="badge-green">Inclus (gratuit)</span></td>
+                            <td><span class="badge-green">Gratuites</span></td>
+                            <td>Excellent rapport qualité/prix, bande passante illimitée, souverain.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Scaleway (iliad)</th>
+                            <td>🇫🇷 France</td>
+                            <td><strong>~0,0100 €</strong></td>
+                            <td><strong>~10,00 €</strong></td>
+                            <td>75 Go offerts puis ~0,01 €/Go</td>
+                            <td><span class="badge-green">Gratuites</span></td>
+                            <td><strong>75 Go gratuits/mois</strong>. Écosystème très complet (K8s, Serverless, IA).</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Infomaniak (Public Cloud IaaS)</th>
+                            <td>🇨🇭 Suisse</td>
+                            <td><strong>~0,0110 €</strong></td>
+                            <td><strong>~11,00 €</strong></td>
+                            <td><span class="badge-green">Inclus (fair use)</span></td>
+                            <td><span class="badge-green">Gratuites</span></td>
+                            <td>Stockage objet IaaS OpenStack standard, sans licence par appareil.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Clever Cloud (Cellar S3)</th>
+                            <td>🇫🇷 France</td>
+                            <td><strong>~0,0150 €</strong></td>
+                            <td><strong>~15,00 €</strong></td>
+                            <td><span class="badge-green">Inclus (gratuit)</span></td>
+                            <td><span class="badge-green">Gratuites</span></td>
+                            <td>Idéal pour déploiements PaaS automatiques avec <code>git push</code>.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">StackIT (Groupe Schwarz)</th>
+                            <td>🇩🇪 Allemagne</td>
+                            <td><strong>~0,0150 €</strong></td>
+                            <td><strong>~15,00 €</strong></td>
+                            <td><span class="badge-green">Inclus (fair use)</span></td>
+                            <td><span class="badge-green">Gratuites</span></td>
+                            <td>Cloud souverain allemand d'entreprise (secteur public, industrie).</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Exoscale (A1 Telekom)</th>
+                            <td>🇨🇭 / 🇦🇹</td>
+                            <td><strong>~0,0180 €</strong></td>
+                            <td><strong>~18,00 €</strong></td>
+                            <td><span class="badge-green">Inclus (fair use)</span></td>
+                            <td><span class="badge-green">Gratuites</span></td>
+                            <td>Cloud d'entreprise très stable, haute conformité RGPD / Suisse.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Google Cloud Storage (GCS)</th>
+                            <td>🇺🇸 USA</td>
+                            <td><strong>~0,0200 €</strong></td>
+                            <td><strong>~20,00 €</strong></td>
+                            <td><span class="badge-red">~0,11 € / Go (~110 €/To)</span></td>
+                            <td><span class="badge-red">Payantes (~0,005 €/1k)</span></td>
+                            <td>Facture très élevée dès qu'il y a du trafic sortant ou des requêtes.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Amazon Web Services (AWS S3)</th>
+                            <td>🇺🇸 USA</td>
+                            <td><strong>~0,0210 €</strong></td>
+                            <td><strong>~21,00 €</strong></td>
+                            <td><span class="badge-red">~0,08 € / Go (~80 €/To)</span></td>
+                            <td><span class="badge-red">Payantes (~0,005 €/1k)</span></td>
+                            <td>Référence mondiale, immense catalogue, mais pièges de facturation.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3DS Outscale (Dassault)</th>
+                            <td>🇫🇷 France</td>
+                            <td><strong>~0,0220 €</strong></td>
+                            <td><strong>~22,00 €</strong></td>
+                            <td><span class="badge-orange">~0,05 € / Go</span></td>
+                            <td><span class="badge-red">Payantes</span></td>
+                            <td>Cloud souverain d'élite certifié <strong>SecNumCloud</strong> (défense, santé).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 5 : Le piège des coûts cachés -->
+        <div class="slide">
+            <h1>4. Le piège des coûts cachés : Européens vs Hyperscalers US</h1>
+            <div class="warning">
+                <strong>Attention aux mauvaises surprises :</strong> Sur AWS ou Google Cloud, le prix affiché pour stocker 1 To (~20 €) n'est que la partie visible de l'iceberg. Deux postes de dépense cachés font souvent exploser la facture finale.
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>1. La bande passante sortante (Egress)</h3>
+                    <p>L'<strong>Egress</strong> désigne chaque octet téléchargé depuis le bucket vers les utilisateurs sur Internet (écoute d'un audio, affichage d'une image, téléchargement de PDF).</p>
+                    <ul>
+                        <li><strong>Chez OVHcloud, Hetzner, Infomaniak :</strong> Le trafic sortant est <strong>totalement gratuit ou inclus</strong> sans surcoût.</li>
+                        <li><strong>Chez AWS et Google Cloud :</strong> Au-delà des 100 premiers Go offerts, chaque To téléchargé coûte entre <strong>80 € et 110 € supplémentaires</strong> !</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>2. La facturation des requêtes API</h3>
+                    <p>Chaque appel effectué par votre code (<code>GET</code> pour lire, <code>PUT</code> pour écrire, <code>LIST</code> pour lister les fichiers) est facturé.</p>
+                    <ul>
+                        <li><strong>Chez les hébergeurs européens :</strong> Les appels d'API S3 sont <strong>gratuits et illimités</strong>.</li>
+                        <li><strong>Chez AWS / GCP :</strong> Chaque lot de 1 000 requêtes est payant. Une simple boucle dans votre code, un bogue de rafraîchissement ou le passage d'un bot d'indexation peut générer des dizaines d'euros imprévus en une seule nuit.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>Conseil Vibe-Coding :</strong> Pour un MVP ou un projet étudiant/débutant, privilégiez les hébergeurs européens où les requêtes et l'egress sont inclus. Vous éviterez tout risque de facture astronomique involontaire.
+            </div>
+        </div>
+
+        <!-- Slide 6 : Simulations de facturation mensuelle -->
+        <div class="slide">
+            <h1>5. Simulations concrètes de facturation mensuelle</h1>
+            <p>Comparaison des coûts réels selon l'échelle de votre projet (stockage + trafic sortant) :</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Cas 1 : Petit projet / Début</h3>
+                    <p><em>50 Go stockés + 50 Go téléchargés / mois</em></p>
+                    <ul>
+                        <li><strong>Scaleway :</strong> <span class="badge-green">0,00 €</span> <em>(inclus dans les 75 Go gratuits)</em></li>
+                        <li><strong>OVHcloud :</strong> <span class="badge-green">~0,35 € HT</span></li>
+                        <li><strong>Hetzner :</strong> ~0,26 € HT</li>
+                        <li><strong>Google Cloud :</strong> ~1,00 € HT</li>
+                        <li><strong>AWS S3 :</strong> ~1,05 € HT</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Cas 2 : Projet moyen</h3>
+                    <p><em>500 Go stockés + 500 Go téléchargés / mois</em></p>
+                    <ul>
+                        <li><strong>Hetzner :</strong> <span class="badge-green">~2,60 € HT</span></li>
+                        <li><strong>OVHcloud :</strong> <span class="badge-green">~3,55 € HT</span></li>
+                        <li><strong>Scaleway :</strong> ~8,50 € HT</li>
+                        <li><strong>AWS S3 :</strong> 10,50 € (stock) + 32 € (egress) ≈ <span class="badge-red">~43,00 € HT</span></li>
+                        <li><strong>Google Cloud :</strong> 10 € (stock) + 44 € (egress) ≈ <span class="badge-red">~55,00 € HT</span></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Cas 3 : Distribution média / Audio</h3>
+                    <p><em>2 To stockés + 2 To téléchargés / mois</em></p>
+                    <ul>
+                        <li><strong>Hetzner :</strong> <span class="badge-green">~10,40 € HT</span></li>
+                        <li><strong>OVHcloud :</strong> <span class="badge-green">~14,20 € HT</span></li>
+                        <li><strong>Scaleway :</strong> ~39,25 € HT</li>
+                        <li><strong>AWS S3 :</strong> 42 € (stock) + 152 € (egress) ≈ <span class="badge-red">~195,00 € HT</span></li>
+                        <li><strong>Google Cloud :</strong> 40 € (stock) + 209 € (egress) ≈ <span class="badge-red">~250,00 € HT</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="stats">
+                <strong>Constat marquant :</strong> Sur le cas média (2 To), AWS et Google Cloud sont <strong>15 à 20 fois plus chers</strong> qu'OVHcloud ou Hetzner pour exactement le même service, uniquement en raison des frais de trafic sortant !
+            </div>
+        </div>
+
+        <!-- Slide 7 : Zoom sur Infomaniak Swiss Backup -->
+        <div class="slide">
+            <h1>6. Zoom sur Infomaniak Swiss Backup : Backup vs Applicatif</h1>
+            <div class="stats">
+                L'offre <strong>Swiss Backup d'Infomaniak</strong> propose une structure tarifaire originale à bien distinguer d'un S3 applicatif classique :
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Décomposition du tarif</h3>
+                    <ul>
+                        <li><strong>Volume brut :</strong> <strong>4,18 CHF HT / mois par To</strong> en paiement annuel (-10%) ou 4,64 CHF HT / mois (soit ~4,40 € HT / To).</li>
+                        <li><strong>Licence par appareil connecté :</strong>
+                            <ul>
+                                <li>Option Cloud (<span class="tooltip-trigger" data-tooltip="Standard universel de stockage de fichiers dans le nuage, inventé par Amazon et adopté par la quasi-totalité des hébergeurs.">S3</span> / Swift / SFTP) : <strong>+1,84 CHF HT / mois</strong> par appareil.</li>
+                                <li>Option Acronis Cyber Protect : +2,85 CHF (Poste), +5,72 CHF (VM).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Garanties :</strong> 90 jours d'essai gratuit, bande passante illimitée, hébergement 100% en Suisse hors <span class="tooltip-trigger" data-tooltip="Loi extraterritoriale américaine permettant à la justice des États-Unis d'accéder aux données hébergées chez des fournisseurs US, même en Europe.">Cloud Act</span>.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Quand l'utiliser (et quand l'éviter) ?</h3>
+                    <p><strong>Idéal pour :</strong></p>
+                    <ul>
+                        <li>Sauvegarde automatisée de serveurs de production et VPS.</li>
+                        <li>Archives chiffrées de bases de données et dépôts Git.</li>
+                        <li>Outils comme <code>rclone</code>, <code>restic</code>, <code>BorgBackup</code> ou Veeam.</li>
+                    </ul>
+                    <p><strong>Non adapté pour :</strong></p>
+                    <ul>
+                        <li>Servir des fichiers directement à des clients web/mobiles (images de profil, streaming audio, téléchargements publics directs) en raison de la contrainte de licence par appareil/utilisateur connecté.</li>
+                        <li>Pour cet usage public direct, préférez <strong>OVHcloud Object Storage</strong> ou <strong>Scaleway</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8 : Sobriété énergétique & Empreinte carbone -->
+        <div class="slide">
+            <h1>7. Empreinte carbone &amp; Sobriété énergétique (Green IT)</h1>
+            <p>Le choix d'un hébergeur a un impact direct sur l'empreinte environnementale de vos applications :</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>OVHcloud (France)</h3>
+                    <ul>
+                        <li><strong>Refroidissement liquide (<span class="tooltip-trigger" data-tooltip="Technique de refroidissement direct des processeurs par circulation d'eau en circuit fermé, éliminant les climatiseurs énergivores.">Watercooling</span> direct) :</strong> Conçu en interne dès 2003, les processeurs sont refroidis par eau en circuit fermé sans climatiseurs énergivores.</li>
+                        <li><strong><span class="tooltip-trigger" data-tooltip="Indicateur d'efficacité énergétique mesurant la part d'électricité réellement consommée par les serveurs par rapport au bâtiment.">PUE</span> record :</strong> Entre <strong>1,10 et 1,28</strong> (face à une moyenne mondiale de l'industrie de 1,50 à 1,60).</li>
+                        <li><strong>WUE minimal :</strong> 0,26 L d'eau par kWh consommé (contre ~1,8 L de moyenne).</li>
+                        <li><strong>Économie circulaire (Scope 3) :</strong> OVH assemble et désassemble ses propres serveurs dans ses usines (Croix, Beauharnois). Les composants (RAM, CPU, disques) sont reconditionnés sur 3 à 4 vies.</li>
+                        <li><strong>Mix électrique bas-carbone :</strong> Centres français alimentés par le mix national décarboné (nucléaire + renouvelable) avec suivi transparent via l'<em>Environmental Impact Tracker</em>.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Infomaniak (Suisse)</h3>
+                    <ul>
+                        <li><strong>Pionnier de l'écologie numérique :</strong> Énergie 100% renouvelable certifiée (hydraulique locale et panneaux solaires en toiture).</li>
+                        <li><strong>PUE exceptionnel :</strong> Inférieur à <strong>1,10</strong> sur les nouveaux centres de données suisses.</li>
+                        <li><strong>Refroidissement passif :</strong> Aucune climatisation mécanique polluante ; utilisation exclusive de l'air extérieur filtré.</li>
+                        <li><strong>Compensation à 200% :</strong> Compensation du double des émissions résiduelles générées.</li>
+                        <li><strong>Durabilité matérielle :</strong> Serveurs amortis et maintenus en production sur une durée prolongée (jusqu'à 10-15 ans) pour minimiser l'impact de fabrication.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9 : Le composant Pages (Frontend Jamstack) -->
+        <div class="slide">
+            <h1>8. Le composant « Pages » (Frontend Jamstack &amp; Edge)</h1>
+            <div class="highlight">
+                L'approche <strong>Jamstack</strong> consiste à compiler votre interface en fichiers statiques (HTML, CSS, JS) et à les propulser sur un réseau mondial de serveurs de cache (<span class="tooltip-trigger" data-tooltip="Réseau mondial de serveurs relais qui met vos fichiers en cache au plus près des visiteurs pour un affichage instantané.">CDN</span>).
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Pourquoi Cloudflare Pages domine ?</h3>
+                    <ul>
+                        <li><strong>Intégration Git directe :</strong> Chaque <code>git push</code> déclenche la compilation automatique (Vite, React, Astro, Next export).</li>
+                        <li><strong>Réseau Anycast mondial :</strong> Plus de 300 points de présence dans le monde pour un chargement instantané en quelques millisecondes.</li>
+                        <li><strong>Environnements de prévisualisation :</strong> Une URL temporaire unique est générée sur chaque branche ou Pull Request.</li>
+                        <li><strong>Gratuité totale :</strong> Bande passante et requêtes illimitées sur le forfait gratuit.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Équivalents &amp; Panorama européen</h3>
+                    <ul>
+                        <li><strong>Équivalents US directs :</strong> AWS Amplify Hosting et Google Firebase Hosting offrent un service similaire.</li>
+                        <li><strong>Pourquoi pas d'équivalent européen direct ?</strong> Aucun acteur européen ne dispose à la fois d'un réseau Anycast mondialisé à 300+ PoP et d'un orchestrateur Jamstack clé-en-main.</li>
+                        <li><strong>Alternatives souveraines européennes :</strong>
+                            <ul>
+                                <li><strong>Clever Cloud Static :</strong> Déploiement <code>git push</code> en France, mais sans cache mondial en périphérie.</li>
+                                <li><strong>GitLab / GitHub Pages :</strong> Idéal pour la documentation et les petits sites.</li>
+                                <li><strong>Pipeline CI/CD vers S3 :</strong> Compilation dans GitLab CI puis synchronisation automatique vers un bucket S3 OVHcloud ou Scaleway.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10 : Le composant VPS / Compute -->
+        <div class="slide">
+            <h1>9. Le composant « VPS / Compute » (API &amp; Backend)</h1>
+            <div class="stats">
+                Alors que l'interface statique tourne sur le CDN Pages, votre logique dynamique (API FastAPI, Node.js, authentification, bases de données) nécessite un serveur d'exécution : le <strong>VPS</strong>.
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Comparatif des offres VPS économiques</h3>
+                    <ul>
+                        <li><strong>Hetzner Cloud (CX22 / CX32) :</strong> À partir de <strong>~3,80 € à 4,50 € / mois</strong>. Processeurs très rapides, IPv4/IPv6, 20 To de trafic inclus, interface moderne et API puissante.</li>
+                        <li><strong>OVHcloud (VPS Starter / Value) :</strong> À partir de <strong>~4,20 € / mois</strong>. Datacenters en France (Gravelines, Roubaix, Strasbourg), bande passante illimitée, protection anti-DDoS incluse.</li>
+                        <li><strong>Scaleway (Instances Stardust / Learning) :</strong> Instances modulaires à Paris ou Amsterdam, idéales pour brancher facilement sur l'écosystème Serverless et Object Storage.</li>
+                        <li><strong>Infomaniak Public Cloud :</strong> Instances basées sur OpenStack avec souveraineté totale et énergie 100% renouvelable en Suisse.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Règles d'or en Vibe-Coding</h3>
+                    <ul>
+                        <li><strong>Conteneurs Docker Compose :</strong> Encapsulez votre API, votre base de données et vos tâches de fond dans un fichier <code>docker-compose.yml</code> pour déployer en une seule commande.</li>
+                        <li><strong>Accès SSH par clés :</strong> Désactivez systématiquement l'authentification par mot de passe sur le port 22 du serveur.</li>
+                        <li><strong>Pare-feu UFW activé :</strong> N'ouvrez que les ports strictement indispensables (SSH 22, HTTP 80, HTTPS 443).</li>
+                        <li><strong>Sauvegardes automatisées :</strong> Programmez un script ou une tâche cron qui exporte votre base de données vers votre bucket S3 chaque nuit.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11 : Recommandations d'architectures types -->
+        <div class="slide">
+            <h1>10. Recommandations d'architectures types</h1>
+            <p>Deux combinaisons d'infrastructure adaptées aux besoins concrets du développement moderne :</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Architecture 1 : Vibe-Coding &amp; Prototypage rapide</h3>
+                    <p><em>Objectif : Démarrage immédiat, zéro friction, budget minimal (~4 € / mois).</em></p>
+                    <ul>
+                        <li><strong>Frontend :</strong> <strong>Cloudflare Pages</strong> (gratuit, ultra-rapide, previews Git sur chaque branche).</li>
+                        <li><strong>Backend API :</strong> Petit VPS chez <strong>Hetzner</strong> (CX22 à ~4 €/mois) ou <strong>OVHcloud</strong> (Starter à ~4 €/mois) avec Docker Compose.</li>
+                        <li><strong>Fichiers &amp; Médias :</strong> <strong>Scaleway S3</strong> (75 Go gratuits/mois) ou <strong>Cloudflare R2</strong> (10 Go gratuits, 0 € de frais d'egress).</li>
+                        <li><strong>Base de données :</strong> SQLite local dans un volume monté ou conteneur PostgreSQL léger.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Architecture 2 : Production Souveraine &amp; Écologique</h3>
+                    <p><em>Objectif : Conformité RGPD stricte, données hors Cloud Act, empreinte carbone minimale.</em></p>
+                    <ul>
+                        <li><strong>Frontend :</strong> GitLab Pages ou frontend servi via Nginx / Caddy sur VPS européen.</li>
+                        <li><strong>Backend API :</strong> VPS / Instance Public Cloud chez <strong>OVHcloud</strong> ou <strong>Infomaniak</strong>.</li>
+                        <li><strong>Stockage Médias :</strong> <strong>OVHcloud Object Storage</strong> (Région Gravelines ou Roubaix, ~7 €/To/mois, egress gratuit).</li>
+                        <li><strong>Sauvegardes &amp; Archives DB :</strong> <strong>Infomaniak Swiss Backup</strong> (chiffré en Suisse, ~6 €/To/mois avec licence S3).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <strong>À retenir :</strong> Vous pouvez démarrer votre projet en Architecture 1 pour valider votre MVP en formation, puis migrer facilement vers l'Architecture 2 pour la mise en production officielle.
+            </div>
+        </div>
+
+        <!-- Slide 12 : Checklist de décision -->
+        <div class="slide">
+            <h1>11. Checklist de décision d'infrastructure</h1>
+            <div class="exercise">
+                <ul>
+                    <li><strong>Mon front est-il statique ou dynamique ?</strong> Si statique ou Jamstack (React/Vite/Astro), privilégiez un hébergement Pages sur CDN mondial.</li>
+                    <li><strong>Mon application manipule-t-elle des fichiers lourds ?</strong> Déchargez immédiatement le VPS vers un bucket S3 pour éviter de saturer le disque dur de la machine.</li>
+                    <li><strong>Ai-je vérifié les frais de trafic sortant (Egress) ?</strong> Bannissez les hyperscalers US (AWS/GCP) si vos utilisateurs téléchargent des audios, vidéos ou documents en volume.</li>
+                    <li><strong>Où doivent résider les données ?</strong> Si les données sont soumises au secret professionnel, aux données de santé ou au RGPD strict, choisissez des hébergeurs européens (OVHcloud, Scaleway, Infomaniak, Hetzner).</li>
+                    <li><strong>Les secrets sont-ils protégés ?</strong> Clés d'accès S3, jetons API et mots de passe stockés uniquement dans les variables d'environnement, jamais dans Git.</li>
+                    <li><strong>Le plan de secours existe-t-il ?</strong> Sauvegarde automatisée de la base de données vers un stockage externe sécurisé et test de restauration validé.</li>
+                </ul>
+            </div>
+            <div class="highlight">
+                Consultez le <a href="annexes.html" style="color: white; font-weight: bold; text-decoration: underline;">sommaire des annexes</a> et le <a href="lexique.html" style="color: white; font-weight: bold; text-decoration: underline;">lexique FALC</a> pour approfondir les notions techniques.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Contrôles de navigation -->
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Plein écran</button>
+    <a href="lexique.html" class="lexique-btn" title="Consulter le lexique FALC">Lexique</a>
+    <a href="index.html" class="home-btn">Sommaire</a>
+    <button class="pdf-btn" onclick="downloadPDF()">PDF</button>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">0</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prev-btn" onclick="changeSlide(-1)">Précédent</button>
+        <button class="nav-button" id="next-btn" onclick="changeSlide(1)">Suivant</button>
+        <span style="margin: 0 15px;">Flèches du clavier</span>
+    </div>
+
+    
+
+</body>
+</html>

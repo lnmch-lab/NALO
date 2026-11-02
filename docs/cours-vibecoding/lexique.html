@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lexique FALC</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1e293b;
+      background: #f8fafc;
+      line-height: 1.6;
+      font-size: 17px;
+    }
+    header {
+      background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+      color: #fff;
+      padding: 40px 20px;
+    }
+    .header-content {
+      width: min(1120px, 94vw);
+      margin: 0 auto;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 2.2rem;
+      color: #f8fafc;
+    }
+    .subtitle {
+      font-size: 1.15rem;
+      color: #ccfbf1;
+      margin: 0 0 20px;
+      max-width: 800px;
+    }
+    .topbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      color: #0f766e;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn:hover {
+      background: #f0fdfa;
+      transform: translateY(-1px);
+    }
+    main {
+      width: min(1120px, 94vw);
+      margin: 0 auto;
+      padding: 32px 0 64px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+    }
+    .card-falc {
+      background: #f0fdf4;
+      border-left: 6px solid #16a34a;
+    }
+    .card-warning {
+      background: #fffbeb;
+      border-left: 6px solid #f59e0b;
+    }
+    h2 {
+      color: #0f766e;
+      font-size: 1.6rem;
+      margin: 0 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #99f6e4;
+    }
+    h3 {
+      color: #1e3a5f;
+      margin: 20px 0 10px;
+      font-size: 1.25rem;
+    }
+    .toc ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+      padding-left: 20px;
+      margin: 0;
+    }
+    .toc a {
+      color: #0f766e;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .toc a:hover {
+      text-decoration: underline;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 16px 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.98rem;
+    }
+    thead {
+      background: #0f766e;
+      color: #ffffff;
+    }
+    th, td {
+      padding: 14px 16px;
+      vertical-align: top;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    th {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    tr:hover {
+      background: #f1f5f9;
+    }
+    .term-name {
+      font-weight: 700;
+      color: #0f766e;
+      white-space: nowrap;
+    }
+    .visual-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+    .word-count-badge {
+      font-size: 0.8rem;
+      color: #64748b;
+      display: block;
+      margin-top: 4px;
+    }
+    .avoid-grid, .keep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .avoid-item {
+      background: #fff;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #ef4444;
+      padding: 14px 18px;
+      border-radius: 8px;
+    }
+    .avoid-bad {
+      font-weight: 700;
+      color: #b91c1c;
+      font-size: 1.05rem;
+    }
+    .avoid-arrow {
+      color: #64748b;
+      margin: 0 6px;
+    }
+    .avoid-good {
+      font-weight: 700;
+      color: #15803d;
+      font-size: 1.05rem;
+    }
+    .keep-item {
+      background: #fff;
+      border: 1px solid #bae6fd;
+      border-left: 4px solid #0284c7;
+      padding: 14px 18px;
+      border-radius: 8px;
+    }
+    .keep-name {
+      font-weight: 700;
+      color: #0369a1;
+      font-size: 1.05rem;
+    }
+    .keep-desc {
+      margin-top: 4px;
+      color: #334155;
+      font-size: 0.95rem;
+    }
+    @media print {
+      header { background: #0f766e; color: #fff; }
+      .topbar { display: none; }
+      .card { box-shadow: none; border: 1px solid #94a3b8; }
+    }
+  </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="local-nav-title">Lexique FALC</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/lexique.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+
+  <header>
+    <div class="header-content">
+      <h1>Lexique FALC — Vibe-Coding : IA et développement web</h1>
+      <p class="subtitle">
+        Guide de vocabulaire rédigé en français facile à lire et à comprendre pour les adultes qui découvrent la programmation et l'intelligence artificielle.
+      </p>
+      <div class="topbar">
+        <a class="btn" href="index.html">← Sommaire de la formation</a>
+        <a class="btn" href="session1.html">Séance 1</a>
+        <a class="btn" href="annexes.html">Annexes outils</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="card card-falc">
+      <h2 style="border: none; margin-bottom: 8px; color: #166534;">Principes de rédaction de ce lexique</h2>
+      <p>
+        Ce lexique est spécialement conçu pour les débutants. Chaque explication respecte des règles d'accessibilité strictes :
+      </p>
+      <ul>
+        <li><strong>Longueur maîtrisée :</strong> chaque définition compte entre 10 et 25 mots.</li>
+        <li><strong>Langage direct :</strong> nous employons le présent et des verbes d'action concrets (« Vous pouvez… », « Cet outil sert à… »).</li>
+        <li><strong>Une seule idée par phrase :</strong> aucun jargon n'est utilisé pour expliquer un autre terme technique.</li>
+        <li><strong>Distinction vie courante :</strong> lorsqu'un mot a un autre sens dans la vie de tous les jours (comme <em>branche</em>, <em>jeton</em> ou <em>terminal</em>), son rôle informatique est clarifié.</li>
+      </ul>
+    </section>
+
+    <nav class="card toc" aria-label="Sommaire des thèmes">
+      <h2>Sommaire des thèmes</h2>
+      <ul>
+        <li><a href="#ia">1. Intelligence Artificielle (IA)</a></li>
+        <li><a href="#projet">2. Cadrage et gestion de projet</a></li>
+        <li><a href="#web-code">3. Web et code</a></li>
+        <li><a href="#donnees-securite">4. Données et sécurité</a></li>
+        <li><a href="#tests-erreurs">5. Tests et erreurs</a></li>
+        <li><a href="#git-deploiement">6. Git et publication sur Internet</a></li>
+        <li><a href="#outils">7. Outils et logiciels de travail</a></li>
+        <li><a href="#mots-a-eviter">A. Mots à éviter dans les supports</a></li>
+        <li><a href="#mots-a-garder">B. Mots indispensables à conserver</a></li>
+      </ul>
+    </nav>
+
+    <!-- 1. IA -->
+    <section id="ia" class="card">
+      <h2>1. Intelligence Artificielle (IA)</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%;">Terme</th>
+              <th style="width: 40%;">Explication en français facile (10 à 25 mots)</th>
+              <th style="width: 26%;">Exemple simple</th>
+              <th style="width: 12%;">Support visuel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="term-name">Vibe-coding</td>
+              <td>Vous guidez une intelligence artificielle avec vos phrases ordinaires pour fabriquer une application sans taper tout le code vous-même.</td>
+              <td>Vous demandez à l'assistant d'ajouter un bouton bleu qui ouvre un formulaire de contact sur votre site.</td>
+              <td><span class="visual-tag">Capture d'écran</span> Dialogue avec l'outil</td>
+            </tr>
+            <tr>
+              <td class="term-name">Prompt<br><small style="color:#64748b;">(Consigne pour l'IA)</small></td>
+              <td>Cet outil reçoit votre consigne écrite rédigée en français pour savoir exactement quelle partie de l'application il doit fabriquer.</td>
+              <td>Vous écrivez : « Crée une page d'accueil avec une photo et trois boutons pour mon association ».</td>
+              <td><span class="visual-tag">Texte encadré</span> Modèle à copier</td>
+            </tr>
+            <tr>
+              <td class="term-name">Assistant IA</td>
+              <td>Ce programme informatique dialoguant comprend vos demandes en français et vous propose immédiatement du texte, des images ou du code.</td>
+              <td>Vous posez une question à Claude ou ChatGPT pour corriger une erreur sur votre page web.</td>
+              <td><span class="visual-tag">Capture</span> Fenêtre de discussion</td>
+            </tr>
+            <tr>
+              <td class="term-name">Modèle de langage<br><small style="color:#64748b;">(LLM)</small></td>
+              <td>Ce moteur de calcul lit des millions de textes pour deviner la suite de mots la plus logique à votre question.</td>
+              <td>Le moteur comprend votre demande et propose la suite d'une recette ou le code d'un site.</td>
+              <td><span class="visual-tag">Schéma</span> Question → réponse mot par mot</td>
+            </tr>
+            <tr>
+              <td class="term-name">Contexte<br><small style="color:#64748b;">(Mémoire de l'IA)</small></td>
+              <td>Cet espace de mémoire temporaire contient les règles de votre projet et l'historique de vos échanges récents avec l'assistant.</td>
+              <td>Vous fournissez la liste de vos pages à l'outil pour qu'il ne crée pas de doublons.</td>
+              <td><span class="visual-tag">Illustration</span> Boîte mémoire de travail</td>
+            </tr>
+            <tr>
+              <td class="term-name">Hallucination</td>
+              <td>L'outil produit une fausse information avec une totale assurance quand il ignore la véritable réponse à votre demande.</td>
+              <td>L'assistant vous conseille une commande d'ordinateur qui n'existe pas et bloque votre travail.</td>
+              <td><span class="visual-tag">Icône alerte</span> Panneau danger</td>
+            </tr>
+            <tr>
+              <td class="term-name">Rôle<br><small style="color:#64748b;">(pour l'IA)</small></td>
+              <td>Vous demandez à l'outil d'adopter le métier d'un spécialiste pour obtenir des conseils plus précis et mieux adaptés.</td>
+              <td>Vous commencez votre phrase par : « Agis comme un professeur patient pour m'expliquer cette erreur ».</td>
+              <td><span class="visual-tag">Illustration</span> Badges de métiers</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2. PROJET -->
+    <section id="projet" class="card">
+      <h2>2. Cadrage et gestion de projet</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%;">Terme</th>
+              <th style="width: 40%;">Explication en français facile (10 à 25 mots)</th>
+              <th style="width: 26%;">Exemple simple</th>
+              <th style="width: 12%;">Support visuel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="term-name">Cadrage</td>
+              <td>Vous clarifiez l'objectif de votre application, les personnes visées et les besoins prioritaires avant d'écrire la moindre ligne.</td>
+              <td>Vous rédigez une page pour décrire le but exact de votre futur site d'entraide entre voisins.</td>
+              <td><span class="visual-tag">Fiche</span> Modèle de cadrage</td>
+            </tr>
+            <tr>
+              <td class="term-name">MVP<br><small style="color:#64748b;">(Produit minimum utile)</small></td>
+              <td>Cette toute première version fonctionnelle de votre application propose uniquement les fonctions vitales pour vérifier rapidement l'intérêt du public.</td>
+              <td>Votre boutique en ligne permet seulement d'afficher un produit et de payer, sans options compliquées.</td>
+              <td><span class="visual-tag">Dessin</span> Skateboard vs voiture</td>
+            </tr>
+            <tr>
+              <td class="term-name">Persona</td>
+              <td>Vous inventez un profil d'utilisateur imaginaire très détaillé pour concevoir votre application en pensant à ses besoins réels.</td>
+              <td>Vous imaginez « Paul, 65 ans, jardinier bénévole », qui utilise son téléphone pour lire les nouvelles du club.</td>
+              <td><span class="visual-tag">Portrait</span> Fiche d'identité illustrée</td>
+            </tr>
+            <tr>
+              <td class="term-name">Backlog<br><small style="color:#64748b;">(Liste des tâches)</small></td>
+              <td>Ce registre ordonné rassemble toutes les actions à réaliser pour fabriquer votre application au fil des jours.</td>
+              <td>Vous notez vingt tâches à faire, puis vous cochez celles terminées pendant la semaine.</td>
+              <td><span class="visual-tag">Tableau</span> À faire / En cours / Fait</td>
+            </tr>
+            <tr>
+              <td class="term-name">User story<br><small style="color:#64748b;">(Histoire utilisateur)</small></td>
+              <td>Vous formulez une phrase courte pour exprimer ce qu'un utilisateur veut accomplir sur votre site et pourquoi.</td>
+              <td>Vous écrivez : « En tant que visiteur, je veux voir les horaires pour ne pas me déplacer pour rien ».</td>
+              <td><span class="visual-tag">Fiche</span> Modèle de phrase colorée</td>
+            </tr>
+            <tr>
+              <td class="term-name">Priorisation MoSCoW</td>
+              <td>Cette méthode classe vos idées en trois groupes : ce qui est obligatoire, ce qui est important et ce qui peut attendre.</td>
+              <td>Le panier d'achat est obligatoire immédiatement, mais le choix de couleur sombre attendra le mois prochain.</td>
+              <td><span class="visual-tag">Colonnes</span> 3 couleurs d'urgence</td>
+            </tr>
+            <tr>
+              <td class="term-name">Critères d'acceptation</td>
+              <td>Cette liste de conditions obligatoires permet de certifier qu'une tâche est entièrement terminée et fonctionne sans erreur.</td>
+              <td>L'inscription est validée si le mot de passe compte huit lettres et si un message vert apparaît.</td>
+              <td><span class="visual-tag">Checklist</span> Cases à cocher vertes</td>
+            </tr>
+            <tr>
+              <td class="term-name">Livrable</td>
+              <td>Vous transmettez ce travail concret à votre formateur pour prouver la progression réelle de votre projet d'application.</td>
+              <td>Vous remettez le plan de votre site sous la forme d'un fichier texte lisible par tous.</td>
+              <td><span class="visual-tag">Icône</span> Dossier avec tampon vert</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3. WEB ET CODE -->
+    <section id="web-code" class="card">
+      <h2>3. Web et code</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%;">Terme</th>
+              <th style="width: 40%;">Explication en français facile (10 à 25 mots)</th>
+              <th style="width: 26%;">Exemple simple</th>
+              <th style="width: 12%;">Support visuel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="term-name">Front-end<br><small style="color:#64748b;">(Partie visible)</small></td>
+              <td>Cet espace regroupe tout ce qui apparaît sur l'écran : textes, images, couleurs, menus et boutons d'action.</td>
+              <td>La barre de recherche et les photos de votre site composent la partie visible par tous.</td>
+              <td><span class="visual-tag">Schéma</span> Vitrine d'un magasin</td>
+            </tr>
+            <tr>
+              <td class="term-name">Back-end<br><small style="color:#64748b;">(Arrière-boutique)</small></td>
+              <td>Ce moteur invisible installé sur un ordinateur distant traite vos données, vérifie vos droits et organise les calculs secrets.</td>
+              <td>Le système vérifie votre mot de passe dans sa réserve sécurisée avant de vous laisser entrer.</td>
+              <td><span class="visual-tag">Schéma</span> Coulisses d'un théâtre</td>
+            </tr>
+            <tr>
+              <td class="term-name">Full-stack<br><small style="color:#64748b;">(Complet)</small></td>
+              <td>Ce terme désigne une application ou une personne qui maîtrise à la fois l'écran visible et les mécanismes secrets cachés.</td>
+              <td>Votre application gère à la fois le formulaire affiché à l'écran et l'enregistrement secret en cuisine.</td>
+              <td><span class="visual-tag">Schéma</span> Iceberg (haut et bas)</td>
+            </tr>
+            <tr>
+              <td class="term-name">Composant</td>
+              <td>Vous assemblez un bloc réutilisable d'interface que vous pouvez afficher sur plusieurs pages sans le reconstruire à chaque fois.</td>
+              <td>Vous fabriquez un bouton d'achat identique sur toutes les fiches d'articles sans le redessiner.</td>
+              <td><span class="visual-tag">Dessin</span> Briques de construction</td>
+            </tr>
+            <tr>
+              <td class="term-name">Responsive<br><small style="color:#64748b;">(Adapté à l'écran)</small></td>
+              <td>Votre page réorganise automatiquement ses textes et ses images pour rester agréable sur un téléphone comme sur un grand moniteur.</td>
+              <td>Les trois colonnes de l'ordinateur se placent sagement l'une sous l'autre sur votre téléphone portable.</td>
+              <td><span class="visual-tag">Pictogrammes</span> Téléphone / Tablette / Écran</td>
+            </tr>
+            <tr>
+              <td class="term-name">Wireframe<br><small style="color:#64748b;">(Maquette fil de fer)</small></td>
+              <td>Ce schéma rapide sans couleurs montre la place réservée au menu, aux textes et aux photos sur l'écran.</td>
+              <td>Vous tracez des rectangles au feutre pour placer le logo, le menu et le texte d'accueil.</td>
+              <td><span class="visual-tag">Croquis</span> Schéma en traits noirs</td>
+            </tr>
+            <tr>
+              <td class="term-name">API<br><small style="color:#64748b;">(Passerelle logicielle)</small></td>
+              <td>Ce canal de communication permet à votre application de demander et recevoir des informations auprès d'un autre programme.</td>
+              <td>Votre site demande la météo du jour à un service externe pour l'afficher sur votre page.</td>
+              <td><span class="visual-tag">Illustration</span> Serveur avec plateau repas</td>
+            </tr>
+            <tr>
+              <td class="term-name">Endpoint<br><small style="color:#64748b;">(Point d'accès)</small></td>
+              <td>Cette adresse web précise indique au serveur quelle action lancer ou quel type de renseignement vous voulez récupérer.</td>
+              <td>L'adresse <code>/api/produits</code> renvoie la liste complète des articles disponibles dans votre magasin.</td>
+              <td><span class="visual-tag">Schéma</span> Portes avec étiquettes</td>
+            </tr>
+            <tr>
+              <td class="term-name">Code d'état HTTP<br><small style="color:#64748b;">(Code de résultat)</small></td>
+              <td>Ce nombre à trois chiffres indique immédiatement si le serveur a réussi votre demande ou s'il rencontre une panne.</td>
+              <td>Le chiffre 200 annonce que tout va bien, alors que 404 signale que la page est introuvable.</td>
+              <td><span class="visual-tag">Feux tricolores</span> Vert 200 / Rouge 500</td>
+            </tr>
+            <tr>
+              <td class="term-name">JSON<br><small style="color:#64748b;">(Format d'échange)</small></td>
+              <td>Ce texte organisé avec des étiquettes et des valeurs permet à deux ordinateurs d'échanger des fiches sans se tromper.</td>
+              <td>Vous écrivez <code>{"prenom": "Sara", "age": 30}</code> pour transmettre la fiche d'une participante.</td>
+              <td><span class="visual-tag">Fiche</span> Tableau avec nom et valeur</td>
+            </tr>
+            <tr>
+              <td class="term-name">Accessibilité<br><small style="color:#64748b;">(Pour tous)</small></td>
+              <td>Vous créez votre application pour qu'une personne en situation de handicap puisse naviguer, écouter et cliquer sans difficulté.</td>
+              <td>Vous écrivez des textes lisibles pour les personnes malvoyantes qui utilisent une voix de synthèse.</td>
+              <td><span class="visual-tag">Symbole</span> Silhouette blanche cercle bleu</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. DONNÉES ET SÉCURITÉ -->
+    <section id="donnees-securite" class="card">
+      <h2>4. Données et sécurité</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%;">Terme</th>
+              <th style="width: 40%;">Explication en français facile (10 à 25 mots)</th>
+              <th style="width: 26%;">Exemple simple</th>
+              <th style="width: 12%;">Support visuel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="term-name">Base de données</td>
+              <td>Cette armoire électronique classe, conserve et retrouve toutes les informations de votre application dès que vous en avez besoin.</td>
+              <td>Le carnet enregistre la liste de vos membres avec leurs adresses e-mail et leurs cotisations.</td>
+              <td><span class="visual-tag">Icône</span> Cylindre à tiroirs</td>
+            </tr>
+            <tr>
+              <td class="term-name">Modèle de données<br><small style="color:#64748b;">(Schéma de base)</small></td>
+              <td>Ce plan de construction liste les différentes catégories d'informations retenues et décrit les liaisons obligatoires entre ces éléments.</td>
+              <td>Vous reliez la fiche d'un client à la liste de ses trois commandes passées.</td>
+              <td><span class="visual-tag">Schéma</span> Rectangles reliés par flèches</td>
+            </tr>
+            <tr>
+              <td class="term-name">SQL<br><small style="color:#64748b;">(Langage de requêtes)</small></td>
+              <td>Vous rédigez ces phrases précises pour demander à votre armoire de ranger, trouver, mettre à jour ou détruire des informations.</td>
+              <td>Vous écrivez une phrase d'ordre pour réclamer uniquement les clients habitant dans votre commune.</td>
+              <td><span class="visual-tag">Dessin</span> Loupe sur tableau de lignes</td>
+            </tr>
+            <tr>
+              <td class="term-name">ORM</td>
+              <td>Cet outil écrit les demandes complexes de stockage à votre place à partir de simples commandes habituelles de code.</td>
+              <td>Vous tapez <code>utilisateur.sauvegarder()</code> et l'outil écrit la commande technique à votre place.</td>
+              <td><span class="visual-tag">Illustration</span> Pont de traduction</td>
+            </tr>
+            <tr>
+              <td class="term-name">Authentification</td>
+              <td>Le système contrôle votre identité avec certitude en comparant votre identifiant personnel et votre mot de passe secret.</td>
+              <td>Vous entrez votre adresse e-mail et votre code pour accéder à votre espace personnel.</td>
+              <td><span class="visual-tag">Icône</span> Cadenas avec une clé</td>
+            </tr>
+            <tr>
+              <td class="term-name">Rôle et permissions</td>
+              <td>Ces règles précisent ce que chaque personne enregistrée a le droit de lire, ajouter, modifier ou supprimer dans l'application.</td>
+              <td>Un membre peut lire les annonces, mais seul le responsable du club peut supprimer un compte.</td>
+              <td><span class="visual-tag">Badge</span> Niveaux d'accès colorés</td>
+            </tr>
+            <tr>
+              <td class="term-name">Jeton<br><small style="color:#64748b;">(Token de session)</small></td>
+              <td>Ce badge chiffré temporaire prouve que vous êtes bien identifié pour naviguer sur le site sans retaper votre mot de passe.</td>
+              <td>Le navigateur garde ce pass secret pendant votre visite pour vous reconnaître d'une page à l'autre.</td>
+              <td><span class="visual-tag">Illustration</span> Bracelet d'entrée de festival</td>
+            </tr>
+            <tr>
+              <td class="term-name">Variable d'environnement<br><small style="color:#64748b;">(Fichier .env)</small></td>
+              <td>Vous rangez vos réglages confidentiels dans ce fichier isolé sans jamais publier ces clés secrètes avec le reste du code.</td>
+              <td>Vous y stockez le mot de passe de votre base pour qu'aucun visiteur ne puisse le lire.</td>
+              <td><span class="visual-tag">Icône</span> Coffre-fort étiqueté secret</td>
+            </tr>
+            <tr>
+              <td class="term-name">Clé API</td>
+              <td>Ce mot de passe exclusif autorise votre application à utiliser les services payants ou protégés d'un autre site partenaire.</td>
+              <td>Votre site utilise cette clé secrète pour envoyer des e-mails avec un service postal en ligne.</td>
+              <td><span class="visual-tag">Icône</span> Clé d'accès dorée</td>
+            </tr>
+            <tr>
+              <td class="term-name">Hachage</td>
+              <td>Cette méthode mathématique transforme un mot de passe en charabia définitif pour qu'aucun voleur ne puisse le deviner.</td>
+              <td>Le mot secret devient une longue suite de lettres mélangées qu'aucun pirate ne peut recalculer.</td>
+              <td><span class="visual-tag">Schéma</span> Hachoir à viande (sens unique)</td>
+            </tr>
+            <tr>
+              <td class="term-name">Double authentification<br><small style="color:#64748b;">(2FA)</small></td>
+              <td>Vous fournissez deux preuves d'identité successives, comme votre mot de passe habituel puis un code envoyé sur votre smartphone.</td>
+              <td>Vous tapez votre mot de passe, puis vous recopiez un code à six chiffres reçu par SMS.</td>
+              <td><span class="visual-tag">Illustration</span> Porte avec deux serrures</td>
+            </tr>
+            <tr>
+              <td class="term-name">HTTPS</td>
+              <td>Ce cadenas numérique chiffre toutes les informations échangées entre votre écran et le serveur pour empêcher toute interception indiscrète.</td>
+              <td>Le petit cadenas vert dans votre navigateur confirme que votre carte bancaire voyage à l'abri.</td>
+              <td><span class="visual-tag">Icône</span> Cadenas dans l'adresse web</td>
+            </tr>
+            <tr>
+              <td class="term-name">Injection de code<br><small style="color:#64748b;">(Attaque pirate)</small></td>
+              <td>Une personne malintentionnée tente de glisser des ordres pirates dans un formulaire pour tromper et piller votre système informatique.</td>
+              <td>Un internaute saisit des caractères bizarres dans le champ recherche pour afficher des données confidentielles.</td>
+              <td><span class="visual-tag">Illustration</span> Passoire bloquant les pierres</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. TESTS ET ERREURS -->
+    <section id="tests-erreurs" class="card">
+      <h2>5. Tests et erreurs</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%;">Terme</th>
+              <th style="width: 40%;">Explication en français facile (10 à 25 mots)</th>
+              <th style="width: 26%;">Exemple simple</th>
+              <th style="width: 12%;">Support visuel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="term-name">Bogue<br><small style="color:#64748b;">(Bug / Panne)</small></td>
+              <td>Cette erreur dans l'écriture du code entraîne un mauvais affichage, un calcul faux ou le blocage complet de votre page.</td>
+              <td>Le clic sur le bouton d'inscription ne déclenche rien du tout sur la page.</td>
+              <td><span class="visual-tag">Icône</span> Petit insecte ou voyant rouge</td>
+            </tr>
+            <tr>
+              <td class="term-name">Débogage<br><small style="color:#64748b;">(Recherche de panne)</small></td>
+              <td>Vous examinez méthodiquement votre programme pour repérer la cause exacte d'un dysfonctionnement et réparer la ligne fautive.</td>
+              <td>Vous relisez les indications de l'ordinateur pour comprendre pourquoi une image refuse d'apparaître.</td>
+              <td><span class="visual-tag">Illustration</span> Détective avec loupe</td>
+            </tr>
+            <tr>
+              <td class="term-name">Test unitaire</td>
+              <td>Vous lancez un contrôle automatique sur une fonction minuscule de votre code pour vérifier qu'elle renvoie le résultat parfait.</td>
+              <td>Le programme teste que l'addition du panier donne bien dix euros pour deux articles à cinq euros.</td>
+              <td><span class="visual-tag">Dessin</span> Éprouvette de laboratoire</td>
+            </tr>
+            <tr>
+              <td class="term-name">Test d'intégration</td>
+              <td>Vous vérifiez que deux morceaux distincts de votre application communiquent ensemble sans bloquer ni perdre la moindre information.</td>
+              <td>Vous vérifiez que le clic sur le panier enregistre bien la commande dans la base.</td>
+              <td><span class="visual-tag">Schéma</span> Deux engrenages emboîtés</td>
+            </tr>
+            <tr>
+              <td class="term-name">Journal<br><small style="color:#64748b;">(Logs)</small></td>
+              <td>Ce registre automatique note toutes les actions, les visites et les pannes survenues sur la machine avec l'heure exacte.</td>
+              <td>Le journal note l'heure exacte où le serveur s'est éteint et pourquoi il a planté.</td>
+              <td><span class="visual-tag">Document</span> Carnet avec dates et heures</td>
+            </tr>
+            <tr>
+              <td class="term-name">Recette<br><small style="color:#64748b;">(Contrôle final)</small></td>
+              <td>Vous testez l'ensemble des boutons et des écrans selon une liste précise avant d'ouvrir officiellement votre site au public.</td>
+              <td>Vous cliquez sur chaque bouton du site pour confirmer que rien n'est resté en panne.</td>
+              <td><span class="visual-tag">Checklist</span> Planche à pince cochée</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. GIT ET DÉPLOIEMENT -->
+    <section id="git-deploiement" class="card">
+      <h2>6. Git et publication sur Internet</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%;">Terme</th>
+              <th style="width: 40%;">Explication en français facile (10 à 25 mots)</th>
+              <th style="width: 26%;">Exemple simple</th>
+              <th style="width: 12%;">Support visuel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="term-name">Git</td>
+              <td>Cet outil enregistre chaque étape de votre code pour vous permettre de remonter dans le temps en cas d'accident.</td>
+              <td>Vous pouvez annuler une bêtise commise hier et retrouver votre site intact en un clic.</td>
+              <td><span class="visual-tag">Schéma</span> Frise avec arrêts de train</td>
+            </tr>
+            <tr>
+              <td class="term-name">Dépôt<br><small style="color:#64748b;">(Repository / Repo)</small></td>
+              <td>Ce dossier spécial rassemble tous les fichiers de votre application et garde en mémoire l'historique complet de leurs changements.</td>
+              <td>Votre projet d'application vit dans un dossier surveillé et sauvegardé sur GitHub ou GitLab.</td>
+              <td><span class="visual-tag">Icône</span> Classeur d'archives sécurisé</td>
+            </tr>
+            <tr>
+              <td class="term-name">Commit<br><small style="color:#64748b;">(Étape validée)</small></td>
+              <td>Vous enregistrez une étape propre de votre travail en ajoutant une note explicative courte pour marquer votre avancée.</td>
+              <td>Vous validez votre travail avec la note : « Ajout de la page des tarifs ».</td>
+              <td><span class="visual-tag">Icône</span> Tampon dateur sur feuille</td>
+            </tr>
+            <tr>
+              <td class="term-name">Branche<br><small style="color:#64748b;">(Piste de travail)</small></td>
+              <td>Vous créez une voie séparée pour essayer une idée nouvelle sans risquer de casser la version officielle de votre site.</td>
+              <td>Vous essayez un nouveau menu sans casser le site principal déjà visible par vos collègues.</td>
+              <td><span class="visual-tag">Schéma</span> Aiguillage de voie ferrée</td>
+            </tr>
+            <tr>
+              <td class="term-name">Push / Pull<br><small style="color:#64748b;">(Envoyer / Rapatrier)</small></td>
+              <td>Vous transférez votre travail vers le serveur distant ou vous rapatriez sur votre machine les nouveautés créées par votre équipe.</td>
+              <td>Vous téléversez votre travail du soir sur Internet pour ne rien perdre si votre ordinateur s'éteint.</td>
+              <td><span class="visual-tag">Flèches</span> Vers le haut et le bas</td>
+            </tr>
+            <tr>
+              <td class="term-name">Fichier .gitignore</td>
+              <td>Cette liste indique à Git les fichiers confidentiels ou temporaires qu'il ne doit jamais publier ni sauvegarder sur Internet.</td>
+              <td>Vous y notez le fichier de vos mots de passe pour éviter de l'exposer au monde entier.</td>
+              <td><span class="visual-tag">Symbole</span> Panneau d'interdiction d'accès</td>
+            </tr>
+            <tr>
+              <td class="term-name">Déploiement<br><small style="color:#64748b;">(Mise en ligne)</small></td>
+              <td>Vous installez votre application sur un serveur connecté pour que n'importe qui puisse l'utiliser depuis son propre navigateur web.</td>
+              <td>Vous lancez la mise en ligne pour que vos amis puissent enfin visiter votre boutique web.</td>
+              <td><span class="visual-tag">Illustration</span> Fusée qui décolle</td>
+            </tr>
+            <tr>
+              <td class="term-name">Nom de domaine et DNS</td>
+              <td>Cet annuaire universel convertit un nom de site facile à retenir en adresse chiffrée comprise par les machines du réseau.</td>
+              <td>Il transforme l'adresse facile <code>monsite.fr</code> en un numéro technique pour diriger le visiteur au bon endroit.</td>
+              <td><span class="visual-tag">Schéma</span> Annuaire téléphonique</td>
+            </tr>
+            <tr>
+              <td class="term-name">VPS<br><small style="color:#64748b;">(Serveur virtuel dédié)</small></td>
+              <td>Vous louez un compartiment privé sur un ordinateur distant qui reste allumé jour et nuit pour faire tourner votre site.</td>
+              <td>Votre site fonctionne en permanence dans un appartement privé au sein d'un grand immeuble numérique.</td>
+              <td><span class="visual-tag">Dessin</span> Immeuble avec appartements</td>
+            </tr>
+            <tr>
+              <td class="term-name">Machine virtuelle<br><small style="color:#64748b;">(VM)</small></td>
+              <td>Vous faites tourner un second ordinateur fictif à l'intérieur de votre écran pour manipuler des programmes sans abîmer votre matériel.</td>
+              <td>Vous démarrez un système Linux dans une fenêtre de votre Mac pour vous entraîner en sécurité.</td>
+              <td><span class="visual-tag">Capture</span> Écran dans un autre écran</td>
+            </tr>
+            <tr>
+              <td class="term-name">Conteneur<br><small style="color:#64748b;">(Docker)</small></td>
+              <td>Cette boîte logicielle autonome emporte votre application avec tous ses réglages pour s'exécuter à l'identique sur n'importe quel ordinateur.</td>
+              <td>Votre collègue démarre votre site en une seconde sans devoir réinstaller tous les logiciels un par un.</td>
+              <td><span class="visual-tag">Illustration</span> Conteneur de cargo fermé</td>
+            </tr>
+            <tr>
+              <td class="term-name">Retour arrière<br><small style="color:#64748b;">(Rollback)</small></td>
+              <td>Vous réactivez en urgence la version précédente de votre site pour effacer immédiatement les conséquences d'une mise en ligne ratée.</td>
+              <td>Votre nouvelle mise à jour plante les paiements ; vous revenez à la version d'hier en dix secondes.</td>
+              <td><span class="visual-tag">Bouton</span> Bouton de marche arrière rouge</td>
+            </tr>
+            <tr>
+              <td class="term-name">Stockage objet<br><small style="color:#64748b;">(S3 / Bucket)</small></td>
+              <td>Ce placard numérique conserve des millions de fichiers volumineux (photos, audios, vidéos, sauvegardes) sans limite de taille et à moindre coût.</td>
+              <td>Votre application stocke les photos de profil des utilisateurs dans un bucket S3 au lieu de saturer le disque du serveur.</td>
+              <td><span class="visual-tag">Dessin</span> Casier géant d'objets numérotés</td>
+            </tr>
+            <tr>
+              <td class="term-name">Trafic sortant<br><small style="color:#64748b;">(Egress)</small></td>
+              <td>Ce volume de données quitte le centre de données dès qu'un internaute télécharge une image, écoute un audio ou ouvre un document.</td>
+              <td>Quand mille personnes écoutent votre podcast en ligne, le transfert sortant génère du trafic réseau parfois surtaxé chez certains hébergeurs.</td>
+              <td><span class="visual-tag">Flèche</span> Données sortant du datacenter</td>
+            </tr>
+            <tr>
+              <td class="term-name">Jamstack / Pages</td>
+              <td>Cette méthode compile tout votre site en pages légères prêtes à l'emploi et les distribue partout sur Terre pour un affichage instantané.</td>
+              <td>Votre site Astro ou Vite est mis en ligne gratuitement sur Cloudflare Pages et s'affiche en quelques centièmes de seconde.</td>
+              <td><span class="visual-tag">Schéma</span> Réseau mondial de serveurs relais</td>
+            </tr>
+            <tr>
+              <td class="term-name">PUE<br><small style="color:#64748b;">(Efficacité énergétique)</small></td>
+              <td>Cet indice mesure le gaspillage d'électricité du bâtiment hébergeant les serveurs ; plus le chiffre est proche de 1, plus c'est écologique.</td>
+              <td>Un centre de données avec un PUE de 1,10 consomme presque toute son électricité pour le calcul et ne gaspille rien en climatisation.</td>
+              <td><span class="visual-tag">Jauge</span> Compteur vert d'énergie propre</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 7. OUTILS -->
+    <section id="outils" class="card">
+      <h2>7. Outils et logiciels de travail</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%;">Terme</th>
+              <th style="width: 40%;">Explication en français facile (10 à 25 mots)</th>
+              <th style="width: 26%;">Exemple simple</th>
+              <th style="width: 12%;">Support visuel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="term-name">IDE<br><small style="color:#64748b;">(Atelier d'écriture)</small></td>
+              <td>Ce logiciel rassemble sur un même écran votre traitement de texte de code, votre explorateur de dossiers et vos outils.</td>
+              <td>Vous ouvrez votre projet dans cet atelier pour rédiger vos pages avec l'aide de l'ordinateur.</td>
+              <td><span class="visual-tag">Illustration</span> Établi d'artisan outillé</td>
+            </tr>
+            <tr>
+              <td class="term-name">VS Code</td>
+              <td>Cet atelier gratuit très populaire accueille des extensions pour colorer votre texte, corriger vos fautes et faciliter vos saisies.</td>
+              <td>Vous installez une extension pour colorer votre code et le rendre plus agréable à lire.</td>
+              <td><span class="visual-tag">Logo</span> Ruban bleu officiel</td>
+            </tr>
+            <tr>
+              <td class="term-name">Cursor</td>
+              <td>Cet atelier d'écriture intègre une intelligence artificielle pour analyser vos fichiers et rédiger des modifications à partir de vos ordres.</td>
+              <td>Vous demandez dans le panneau latéral : « Crée un formulaire de contact », et le code s'écrit tout seul.</td>
+              <td><span class="visual-tag">Capture</span> Code + fenêtre d'échange IA</td>
+            </tr>
+            <tr>
+              <td class="term-name">GitHub et GitLab</td>
+              <td>Ces plateformes hébergent vos dépôts de code sur Internet pour protéger vos sauvegardes et simplifier le partage avec d'autres personnes.</td>
+              <td>Vous partagez l'adresse de votre dépôt avec votre formateur pour qu'il regarde votre avancée.</td>
+              <td><span class="visual-tag">Logos</span> Chat-pieuvre et renard</td>
+            </tr>
+            <tr>
+              <td class="term-name">Cloudflare<br><small style="color:#64748b;">(Pages et Workers)</small></td>
+              <td>Ce service mondial héberge et protège votre site web pour l'afficher instantanément chez vos visiteurs tout en repoussant les attaques.</td>
+              <td>Votre site se charge en une fraction de seconde pour un internaute situé à Paris ou à Montréal.</td>
+              <td><span class="visual-tag">Schéma</span> Nuage orange et relais mondiaux</td>
+            </tr>
+            <tr>
+              <td class="term-name">Docker Compose</td>
+              <td>Cet outil allume tous les morceaux de votre application en une seule fois grâce à une recette de démarrage unique.</td>
+              <td>Vous tapez une commande et vos trois logiciels de travail s'allument ensemble sans dispute.</td>
+              <td><span class="visual-tag">Schéma</span> Chef d'orchestre guidant 3 blocs</td>
+            </tr>
+            <tr>
+              <td class="term-name">Android Studio et Xcode</td>
+              <td>Ces grands logiciels de fabricants permettent de construire, simuler et contrôler une application sur un téléphone virtuel Android ou iPhone.</td>
+              <td>Vous lancez un faux téléphone sur votre écran d'ordinateur pour vérifier l'allure de votre bouton.</td>
+              <td><span class="visual-tag">Capture</span> Faux smartphone sur l'écran</td>
+            </tr>
+            <tr>
+              <td class="term-name">Terminal<br><small style="color:#64748b;">(Ligne de commande)</small></td>
+              <td>Cette fenêtre textuelle vous permet de donner des ordres directs à votre machine en tapant de courtes phrases au clavier.</td>
+              <td>Vous tapez <code>npm run dev</code> pour allumer votre site en mode brouillon sur votre poste.</td>
+              <td><span class="visual-tag">Capture</span> Fenêtre noire à texte blanc</td>
+            </tr>
+            <tr>
+              <td class="term-name">Mermaid</td>
+              <td>Cet outil transforme automatiquement des phrases ordinaires bien ordonnées en jolis schémas et graphiques d'architecture sans logiciel de dessin.</td>
+              <td>Vous écrivez trois lignes de texte pour générer le dessin des étapes d'inscription d'un membre.</td>
+              <td><span class="visual-tag">Exemple</span> Texte à gauche, schéma à droite</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LISTE A : MOTS À ÉVITER -->
+    <section id="mots-a-eviter" class="card card-warning">
+      <h2 style="border-bottom: 2px solid #fcd34d; color: #b45309;">A. Mots à éviter dans les supports de cours</h2>
+      <p>
+        Dans les cours pour débutants, ces mots techniques ou anglophones compliquent inutilement la compréhension. Privilégiez systématiquement l'expression simple proposée ci-dessous :
+      </p>
+      <div class="avoid-grid">
+        <div class="avoid-item"><span class="avoid-bad">Feature</span><span class="avoid-arrow">➔</span><span class="avoid-good">Fonctionnalité / Option</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Stack technique</span><span class="avoid-arrow">➔</span><span class="avoid-good">Choix des technologies / Outils de fabrication</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Front-end</span><span class="avoid-arrow">➔</span><span class="avoid-good">Partie visible / Écran utilisateur</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Back-end</span><span class="avoid-arrow">➔</span><span class="avoid-good">Arrière-boutique / Moteur secret</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Endpoint</span><span class="avoid-arrow">➔</span><span class="avoid-good">Adresse d'action / Point d'accès</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Refactoring</span><span class="avoid-arrow">➔</span><span class="avoid-good">Nettoyage et simplification du code</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Token</span><span class="avoid-arrow">➔</span><span class="avoid-good">Jeton de session / Badge d'accès</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Commit</span><span class="avoid-arrow">➔</span><span class="avoid-good">Étape enregistrée / Validation datée</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Branch</span><span class="avoid-arrow">➔</span><span class="avoid-good">Branche de brouillon / Piste de travail séparée</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Deploy</span><span class="avoid-arrow">➔</span><span class="avoid-good">Mise en ligne sur Internet</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Framework</span><span class="avoid-arrow">➔</span><span class="avoid-good">Boîte à outils prête à l'emploi</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Build</span><span class="avoid-arrow">➔</span><span class="avoid-good">Fabrication / Assemblage du site</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Rollback</span><span class="avoid-arrow">➔</span><span class="avoid-good">Retour en arrière d'urgence</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Wireframe</span><span class="avoid-arrow">➔</span><span class="avoid-good">Croquis de l'écran / Plan en traits</span></div>
+        <div class="avoid-item"><span class="avoid-bad">User story</span><span class="avoid-arrow">➔</span><span class="avoid-good">Fiche de besoin / Histoire utilisateur</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Bug / Debugger</span><span class="avoid-arrow">➔</span><span class="avoid-good">Panne, défaut / Trouver la panne et réparer</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Log</span><span class="avoid-arrow">➔</span><span class="avoid-good">Journal des événements / Registre de bord</span></div>
+        <div class="avoid-item"><span class="avoid-bad">CLI / Terminal</span><span class="avoid-arrow">➔</span><span class="avoid-good">Fenêtre de commandes au clavier</span></div>
+        <div class="avoid-item"><span class="avoid-bad">Hardcoder</span><span class="avoid-arrow">➔</span><span class="avoid-good">Écrire en dur (sans réglage possible)</span></div>
+        <div class="avoid-item"><span class="avoid-bad">CI/CD Pipeline</span><span class="avoid-arrow">➔</span><span class="avoid-good">Chaîne automatique de fabrication</span></div>
+      </div>
+    </section>
+
+    <!-- LISTE B : MOTS QUI PEUVENT RESTER -->
+    <section id="mots-a-garder" class="card">
+      <h2>B. Mots incontournables qui peuvent rester</h2>
+      <p>
+        Ces noms de technologies et d'outils apparaissent sur les écrans réels et les boutons. Conservez leur nom d'origine, en l'accompagnant systématiquement d'une phrase explicative très simple :
+      </p>
+      <div class="keep-grid">
+        <div class="keep-item">
+          <div class="keep-name">Git</div>
+          <div class="keep-desc">Cet outil enregistre l'historique complet de votre travail pour remonter dans le temps en cas d'erreur.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">GitHub / GitLab</div>
+          <div class="keep-desc">Ces plateformes en ligne sauvegardent vos dossiers de code et permettent de travailler ensemble sans danger.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">VS Code</div>
+          <div class="keep-desc">Ce logiciel gratuit sert d'atelier d'écriture pour rédiger, organiser et colorer vos lignes de code.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">Cursor</div>
+          <div class="keep-desc">Cet atelier d'écriture intègre une intelligence artificielle pour modifier vos fichiers selon vos demandes.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">Docker</div>
+          <div class="keep-desc">Cette boîte étanche fait tourner votre application à l'identique sur n'importe quel ordinateur sans rien dérégler.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">Docker Compose</div>
+          <div class="keep-desc">Cet outil démarre simultanément tous les morceaux de votre application avec une seule commande.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">Cloudflare</div>
+          <div class="keep-desc">Ce service en ligne met votre site sur Internet, accélère son affichage et repousse les pirates.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">Android Studio</div>
+          <div class="keep-desc">Ce logiciel officiel permet de tester votre application sur un téléphone Android virtuel.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">Xcode</div>
+          <div class="keep-desc">Ce logiciel d'Apple permet de tester votre application sur un iPhone virtuel sur ordinateur Mac.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">HTML</div>
+          <div class="keep-desc">Ce langage de base structure le squelette d'une page : titres, paragraphes, images et liens.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">CSS</div>
+          <div class="keep-desc">Ce langage visuel habille votre page avec des couleurs, des tailles de texte et des espacements.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">JavaScript</div>
+          <div class="keep-desc">Ce langage donne vie à votre page web en réagissant aux clics et aux saisies des visiteurs.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">React / Next.js</div>
+          <div class="keep-desc">Cette boîte à outils moderne permet d'assembler des pages web rapidement grâce à des blocs réutilisables.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">SQL</div>
+          <div class="keep-desc">Ce langage universel permet de poser des questions et d'ordonner des fiches dans une base de données.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">HTTPS</div>
+          <div class="keep-desc">Ce cadenas numérique protège la confidentialité des échanges entre le visiteur et votre site web.</div>
+        </div>
+        <div class="keep-item">
+          <div class="keep-name">JSON</div>
+          <div class="keep-desc">Ce format de texte ordonné permet à deux ordinateurs de s'échanger des fiches de données sans erreur.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer style="background: #0f172a; color: #94a3b8; padding: 30px 20px; text-align: center; font-size: 0.95rem;">
+    <p style="margin: 0 0 10px;">Formation SCAP : Vibe-Coding — Conception et développement d'applications web et mobiles avec l'IA.</p>
+    <p style="margin: 0;"><a href="index.html" style="color: #2dd4bf; text-decoration: none;">Retour au sommaire de la formation</a></p>
+  </footer>
+
+
+</body>
+</html>

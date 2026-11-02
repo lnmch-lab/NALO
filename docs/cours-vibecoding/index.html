@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIBE-CODING — Archive locale du cours</title>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+
+:root {
+  --teal: #0f766e;
+  --teal-light: #14b8a6;
+  --navy: #1e3a5f;
+  --mint: #5eead4;
+  --paper: #f8fafc;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Droid Serif', Georgia, serif;
+  background: var(--paper);
+  color: #1e293b;
+}
+
+header.hero {
+  background: linear-gradient(135deg, #134e4a 0%, var(--navy) 100%);
+  color: #fff;
+  padding: 56px 24px 64px;
+  text-align: center;
+}
+
+header.hero h1 {
+  font-family: 'Yanone Kaffeesatz';
+  font-weight: normal;
+  font-size: 3em;
+  margin: 0 0 6px;
+  letter-spacing: 1px;
+}
+
+header.hero p.subtitle {
+  font-size: 1.2em;
+  color: #cbd5e1;
+  margin: 0 0 20px;
+}
+
+header.hero .meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+header.hero .meta span {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.85em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+header.hero a.source {
+  display: inline-block;
+  margin-top: 22px;
+  color: var(--mint);
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.9em;
+}
+header.hero a.source:hover { text-decoration: underline; }
+
+main { max-width: 1040px; margin: -32px auto 60px; padding: 0 20px; }
+
+section.block {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  padding: 32px 30px;
+  margin-bottom: 28px;
+}
+
+section.block h2 {
+  font-family: 'Yanone Kaffeesatz';
+  font-weight: normal;
+  font-size: 2em;
+  color: var(--navy);
+  margin: 0 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+section.block p.lead {
+  color: #475569;
+  margin: 0 0 22px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.95em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+a.card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: var(--paper);
+  border: 1px solid #e2e8f0;
+  border-top: 4px solid var(--teal);
+  border-radius: 10px;
+  padding: 16px 18px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+a.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(15, 118, 110, 0.18);
+  border-top-color: var(--teal-light);
+}
+a.card .num {
+  font-family: 'Yanone Kaffeesatz';
+  font-size: 1.5em;
+  color: var(--teal);
+  display: block;
+}
+a.card .title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 0.95em;
+  color: var(--navy);
+  display: block;
+  margin-top: 2px;
+}
+
+a.card.annexe { border-top-color: #ea580c; }
+a.card.annexe:hover { box-shadow: 0 10px 20px rgba(234, 88, 12, 0.18); border-top-color: #f97316; }
+a.card.annexe .num { color: #ea580c; }
+
+a.card.misc { border-top-color: #7c3aed; }
+a.card.misc:hover { box-shadow: 0 10px 20px rgba(124, 58, 237, 0.18); border-top-color: #8b5cf6; }
+a.card.misc .num { color: #7c3aed; }
+
+.note {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.85em;
+  color: #64748b;
+  margin-top: 18px;
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 14px;
+}
+
+footer {
+  text-align: center;
+  color: #94a3b8;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.85em;
+  padding-bottom: 40px;
+}
+
+@media (max-width: 600px) {
+  header.hero h1 { font-size: 2.2em; }
+  main { margin-top: -20px; }
+  section.block { padding: 24px 18px; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>VIBE-CODING</h1>
+  <p class="subtitle">Archive locale du cours — SCAP Paris · Mehdi Guiraud</p>
+  <div class="meta">
+    <span>15 séances · 45 heures</span>
+    <span>Application web &amp; mobile avec IA</span>
+    <span>Lundi 18h30–21h30</span>
+  </div>
+  <br>
+  <a class="source" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/" target="_blank" rel="noopener">Voir le site officiel du cours ↗</a>
+</header>
+
+<main>
+
+  <section class="block">
+    <h2>📘 Les 15 séances</h2>
+    <p class="lead">Du cadrage produit au déploiement, chaque séance produit un livrable versionné dans le dépôt du projet.</p>
+    <div class="grid">
+      <a class="card" href="session1.html"><span class="num">01</span><span class="title">Découverte, cadre &amp; méthode</span></a>
+      <a class="card" href="session2.html"><span class="num">02</span><span class="title">Projet, GitHub et MVP</span></a>
+      <a class="card" href="session3.html"><span class="num">03</span><span class="title">Maquettes, UX et outils</span></a>
+      <a class="card" href="session4.html"><span class="num">04</span><span class="title">Cloudflare, formulaires et stockage</span></a>
+      <a class="card" href="session5.html"><span class="num">05</span><span class="title">Modélisation des données</span></a>
+      <a class="card" href="session6.html"><span class="num">06</span><span class="title">API et règles métier</span></a>
+      <a class="card" href="session7.html"><span class="num">07</span><span class="title">Authentification et rôles</span></a>
+      <a class="card" href="session8.html"><span class="num">08</span><span class="title">Front-end</span></a>
+      <a class="card" href="session9.html"><span class="num">09</span><span class="title">Développement mobile</span></a>
+      <a class="card" href="session10.html"><span class="num">10</span><span class="title">Tests et débogage</span></a>
+      <a class="card" href="session11.html"><span class="num">11</span><span class="title">Sécurité et confidentialité</span></a>
+      <a class="card" href="session12.html"><span class="num">12</span><span class="title">Déploiement Cloudflare</span></a>
+      <a class="card" href="session13.html"><span class="num">13</span><span class="title">Serveur Linux / VPS</span></a>
+      <a class="card" href="session14.html"><span class="num">14</span><span class="title">Documentation et démo</span></a>
+      <a class="card" href="session15.html"><span class="num">15</span><span class="title">Revue finale</span></a>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>🧰 Annexes — préparation des outils</h2>
+    <p class="lead">Les guides d'installation pour chaque outil utilisé pendant le cours.</p>
+    <div class="grid">
+      <a class="card annexe" href="annexes.html"><span class="num">·</span><span class="title">Sommaire des annexes</span></a>
+      <a class="card annexe" href="annexe-a-github-gitlab.html"><span class="num">A</span><span class="title">Git, GitHub &amp; GitLab</span></a>
+      <a class="card annexe" href="annexe-b-cloudflare.html"><span class="num">B</span><span class="title">Compte Cloudflare</span></a>
+      <a class="card annexe" href="annexe-c-android-studio.html"><span class="num">C</span><span class="title">Android Studio</span></a>
+      <a class="card annexe" href="annexe-d-xcode.html"><span class="num">D</span><span class="title">Xcode</span></a>
+      <a class="card annexe" href="annexe-e-vm-linux.html"><span class="num">E</span><span class="title">VM Linux (simulation VPS)</span></a>
+      <a class="card annexe" href="annexe-f-cloud-s3-vps-pages.html"><span class="num">F</span><span class="title">Comparatif hébergement S3/VPS/Pages</span></a>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>🗂️ Autres ressources</h2>
+    <div class="grid">
+      <a class="card misc" href="fiche.html"><span class="num">📋</span><span class="title">Fiche cours</span></a>
+      <a class="card misc" href="lexique.html"><span class="num">📖</span><span class="title">Lexique FALC</span></a>
+      <a class="card misc" href="outils-awesome-vibecoding.md"><span class="num">🔧</span><span class="title">Liste d'outils Vibe-Coding</span></a>
+    </div>
+    <p class="note">La liste d'outils reste au format texte brut (source : dépôt GitHub <a href="https://github.com/Scap-Mehdi/awesome-vibecoding" target="_blank" rel="noopener">Scap-Mehdi/awesome-vibecoding</a>, mis à jour régulièrement — mieux vaut le consulter directement en ligne).</p>
+  </section>
+
+</main>
+
+<footer>
+  Archive locale constituée le 2 novembre 2026 depuis formations.mehdiguiraud.com — contenu original © Mehdi Guiraud / SCAP Paris.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1057 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annexe A — Git, GitHub & GitLab</title>
+<style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif', Georgia, serif;
+            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            background: #ffffff;
+            width: 90%;
+            max-width: 1040px;
+            height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            display: none;
+            position: relative;
+            overflow-y: auto;
+            font-size: 17px;
+            line-height: 1.6;
+            box-sizing: border-box;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.4s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-slide h1 {
+            color: #ecf0f1;
+            font-size: 2.6em;
+            margin-bottom: 0.2em;
+            font-family: 'Yanone Kaffeesatz', sans-serif;
+        }
+
+        .title-slide h2 {
+            color: #5eead4;
+            font-size: 2em;
+            margin-top: 0;
+            margin-bottom: 0.3em;
+        }
+
+        .title-slide h3 {
+            color: #f1f5f9;
+            font-size: 1.6em;
+            margin-top: 0.2em;
+            font-weight: normal;
+        }
+
+        .title-slide p {
+            color: #cbd5e1;
+            font-size: 1.1em;
+            margin-top: 0.5em;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz', sans-serif;
+            font-weight: normal;
+            color: #1e3a5f;
+            margin-top: 0;
+        }
+
+        h1 { font-size: 2.2em; margin-bottom: 0.3em; }
+        h2 { font-size: 1.7em; color: #0f766e; margin-bottom: 0.3em; }
+        h3 { font-size: 1.3em; color: #1e3a5f; }
+
+        .highlight {
+            background-color: #0f766e;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 14px 0;
+        }
+
+        .highlight strong { color: #ccfbf1; }
+
+        .exercise {
+            background: #ecfdf5;
+            border-left: 5px solid #059669;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 14px 0;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 14px 0;
+        }
+
+        .code-block {
+            font-family: 'Ubuntu Mono', monospace;
+            background: #1e293b;
+            color: #f8f8f2;
+            padding: 12px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.45;
+        }
+
+        .stats {
+            background: #f1f5f9;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 14px 0;
+            border-left: 4px solid #0284c7;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px;
+            margin: 15px 0;
+        }
+
+        .card {
+            background: #f8fafc;
+            border-top: 4px solid #0f766e;
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-size: 0.94em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            margin: 0 0 8px;
+            color: #0f766e;
+            font-size: 1.25em;
+        }
+
+        .card p {
+            margin: 0 0 6px;
+            line-height: 1.5;
+        }
+
+        .card ul {
+            margin: 6px 0 0;
+            padding-left: 20px;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+            margin: 14px 0;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+            min-width: 660px;
+            background: #ffffff;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 9px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        thead th {
+            background: #1e3a5f;
+            color: #ffffff;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 0.95em;
+        }
+
+        tbody th {
+            background: #f1f5f9;
+            color: #1e3a5f;
+            font-weight: 600;
+        }
+
+        tbody tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        /* Diagrammes visuels Git */
+        .git-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 8px;
+            margin: 18px 0;
+            overflow-x: auto;
+            padding: 8px 4px;
+        }
+
+        .git-zone {
+            flex: 1;
+            min-width: 200px;
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .git-zone.zone-active {
+            border-color: #0f766e;
+            background: #f0fdfa;
+        }
+
+        .git-zone.zone-remote {
+            border-color: #1e3a5f;
+            background: #f1f5f9;
+        }
+
+        .git-zone-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #1e3a5f;
+            margin-bottom: 4px;
+        }
+
+        .git-zone-desc {
+            font-size: 0.85em;
+            color: #475569;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .git-zone-tag {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #0f172a;
+            font-size: 0.78em;
+            font-family: 'Ubuntu Mono', monospace;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .git-flow {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 0.88em;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 14px 0;
+        }
+
+        .git-flow .step-cmd {
+            color: #5eead4;
+            font-weight: bold;
+        }
+
+        .git-flow .step-comment {
+            color: #94a3b8;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #14b8a6;
+            transition: width 0.3s ease;
+            z-index: 1000;
+            width: 0%;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-button {
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            margin: 0 5px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .nav-button:hover { background: #0d9488; }
+        .nav-button:disabled { background: #64748b; cursor: not-allowed; }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.85);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            transition: background 0.2s ease;
+        }
+        .fullscreen-btn:hover { background: rgba(0,0,0,0.95); }
+
+        .lexique-btn {
+            position: fixed;
+            top: 20px;
+            right: 215px;
+            background: rgba(30, 58, 95, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .lexique-btn:hover { background: #1e3a5f; }
+
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 105px;
+            background: rgba(15, 118, 110, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .home-btn:hover { background: #0f766e; }
+
+        .pdf-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            transition: background 0.2s ease;
+        }
+        .pdf-btn:hover { background: #b91c1c; }
+
+        /* Tooltip Serhat Bek */
+        .tooltip-trigger {
+            position: relative;
+            display: inline;
+            cursor: help;
+            border-bottom: 2px dotted #0f766e;
+            color: inherit;
+            font-weight: inherit;
+            transition: color 0.15s ease;
+        }
+
+        .tooltip-trigger:hover,
+        .tooltip-trigger:focus-visible {
+            color: #0f766e;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background-color: #0f172a;
+            color: #f8fafc;
+            text-align: left;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: normal;
+            width: max-content;
+            max-width: 290px;
+            min-width: 170px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+
+        .tooltip.tooltip--bottom {
+            bottom: auto;
+            top: calc(100% + 8px);
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .tooltip.tooltip--bottom::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #0f172a transparent;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media print {
+            .fullscreen-btn, .home-btn, .pdf-btn, .lexique-btn, .navigation, .slide-counter, .progress-bar {
+                display: none !important;
+            }
+            body { background: white !important; overflow: visible !important; }
+            .slideshow-container { display: block !important; height: auto !important; }
+            .slide {
+                display: block !important;
+                page-break-after: always !important;
+                max-width: 100% !important;
+                height: auto !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                padding: 20px !important;
+            }
+        }
+    </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="annexes.html">← Annexes</a><span class="local-nav-title">Annexe A — Git, GitHub & GitLab</span><a href="annexe-b-cloudflare.html">Annexe B →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/annexe-a-github-gitlab.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slideshow-container">
+
+        <!-- Slide 1 : Titre -->
+        <div class="slide title-slide active">
+            <h1>VIBE-CODING</h1>
+            <h2>Annexe A</h2>
+            <h3>Installer &amp; Maîtriser <span class="tooltip-trigger" data-tooltip="Outil qui mémorise tout l'historique de votre code pour remonter le temps en cas d'erreur.">Git</span> (avec <span class="tooltip-trigger" data-tooltip="Plateforme en ligne qui héberge vos dépôts Git, sauvegarde votre code et facilite le partage.">GitHub</span> &amp; <span class="tooltip-trigger" data-tooltip="Plateforme en ligne pour héberger vos dépôts Git et automatiser la fabrication du projet.">GitLab</span>)</h3>
+            <p>Schémas d'architecture · Tutoriels d'installation (Mac, Windows, Linux) · Configuration · Commandes fondamentales</p>
+        </div>
+
+        <!-- Slide 2 : Objectif et distinction Git vs GitHub -->
+        <div class="slide">
+            <h1>1. Objectif &amp; Distinction fondamentale</h1>
+            <div class="stats">
+                <strong>Objectif :</strong> Installer <span class="tooltip-trigger" data-tooltip="Outil qui mémorise tout l'historique de votre code pour remonter le temps en cas d'erreur.">Git</span> sur son ordinateur, comprendre son fonctionnement avec des schémas clairs, le configurer et maîtriser les commandes indispensables pour sauvegarder, collaborer et sécuriser son projet en <em>vibe-coding</em>.
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Git (Sur votre ordinateur)</h3>
+                    <p>Le logiciel de <strong>gestion de versions</strong> installé en local.</p>
+                    <ul>
+                        <li>Fonctionne hors-ligne sur votre machine.</li>
+                        <li>Enregistre chaque étape sous forme de <span class="tooltip-trigger" data-tooltip="Enregistrement daté d'une étape de travail avec un court message explicatif.">commits</span>.</li>
+                        <li>Vous donne le droit absolu à l'erreur : remonter dans le temps en une seconde si une IA casse le code.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>GitHub &amp; GitLab (Dans le Cloud)</h3>
+                    <p>Les <strong>plateformes d'hébergement</strong> distantes connectées à Internet.</p>
+                    <ul>
+                        <li>Sauvegardent vos projets hors de votre ordinateur.</li>
+                        <li>Permettent le travail d'équipe et la relecture de code (<span class="tooltip-trigger" data-tooltip="Demande officielle de fusionner vos modifications dans la branche principale après relecture.">Pull Request</span>).</li>
+                        <li>Déclenchent les déploiements automatiques (vers Cloudflare, Pages ou VPS).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>Règle de sécurité n°1 :</strong> Activez systématiquement la <span class="tooltip-trigger" data-tooltip="Double vérification d'identité demandant votre mot de passe habituel puis un code sur téléphone.">2FA</span> sur votre compte. Ne placez <strong>jamais</strong> de mots de passe, <span class="tooltip-trigger" data-tooltip="Mots de passe exclusifs autorisant votre application à utiliser des services partenaires.">clés API</span> ou fichiers <span class="tooltip-trigger" data-tooltip="Fichier de configuration confidentiel qui contient les secrets et mots de passe du projet.">.env</span> dans un dépôt Git public ou privé.
+            </div>
+        </div>
+
+        <!-- Slide 3 : Schéma visuel — Les 4 zones de Git -->
+        <div class="slide">
+            <h1>2. Schéma visuel : Les 4 zones de Git</h1>
+            <div class="highlight">
+                Pour bien utiliser Git, il suffit de visualiser le voyage d'un fichier à travers <strong>quatre zones distinctes</strong> :
+            </div>
+
+            <div class="git-diagram">
+                <div class="git-zone">
+                    <div class="git-zone-title">1. Répertoire de travail</div>
+                    <div class="git-zone-desc">Vos fichiers réels modifiés dans VS Code ou Cursor sur votre disque.</div>
+                    <div class="git-zone-tag">Working Directory</div>
+                </div>
+                <div class="git-zone zone-active">
+                    <div class="git-zone-title">2. Zone d'index</div>
+                    <div class="git-zone-desc">La « salle d'embarquement » des fichiers préparés pour le prochain vol.</div>
+                    <div class="git-zone-tag">Staging Area (git add)</div>
+                </div>
+                <div class="git-zone zone-active">
+                    <div class="git-zone-title">3. Dépôt local</div>
+                    <div class="git-zone-desc">L'historique officiel et scellé des versions sur votre machine.</div>
+                    <div class="git-zone-tag">Local (.git / commit)</div>
+                </div>
+                <div class="git-zone zone-remote">
+                    <div class="git-zone-title">4. Dépôt distant</div>
+                    <div class="git-zone-desc">La copie sauvegardée sur GitHub ou GitLab dans le cloud.</div>
+                    <div class="git-zone-tag">Remote (git push)</div>
+                </div>
+            </div>
+
+            <div class="git-flow">
+                <span class="step-comment"># Flux des commandes d'une zone à l'autre :</span><br>
+                [Répertoire de travail] ──▶ <span class="step-cmd">git add .</span> ──▶ [Zone d'index / Staging] ──▶ <span class="step-cmd">git commit -m "..."</span> ──▶ [Dépôt local] ──▶ <span class="step-cmd">git push</span> ──▶ [GitHub / GitLab]<br>
+                [Répertoire de travail] ◀── <span class="step-cmd">git pull</span> ◀───────────────────────────────────────────────────────────── [GitHub / GitLab]
+            </div>
+
+            <div class="exercise">
+                <strong>En résumé :</strong> <code>git add</code> prépare ce que l'on veut enregistrer, <code>git commit</code> valide l'étape en local, et <code>git push</code> envoie la sauvegarde en ligne.
+            </div>
+        </div>
+
+        <!-- Slide 4 : Schéma visuel — Le cycle de vie d'un fichier -->
+        <div class="slide">
+            <h1>3. Schéma visuel : Le cycle de vie d'un fichier</h1>
+            <p>Dans Git, chaque fichier se trouve toujours dans l'un de ces 4 états :</p>
+
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Tableau cycle de vie des fichiers">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">État du fichier</th>
+                            <th scope="col">Ce que cela signifie</th>
+                            <th scope="col">Couleur dans <code>git status</code></th>
+                            <th scope="col">Commande pour changer d'état</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Non suivi (Untracked)</th>
+                            <td>Fichier fraîchement créé, encore inconnu de Git.</td>
+                            <td style="color: #dc2626; font-weight: bold;">Rouge</td>
+                            <td><code>git add mon-fichier</code></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Préparé (Staged)</th>
+                            <td>Fichier placé en zone d'index, prêt pour le commit.</td>
+                            <td style="color: #16a34a; font-weight: bold;">Vert</td>
+                            <td><code>git commit -m "..."</code></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Validé (Committed)</th>
+                            <td>Fichier archivé dans l'historique sans modifications en attente.</td>
+                            <td style="color: #64748b;">(Invisible / Clean)</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Modifié (Modified)</th>
+                            <td>Fichier déjà suivi mais modifié depuis le dernier commit.</td>
+                            <td style="color: #dc2626; font-weight: bold;">Rouge</td>
+                            <td><code>git add mon-fichier</code> ou <code>git restore</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight">
+                <strong>Le réflexe magique :</strong> Tapez <code>git status</code> à tout instant ! C'est votre GPS permanent qui vous affiche la liste exacte des fichiers verts (prêts) et rouges (à préparer ou à ignorer).
+            </div>
+        </div>
+
+        <!-- Slide 5 : Tutoriel d'installation — macOS -->
+        <div class="slide">
+            <h1>4. Tutoriel d'installation : macOS</h1>
+            <div class="stats">
+                Sur Mac, vous avez deux méthodes très simples et officielles pour installer Git :
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Méthode 1 : Outils officiels Apple (Le plus rapide)</h3>
+                    <p>Ouvrez l'application <strong>Terminal</strong> (via Spotlight : Cmd + Espace, puis tapez <em>Terminal</em>) et tapez :</p>
+                    <div class="code-block">git --version</div>
+                    <p>Si Git n'est pas encore installé, macOS affiche automatiquement une invite : <em>« La commande git requiert les outils de développement de ligne de commande »</em>.</p>
+                    <ul>
+                        <li>Cliquez sur <strong>Installer</strong> et acceptez la licence.</li>
+                        <li>Vous pouvez aussi forcer cette installation via :
+                            <div class="code-block">xcode-select --install</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Méthode 2 : Via Homebrew (Pour avoir la dernière version)</h3>
+                    <p>Si vous utilisez le gestionnaire de paquets <span class="tooltip-trigger" data-tooltip="Gestionnaire de paquets populaire pour installer rapidement des outils sur macOS.">Homebrew</span> :</p>
+                    <div class="code-block">brew install git</div>
+                    <p>Vérifiez que le terminal utilise bien la version Homebrew :</p>
+                    <div class="code-block">which git
+# doit renvoyer /opt/homebrew/bin/git (ou /usr/local/bin/git)</div>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <strong>Vérification finale :</strong> Fermez et rouvrez votre Terminal, puis tapez <code>git --version</code>. Vous devez voir une réponse du type : <code>git version 2.39.x</code> (ou plus récent).
+            </div>
+        </div>
+
+        <!-- Slide 6 : Tutoriel d'installation — Windows -->
+        <div class="slide">
+            <h1>5. Tutoriel d'installation : Windows</h1>
+            <div class="stats">
+                Sur Windows, installez l'outil officiel <strong>Git for Windows</strong> qui intègre le moteur Git et l'environnement de commande <strong>Git Bash</strong>.
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Étape 1 : Téléchargement</h3>
+                    <ul>
+                        <li>Rendez-vous sur le site officiel : <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">git-scm.com/download/win</a>.</li>
+                        <li>Téléchargez la version <strong>64-bit Git for Windows Setup</strong>.</li>
+                        <li><em>Alternative en commande PowerShell :</em>
+                            <div class="code-block">winget install --id Git.Git -e --source winget</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Étape 2 : Options clés pendant l'assistant</h3>
+                    <ul>
+                        <li><strong>Éditeur par défaut :</strong> Choisissez <em>Use Visual Studio Code as Git's default editor</em>.</li>
+                        <li><strong>Nom de la branche :</strong> Choisissez <em>Override the default branch name</em> et saisissez <code>main</code>.</li>
+                        <li><strong>Ligne de commande :</strong> Cochez <em>Git from the command line and also from 3rd-party software</em>.</li>
+                        <li><strong>Fins de ligne (Crucial) :</strong> Cochez <em>Checkout Windows-style, commit Unix-style line endings</em>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>L'astuce Windows :</strong> Utilisez <strong>Git Bash</strong> (installé avec Git). Il vous fournit un vrai terminal de style Linux très agréable pour taper les mêmes commandes <code>ls</code>, <code>pwd</code> et <code>ssh</code> que sur Mac ou Linux.
+            </div>
+        </div>
+
+        <!-- Slide 7 : Tutoriel d'installation — Linux -->
+        <div class="slide">
+            <h1>6. Tutoriel d'installation : Linux</h1>
+            <p>Sur Linux ou sur votre serveur virtuel (<span class="tooltip-trigger" data-tooltip="Compartiment privé loué sur un ordinateur connecté en continu à Internet.">VPS</span>), Git s'installe en une seule ligne via le gestionnaire de paquets de votre distribution :</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Debian, Ubuntu, Linux Mint</h3>
+                    <div class="code-block">sudo apt update
+sudo apt install -y git</div>
+                </div>
+                <div class="card">
+                    <h3>Fedora, RHEL, AlmaLinux</h3>
+                    <div class="code-block">sudo dnf install -y git</div>
+                </div>
+                <div class="card">
+                    <h3>Arch Linux, Manjaro</h3>
+                    <div class="code-block">sudo pacman -S git</div>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <strong>Vérification sur votre machine :</strong>
+                <div class="code-block">git --version
+which git</div>
+                Un message confirmant la présence de Git (ex : <code>git version 2.43.0</code>) doit s'afficher.
+            </div>
+        </div>
+
+        <!-- Slide 8 : Configuration initiale obligatoire -->
+        <div class="slide">
+            <h1>7. Configuration initiale obligatoire (First-Time Setup)</h1>
+            <div class="warning">
+                <strong>À faire une seule fois :</strong> Avant d'enregistrer votre tout premier commit, Git a obligatoirement besoin de connaître votre identité (nom et e-mail). Sans cela, Git refusera d'enregistrer vos modifications.
+            </div>
+
+            <p>Ouvrez votre terminal et exécutez ces deux commandes en remplaçant par vos informations :</p>
+
+            <div class="code-block"># 1. Votre nom d'auteur public
+git config --global user.name "Prénom Nom"
+
+# 2. Votre adresse e-mail (utilisez la même que sur GitHub ou GitLab !)
+git config --global user.email "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f8959796d59d95999194b89d809d9588949dd69b9795">[email&#160;protected]</a>"
+
+# 3. Définir le nom standard de la branche principale par défaut
+git config --global init.defaultBranch main
+
+# 4. Activer les jolies couleurs dans le terminal
+git config --global color.ui auto</div>
+
+            <div class="highlight">
+                <strong>Vérifier votre configuration :</strong>
+                <div class="code-block">git config --list --show-origin</div>
+                Vérifiez que votre <code>user.name</code> et <code>user.email</code> apparaissent correctement sans fautes de frappe.
+            </div>
+        </div>
+
+        <!-- Slide 9 : Authentification sécurisée (GitHub & GitLab) -->
+        <div class="slide">
+            <h1>8. Authentification sécurisée : GitHub &amp; GitLab</h1>
+            <div class="stats">
+                Depuis août 2021, GitHub et GitLab <strong>interdisent</strong> l'utilisation de votre simple mot de passe de compte pour envoyer du code en ligne (<code>git push</code>). Vous devez vous authentifier soit par <strong>clé SSH</strong>, soit par <strong>jeton personnel (Token)</strong>.
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Option 1 : Clé SSH (Recommandée &amp; Définitive)</h3>
+                    <p>Une clé SSH vous identifie automatiquement et en toute sécurité sans jamais devoir retaper de mot de passe :</p>
+                    <div class="code-block"># Générer la clé (appuyez sur Entrée aux questions)
+ssh-keygen -t ed25519 -C "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="61170e1513044c040c00080d210419040c110d044f020e0c">[email&#160;protected]</a>"
+
+# Afficher et copier la clé publique générée :
+cat ~/.ssh/id_ed25519.pub</div>
+                    <p>Collez cette clé dans votre compte :</p>
+                    <ul>
+                        <li><strong>GitHub :</strong> Settings ➔ SSH and GPG keys ➔ New SSH Key.</li>
+                        <li><strong>GitLab :</strong> Preferences ➔ SSH Keys ➔ Add new key.</li>
+                        <li><em>Tester :</em> <code>ssh -T <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="20474954604749544855420e434f4d">[email&#160;protected]</a></code></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Option 2 : Jeton personnel (Personal Access Token)</h3>
+                    <p>Si vous préférez rester en HTTPS, générez un jeton d'accès secret :</p>
+                    <ul>
+                        <li><strong>GitHub :</strong> Settings ➔ Developer Settings ➔ Personal Access Tokens (Tokens classic) ➔ Generate new token ➔ Cochez la case <code>repo</code>.</li>
+                        <li><strong>GitLab :</strong> Preferences ➔ Access Tokens ➔ Add new token ➔ Cochez <code>read_repository</code> et <code>write_repository</code>.</li>
+                    </ul>
+                    <p>Copiez ce jeton dans un gestionnaire de mots de passe. Lors du premier <code>git push</code>, collez ce jeton quand Git demande votre mot de passe.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10 : Tutoriel pas-à-pas — Démarrer son projet -->
+        <div class="slide">
+            <h1>9. Tutoriel pas-à-pas : Démarrer son projet</h1>
+            <p>Deux cas de figure classiques se présentent à vous en formation :</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Cas A : Créer un nouveau projet local et le publier</h3>
+                    <div class="code-block"># 1. Créer le dossier et y entrer
+mkdir mon-projet && cd mon-projet
+
+# 2. Initialiser Git
+git init
+
+# 3. Créer les fichiers de base
+echo "# Mon Projet MVP" > README.md
+echo "node_modules/\n.env\n.DS_Store" > .gitignore
+
+# 4. Préparer et committer
+git add .
+git commit -m "chore: initialiser le dépôt"
+
+# 5. Définir la branche principale
+git branch -M main
+
+# 6. Relier au dépôt GitHub/GitLab créé en ligne
+git remote add origin <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="89eee0fdc9eee0fde1fceba7eae6e4">[email&#160;protected]</a>:votre-compte/mon-projet.git
+
+# 7. Envoyer pour la première fois
+git push -u origin main</div>
+                </div>
+                <div class="card">
+                    <h3>Cas B : Récupérer un projet déjà existant en ligne</h3>
+                    <p>Si le dépôt a déjà été créé avec un modèle sur GitHub ou GitLab :</p>
+                    <div class="code-block"># Cloner le projet sur votre machine
+git clone <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a7d736e5a7d736e726f7834797577">[email&#160;protected]</a>:votre-compte/mon-projet.git
+
+# Entrer dans le dossier téléchargé
+cd mon-projet
+
+# Vérifier l'état
+git status</div>
+                    <p>Tous les fichiers et l'historique complet sont immédiatement disponibles sur votre ordinateur !</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11 : Le cycle de travail quotidien -->
+        <div class="slide">
+            <h1>10. Le cycle de travail quotidien en 4 commandes</h1>
+            <div class="highlight">
+                En <em>vibe-coding</em>, à chaque fois que vous dialoguez avec l'IA et que le code proposé fonctionne, appliquez immédiatement cette routine :
+            </div>
+
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Cycle quotidien des commandes">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Étape</th>
+                            <th scope="col">Commande</th>
+                            <th scope="col">Ce que vous faites</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1. Vérifier</th>
+                            <td><code>git status</code></td>
+                            <td>Vous vérifiez quels fichiers ont été ajoutés ou modifiés par l'assistant IA.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2. Inspecter</th>
+                            <td><code>git diff</code></td>
+                            <td>Vous relisez ligne par ligne les ajouts (en vert) et suppressions (en rouge).</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3. Préparer</th>
+                            <td><code>git add .</code> <em>(ou <code>git add fichier.js</code>)</em></td>
+                            <td>Vous placez vos modifications propres dans la zone d'embarquement (staging).</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4. Enregistrer</th>
+                            <td><code>git commit -m "feat: ajout du formulaire"</code></td>
+                            <td>Vous photographiez définitivement cette étape propre dans l'historique.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">5. Sauvegarder</th>
+                            <td><code>git push</code></td>
+                            <td>Vous propulsez vos commits locaux vers GitHub/GitLab en ligne.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="exercise">
+                <strong>Bonnes pratiques de messages de commit :</strong> Utilisez des préfixes clairs : <code>feat:</code> (nouvelle fonctionnalité), <code>fix:</code> (correction d'un bogue), <code>docs:</code> (documentation README), <code>style:</code> (mise en page CSS), <code>refactor:</code> (nettoyage du code sans changer le résultat).
+            </div>
+        </div>
+
+        <!-- Slide 12 : Schéma & Tutoriel — Les branches et Pull Requests -->
+        <div class="slide">
+            <h1>11. Schéma &amp; Tutoriel : Les branches et Pull Requests</h1>
+            <div class="highlight">
+                Une <strong>branche</strong> est une piste de travail parallèle qui vous permet d'expérimenter une nouvelle idée ou de tester du code IA sans risquer de casser la version stable officielle (<code>main</code>).
+            </div>
+
+            <div class="git-flow">
+                <span class="step-comment"># Schéma d'une branche isolée fusionnée après validation :</span><br>
+                Branche main :     [C1] ─── [C2] ─────────────────────── [C5: Merge PR] ──▶<br>
+                                            \                           /<br>
+                Branche feature :            └─── [C3] ─── [C4: commit] ─┘
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>1. Créer et travailler sur une branche</h3>
+                    <div class="code-block"># Créer et basculer sur une nouvelle branche
+git switch -c feature-maquette-accueil
+
+# Coder avec l'IA, tester... puis enregistrer :
+git add .
+git commit -m "feat: maquette de la page d'accueil"
+
+# Envoyer la branche sur GitHub/GitLab
+git push -u origin feature-maquette-accueil</div>
+                </div>
+                <div class="card">
+                    <h3>2. La Pull Request &amp; Fusion</h3>
+                    <ul>
+                        <li>Ouvrez votre dépôt sur GitHub ou GitLab : un bandeau jaune propose automatiquement de créer une <strong>Pull Request</strong> (ou <em>Merge Request</em>).</li>
+                        <li>Vérifiez les différences de code et cliquez sur <strong>Merge</strong>.</li>
+                        <li>De retour sur votre terminal, revenez sur la branche principale et mettez-la à jour :
+                            <div class="code-block">git switch main
+git pull</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13 : La boîte à outils de secours -->
+        <div class="slide">
+            <h1>12. La boîte à outils de secours : Réparer les erreurs</h1>
+            <div class="warning">
+                <strong>Pas de panique !</strong> Avec Git, rien n'est jamais définitivement perdu. Voici les 4 situations d'urgence les plus fréquentes :
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>J'ai cassé un fichier et je veux retrouver la version saine</h3>
+                    <p>Annule toutes les modifications non enregistrées sur ce fichier :</p>
+                    <div class="code-block">git restore mon-fichier.js</div>
+                    <p><em>(Pour tout restaurer d'un coup : <code>git restore .</code>)</em></p>
+                </div>
+                <div class="card">
+                    <h3>J'ai fait <code>git add</code> trop vite sur un fichier secret (.env)</h3>
+                    <p>Retire le fichier de la zone de staging sans effacer son contenu :</p>
+                    <div class="code-block">git restore --staged .env</div>
+                    <p>N'oubliez pas d'ajouter <code>.env</code> dans votre fichier <code>.gitignore</code> !</p>
+                </div>
+                <div class="card">
+                    <h3>J'ai fait une faute dans mon message de commit</h3>
+                    <p>Corrige le texte du tout dernier commit (avant de faire push) :</p>
+                    <div class="code-block">git commit --amend -m "feat: le bon message corrigé"</div>
+                </div>
+                <div class="card">
+                    <h3>Un commit déployé provoque une panne en ligne</h3>
+                    <p>Crée automatiquement un commit inverse qui annule l'erreur proprement :</p>
+                    <div class="code-block">git revert HEAD
+git push</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14 : Checklist finale -->
+        <div class="slide">
+            <h1>13. Checklist de validation</h1>
+            <div class="exercise">
+                <ul>
+                    <li><strong>Git est installé et opérationnel :</strong> <code>git --version</code> répond sans erreur dans le terminal.</li>
+                    <li><strong>Identité configurée :</strong> <code>user.name</code> et <code>user.email</code> sont renseignés dans la configuration globale.</li>
+                    <li><strong>Authentification prête :</strong> Clé SSH testée (<code>ssh -T <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="26414f5266414f524e53440845494b">[email&#160;protected]</a></code>) ou jeton personnel enregistré.</li>
+                    <li><strong>Double authentification (2FA) :</strong> 2FA activée sur GitHub/GitLab avec les codes de récupération sauvegardés en lieu sûr.</li>
+                    <li><strong>Fichier <code>.gitignore</code> en place :</strong> <code>node_modules/</code>, <code>.env</code> et fichiers temporaires ignorés dès le premier commit.</li>
+                    <li><strong>Premier push validé :</strong> Le dépôt est visible sur le site web GitHub ou GitLab avec un fichier <code>README.md</code> d'accueil.</li>
+                    <li><strong>Réflexe vibe-coding :</strong> Chaque étape validée avec l'assistant IA est enregistrée par un commit explicite.</li>
+                </ul>
+            </div>
+
+            <div class="highlight">
+                Vous êtes fin prêt ! Consultez le <a href="annexes.html" style="color: white; font-weight: bold; text-decoration: underline;">sommaire des annexes</a> ou le <a href="lexique.html" style="color: white; font-weight: bold; text-decoration: underline;">lexique FALC</a> pour approfondir les notions.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Contrôles de navigation -->
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Plein écran</button>
+    <a href="lexique.html" class="lexique-btn" title="Consulter le lexique FALC">Lexique</a>
+    <a href="index.html" class="home-btn">Sommaire</a>
+    <button class="pdf-btn" onclick="downloadPDF()">PDF</button>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">0</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prev-btn" onclick="changeSlide(-1)">Précédent</button>
+        <button class="nav-button" id="next-btn" onclick="changeSlide(1)">Suivant</button>
+        <span style="margin: 0 15px;">Flèches du clavier</span>
+    </div>
+
+    
+
+</body>
+</html>

@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Séance 3 — Maquettes, UX et outils</title>
+<style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            background: #ffffff;
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            display: none;
+            position: relative;
+            overflow-y: auto;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            color: #ecf0f1;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            font-family: 'Yanone Kaffeesatz';
+        }
+
+        .title-slide h2, .title-slide h3, .title-slide p {
+            color: #e2e8f0;
+        }
+
+        .qcm-skip {
+            display: inline-block;
+            margin-top: 16px;
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .qcm-skip:hover {
+            background: #e2e8f0;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+            color: #1e3a5f;
+        }
+
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; color: #0f766e; }
+        h3 { font-size: 1.4em; }
+
+        .highlight {
+            background-color: #0f766e;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .exercise {
+            background: #ecfdf5;
+            border-left: 5px solid #059669;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .code-block {
+            font-family: 'Ubuntu Mono', monospace;
+            background: #1e293b;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .stats {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #14b8a6;
+            transition: width 0.3s ease;
+            z-index: 1000;
+            width: 0%;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-button:hover { background: #0d9488; }
+        .nav-button:disabled { background: #7f8c8d; cursor: not-allowed; }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .lexique-btn {
+            position: fixed;
+            top: 20px;
+            right: 195px;
+            background: rgba(30, 58, 95, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .lexique-btn:hover { background: #1e3a5f; }
+
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 90px;
+            background: rgba(15, 118, 110, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .pdf-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        /* Tooltip Serhat Bek (https://codepen.io/serhatbek/pen/vYwKdaG) */
+        .tooltip-trigger {
+            position: relative;
+            display: inline;
+            cursor: help;
+            border-bottom: 2px dotted #0f766e;
+            color: inherit;
+            font-weight: inherit;
+            transition: color 0.15s ease;
+        }
+
+        .tooltip-trigger:hover,
+        .tooltip-trigger:focus-visible {
+            color: #0f766e;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background-color: #0f172a;
+            color: #f8fafc;
+            text-align: left;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: normal;
+            width: max-content;
+            max-width: 280px;
+            min-width: 170px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+
+        .tooltip.tooltip--bottom {
+            bottom: auto;
+            top: calc(100% + 8px);
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .tooltip.tooltip--bottom::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #0f172a transparent;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media print {
+            .fullscreen-btn, .home-btn, .pdf-btn, .lexique-btn, .navigation, .slide-counter, .progress-bar {
+                display: none !important;
+            }
+            body { background: white !important; overflow: visible !important; }
+            .slideshow-container { display: block !important; height: auto !important; }
+            .slide {
+                display: block !important;
+                page-break-after: always !important;
+                max-width: 100% !important;
+                height: auto !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="session2.html">← Séance 2</a><span class="local-nav-title">Séance 3 — Maquettes, UX et outils</span><a href="session4.html">Séance 4 →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/session3.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slideshow-container">
+
+        <div class="slide title-slide active">
+            <h1>VIBE-CODING</h1>
+            <h2>Séance 3 : Maquettes, UX et inventaire des outils</h2>
+            <h3>Écrans, <span class="tooltip-trigger" data-tooltip="Conception permettant aux personnes en situation de handicap d&#x27;utiliser l&#x27;application sans gêne.">accessibilité</span> et comparaison critique des ressources</h3>
+            <p><strong>Durée :</strong> 3 h · Application web &amp; mobile avec IA</p>
+        </div>
+
+        <div class="slide qcm" id="qcm-intro">
+            <h1>QCM — Rappel de la session 2</h1>
+            <p>Huit questions, une seule réponse par question. Le bilan sera présenté à la fin.</p>
+            <form id="qcm-start">
+                <p><label for="qcm-name">Votre nom</label><br>
+                <input id="qcm-name" name="name" required maxlength="80" autocomplete="name"></p>
+                <p><label for="qcm-group">Votre groupe</label><br>
+                <select id="qcm-group" name="group" required><option value="lundi">Lundi</option><option value="jeudi">Jeudi</option></select></p>
+                <p>Votre nom et vos choix sont enregistrés en ligne pour cette séance, puis supprimés après 30 jours. Le bilan collectif affiche uniquement les effectifs, sans les noms.</p>
+                <button class="nav-button" type="submit">Commencer le QCM</button>
+            </form>
+            <p id="qcm-start-status" role="status" aria-live="polite"></p>
+            <p><button type="button" class="qcm-skip" id="skip-qcm">Passer le questionnaire → diapo 11</button></p>
+        </div>
+<div class="slide qcm" data-qcm-question="0"><h1>Question 1 / 8</h1><fieldset><legend>Quelle différence faites-vous entre Git et GitHub ?</legend><label class="qcm-option"><input type="radio" name="qcm-0" value="0"><span><strong>A.</strong> Ce sont des outils pour travailler sur du code.</span></label><label class="qcm-option"><input type="radio" name="qcm-0" value="1"><span><strong>B.</strong> Git conserve l’historique des fichiers ; GitHub héberge des dépôts Git et facilite la collaboration.</span></label><label class="qcm-option"><input type="radio" name="qcm-0" value="2"><span><strong>C.</strong> Git est le site web ; GitHub est le logiciel qui garde les versions sur votre ordinateur.</span></label><label class="qcm-option"><input type="radio" name="qcm-0" value="3"><span><strong>D.</strong> Git est la machine à remonter le temps ; GitHub est le salon où l’on montre ses voyages.</span></label></fieldset><p class="qcm-status" role="status" aria-live="polite"></p><button type="button" class="nav-button qcm-next">Question suivante</button></div>
+<div class="slide qcm" data-qcm-question="1"><h1>Question 2 / 8</h1><fieldset><legend>Que contient un dépôt ? À quoi sert son README ?</legend><label class="qcm-option"><input type="radio" name="qcm-1" value="0"><span><strong>A.</strong> Le dépôt est le carton du projet ; le README est l’étiquette qui évite de demander : « C’est quoi, ce bazar ? ».</span></label><label class="qcm-option"><input type="radio" name="qcm-1" value="1"><span><strong>B.</strong> Le dépôt est votre compte personnel ; le README est la liste des mots de passe du projet.</span></label><label class="qcm-option"><input type="radio" name="qcm-1" value="2"><span><strong>C.</strong> Le dépôt contient les fichiers et leur historique ; le README présente le projet, son public, son besoin et son état.</span></label><label class="qcm-option"><input type="radio" name="qcm-1" value="3"><span><strong>D.</strong> Le dépôt contient des documents ; le README donne des informations.</span></label></fieldset><p class="qcm-status" role="status" aria-live="polite"></p><button type="button" class="nav-button qcm-next">Question suivante</button></div>
+<div class="slide qcm" data-qcm-question="2"><h1>Question 3 / 8</h1><fieldset><legend>Vous modifiez le README : qu’enregistre un commit et que doit expliquer son message ?</legend><label class="qcm-option"><input type="radio" name="qcm-2" value="0"><span><strong>A.</strong> Le commit publie automatiquement le site ; son message indique son adresse web.</span></label><label class="qcm-option"><input type="radio" name="qcm-2" value="1"><span><strong>B.</strong> Le commit sauvegarde le travail, avec un message.</span></label><label class="qcm-option"><input type="radio" name="qcm-2" value="2"><span><strong>C.</strong> C’est une photo souvenir du projet, avec une légende plus utile que « truc final FINAL 2 ».</span></label><label class="qcm-option"><input type="radio" name="qcm-2" value="3"><span><strong>D.</strong> Le commit enregistre la modification dans l’historique ; son message décrit ce qui change, par exemple « Précise le public du projet ».</span></label></fieldset><p class="qcm-status" role="status" aria-live="polite"></p><button type="button" class="nav-button qcm-next">Question suivante</button></div>
+<div class="slide qcm" data-qcm-question="3"><h1>Question 4 / 8</h1><fieldset><legend>Pour ajouter une page sans modifier directement la version principale, dans quel ordre utilisez-vous une issue, une branche et une pull request ?</legend><label class="qcm-option"><input type="radio" name="qcm-3" value="0"><span><strong>A.</strong> Issue pour décrire la tâche → branche → modifications et commit → pull request → relecture et fusion.</span></label><label class="qcm-option"><input type="radio" name="qcm-3" value="1"><span><strong>B.</strong> On écrit la mission, on prend une voie de garage et on demande le feu vert avant de rejoindre la voie principale.</span></label><label class="qcm-option"><input type="radio" name="qcm-3" value="2"><span><strong>C.</strong> On prépare le changement, puis on le partage avec le groupe.</span></label><label class="qcm-option"><input type="radio" name="qcm-3" value="3"><span><strong>D.</strong> On fusionne d’abord la pull request, puis on crée une branche ; l’issue enregistre la version des fichiers.</span></label></fieldset><p class="qcm-status" role="status" aria-live="polite"></p><button type="button" class="nav-button qcm-next">Question suivante</button></div>
+<div class="slide qcm" data-qcm-question="4"><h1>Question 5 / 8</h1><fieldset><legend>Que signifie MVP ? Quels sont les quatre éléments de sa formule ?</legend><label class="qcm-option"><input type="radio" name="qcm-4" value="0"><span><strong>A.</strong> Un Maximum de Versions Possibles : toutes les fonctionnalités prévues, livrées d’un coup.</span></label><label class="qcm-option"><input type="radio" name="qcm-4" value="1"><span><strong>B.</strong> Minimum Viable Product : une cible + un problème + une action centrale + un résultat observable.</span></label><label class="qcm-option"><input type="radio" name="qcm-4" value="2"><span><strong>C.</strong> Le plus petit vélo qui roule : pas besoin de klaxon connecté pour vérifier qu’on avance.</span></label><label class="qcm-option"><input type="radio" name="qcm-4" value="3"><span><strong>D.</strong> Une petite première version du produit.</span></label></fieldset><p class="qcm-status" role="status" aria-live="polite"></p><button type="button" class="nav-button qcm-next">Question suivante</button></div>
+<div class="slide qcm" data-qcm-question="5"><h1>Question 6 / 8</h1><fieldset><legend>Une belle page dont les boutons ne font rien est-elle un MVP ? Pourquoi ?</legend><label class="qcm-option"><input type="radio" name="qcm-5" value="0"><span><strong>A.</strong> Non, il manque quelque chose.</span></label><label class="qcm-option"><input type="radio" name="qcm-5" value="1"><span><strong>B.</strong> C’est une vitrine de boulangerie sans pain : jolie, mais on ne peut pas encore tester le sandwich.</span></label><label class="qcm-option"><input type="radio" name="qcm-5" value="2"><span><strong>C.</strong> Non : une personne doit pouvoir accomplir l’action centrale et obtenir un résultat permettant de tester l’usage.</span></label><label class="qcm-option"><input type="radio" name="qcm-5" value="3"><span><strong>D.</strong> Oui : une belle maquette suffit à prouver que le produit fonctionne.</span></label></fieldset><p class="qcm-status" role="status" aria-live="polite"></p><button type="button" class="nav-button qcm-next">Question suivante</button></div>
+<div class="slide qcm" data-qcm-question="6"><h1>Question 7 / 8</h1><fieldset><legend>Pour préparer un podcast, quelle action centrale et quel résultat observable choisiriez-vous ? Quelle fonction reporter ?</legend><label class="qcm-option"><input type="radio" name="qcm-6" value="0"><span><strong>A.</strong> Une fiche qu’on retrouve avant que le micro s’allume ; le robot qui fait le café aux invités attendra.</span></label><label class="qcm-option"><input type="radio" name="qcm-6" value="1"><span><strong>B.</strong> Aider à préparer les podcasts, puis améliorer l’outil.</span></label><label class="qcm-option"><input type="radio" name="qcm-6" value="2"><span><strong>C.</strong> Construire d’abord le paiement et les profils ; compter les couleurs de la page pour vérifier l’utilité de la fiche.</span></label><label class="qcm-option"><input type="radio" name="qcm-6" value="3"><span><strong>D.</strong> Créer et retrouver une fiche d’entretien ; vérifier qu’elle sert à préparer un échange ; reporter la transcription automatique.</span></label></fieldset><p class="qcm-status" role="status" aria-live="polite"></p><button type="button" class="nav-button qcm-next">Question suivante</button></div>
+<div class="slide qcm" data-qcm-question="7"><h1>Question 8 / 8</h1><fieldset><legend>Peut-on déposer un mot de passe, une clé API ou des données personnelles dans un dépôt privé ?</legend><label class="qcm-option"><input type="radio" name="qcm-7" value="0"><span><strong>A.</strong> Non : la consigne de la session 2 exclut ces informations des dépôts publics comme privés.</span></label><label class="qcm-option"><input type="radio" name="qcm-7" value="1"><span><strong>B.</strong> Oui : « privé » signifie que les secrets ne peuvent jamais être exposés.</span></label><label class="qcm-option"><input type="radio" name="qcm-7" value="2"><span><strong>C.</strong> Il faut faire attention à ce qu’on met dans le dépôt.</span></label><label class="qcm-option"><input type="radio" name="qcm-7" value="3"><span><strong>D.</strong> Un dépôt privé n’est pas un coffre-fort magique : on n’y colle pas les clés sous le paillasson.</span></label></fieldset><p class="qcm-status" role="status" aria-live="polite"></p><button type="button" class="nav-button qcm-next">Voir le bilan</button></div>
+<div class="slide qcm" id="qcm-summary">
+        <h1>Bilan du QCM</h1><p id="qcm-summary-status" role="status" aria-live="polite"></p>
+        <button type="button" class="nav-button" id="qcm-refresh">Actualiser les statistiques</button>
+        <div id="qcm-results"></div>
+        <button type="button" class="nav-button" id="qcm-another">Autre répondant sur cet appareil</button>
+        <button type="button" class="nav-button" id="qcm-continue">Continuer la séance</button>
+        </div>
+<link rel="stylesheet" href="qcm/quiz.css">
+
+        <div class="slide">
+            <h1>Planning de la séance</h1>
+            <div class="highlight">
+                <strong>18h30 – 18h40</strong> : Questionnaire de rappel de la session 2 et correction (10 min)<br>
+<strong>18h40 – 19h35</strong> : Maquettes, parcours et <span class="tooltip-trigger" data-tooltip="Conception permettant aux personnes en situation de handicap d&#x27;utiliser l&#x27;application sans gêne.">accessibilité</span> du <span class="tooltip-trigger" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l&#x27;idée.">MVP</span> (55 min)<br>
+<strong>19h35 – 19h50</strong> : Pause<br>
+<strong>19h50 – 20h10</strong> : Étape 1 : lire la capture avec l&#x27;<span class="tooltip-trigger" data-tooltip="Programme informatique capable de comprendre du langage naturel et d&#x27;engendrer du code.">IA</span><br>
+<strong>20h10 – 20h30</strong> : Étape 2 : lire le <span class="tooltip-trigger" data-tooltip="Dossier surveillé contenant tous les fichiers de votre projet et l&#x27;historique des versions.">dépôt</span> awesome<br>
+<strong>20h30 – 20h50</strong> : Étape 3 : comparer les sources<br>
+<strong>20h50 – 21h10</strong> : Étape 4 : vérifier trois outils en binôme<br>
+<strong>21h10 – 21h30</strong> : Étape 5 : publier outils.html
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Objectifs de la séance</h1>
+            <ul>
+                <li>Cartographier les écrans du <span class="tooltip-trigger" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l&#x27;idée.">MVP</span></li>
+<li>Rédiger des <span class="tooltip-trigger" data-tooltip="Descriptions écrites structurées des blocs d&#x27;un écran avant de le dessiner ou le coder.">wireframes textuels</span> actionnables</li>
+<li>Prévoir états vides, chargement, erreurs, confirmations</li>
+<li>Appliquer une checklist d&#x27;<span class="tooltip-trigger" data-tooltip="Conception permettant aux personnes en situation de handicap d&#x27;utiliser l&#x27;application sans gêne.">accessibilité</span> minimale</li>
+<li>Comparer deux sources et vérifier les conditions de trois outils</li>
+<li>Publier outils.html via une <span class="tooltip-trigger" data-tooltip="Piste de travail parallèle pour essayer une idée sans casser la version officielle.">branche</span>, une <span class="tooltip-trigger" data-tooltip="Action de rapatrier sur votre ordinateur le travail récent effectué par votre équipe.">pull</span> request et <span class="tooltip-trigger" data-tooltip="Service mondial rapide et gratuit pour héberger et sécuriser votre site web.">Cloudflare Pages</span></li>
+            </ul>
+            <div class="stats">
+                <strong>Fil rouge :</strong> chaque séance alimente le même projet <span class="tooltip-trigger" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l&#x27;idée.">MVP</span>, versionné dès la séance 1.
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Sobriété volontaire</h1>
+            <ul>
+                <li><span class="tooltip-trigger" data-tooltip="Ensemble des éléments visuels affichés à l&#x27;écran permettant à l&#x27;utilisateur d&#x27;interagir.">Interface</span> claire, <span class="tooltip-trigger" data-tooltip="Mise en page qui s&#x27;adapte automatiquement sur smartphone, tablette et grand écran.">responsive</span>, sans décor inutile.</li>
+<li>Chaque écran : une intention principale.</li>
+<li>Les états (vide, erreur, succès) font partie du produit.</li>
+<li><span class="tooltip-trigger" data-tooltip="Conception permettant aux personnes en situation de handicap d&#x27;utiliser l&#x27;application sans gêne.">Accessibilité</span> : contraste, clavier, libellés, cibles tactiles.</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1><span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l&#x27;assistant IA pour fabriquer un élément.">Prompt</span> séance 3 — UX/UI</h1>
+            <p>Copiez le <span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l&#x27;assistant IA pour fabriquer un élément.">prompt</span> dans votre <span class="tooltip-trigger" data-tooltip="Programme informatique dialoguant qui comprend vos demandes en français et propose du code.">assistant IA</span>. Remplacez les éléments entre crochets.</p>
+            <pre class="code-block">Agis comme un UX/UI designer et un développeur front-end.
+
+À partir de cette idée : [description], conçois l&#x27;expérience utilisateur du MVP.
+
+Produis :
+1. La carte des écrans ou pages nécessaires.
+2. Les wireframes textuels de chaque écran, avec la hiérarchie des contenus et les actions principales.
+3. Le parcours d&#x27;un nouvel utilisateur depuis l&#x27;arrivée jusqu&#x27;à la première action réussie.
+4. Les états vides, états de chargement, erreurs et confirmations à prévoir.
+5. Une mini-charte : palette accessible, typographies système, espacements, boutons et composants réutilisables.
+6. Une checklist d&#x27;accessibilité : contraste, navigation clavier, libellés, messages d&#x27;erreur, lecteur d&#x27;écran, taille des cibles tactiles.
+7. Des critères d&#x27;acceptation UX pour chaque écran.
+
+Reste volontairement sobre : propose une interface claire, responsive, sans éléments décoratifs inutiles. Décris les maquettes avec suffisamment de précision pour pouvoir les coder.</pre>
+        </div>
+
+        <div class="slide">
+            <h1>Cadre commun (à coller si besoin)</h1>
+            <div class="warning">
+                À ajouter en fin de <span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l&#x27;assistant IA pour fabriquer un élément.">prompt</span> pour ancrer le <span class="tooltip-trigger" data-tooltip="Espace de mémoire temporaire contenant les règles de votre projet et vos échanges récents.">contexte</span> formation et les contraintes de sécurité.
+            </div>
+            <pre class="code-block">Contexte : je suis en formation et je développe [nom du projet], une application [web/mobile] destinée à [public cible].
+
+Contraintes :
+- Explique chaque choix avec un vocabulaire accessible.
+- Procède étape par étape et attends ma validation entre les grandes étapes.
+- Ne génère pas de secret, clé API ou mot de passe dans le code.
+- Indique les prérequis, les commandes à exécuter et les fichiers à créer ou modifier.
+- Quand tu proposes du code, donne des blocs complets, testables, et précise où les placer.
+- Signale les risques de sécurité, de confidentialité et d&#x27;accessibilité.</pre>
+        </div>
+
+        <div class="slide">
+            <h1>Atelier pratique</h1>
+            <div class="exercise">
+                <ol>
+                    <li>Générer la carte d&#x27;écrans avec le <span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l&#x27;assistant IA pour fabriquer un élément.">prompt</span>.</li>
+<li>Valider le parcours « première action réussie ».</li>
+<li>Annoter 3 écrans prioritaires avec critères UX.</li>
+<li>Déposer les <span class="tooltip-trigger" data-tooltip="Descriptions écrites structurées des blocs d&#x27;un écran avant de le dessiner ou le coder.">wireframes textuels</span> dans /docs/ux.md.</li>
+                </ol>
+            </div>
+        </div>
+<div class="slide"><h1>Objectif</h1><h2>Exercice : faire l’inventaire des outils de vibe-coding</h2><p>Prérequis : dépôt GitHub connecté à Cloudflare Pages ; voir les annexes <a href="annexe-a-github-gitlab.html">Git</a> et <a href="annexe-b-cloudflare.html">Cloudflare</a>.</p>
+<p>Créer la page <code>outils.html</code> dans votre dépôt GitHub. Elle sera publiée automatiquement par Cloudflare Pages. Pour la remplir, vous fusionnez deux sources de nature différente :</p>
+<ul><li><strong>Source A</strong> : une capture d&#x27;écran d&#x27;un post X/Twitter (Himanshu Hingorani, 9 oct. 2026) intitulé « 25 vibe coding resources ». Fichier : <code>docs/Vibe-coding/Vibe-coding.png</code>.</li><li><strong>Source B</strong> : le dépôt GitHub <a href="https://github.com/Scap-Mehdi/awesome-vibecoding">awesome-vibecoding</a>. C&#x27;est une liste « awesome », vérifiée et datée, avec une version en français (<code>README.fr.md</code>).</li></ul>
+<p><a href="images/Vibe-coding.png">Ouvrir ou télécharger la capture du post X</a></p><img src="images/Vibe-coding.png" alt="Capture du post de Himanshu Hingorani : 25 vibe coding resources, utilisée comme source A de l’exercice" style="max-width:100%;height:auto"></div>
+<div class="slide"><h1>Étape 1 – Lire l&#x27;image avec l&#x27;IA (20 min)</h1><p>Donnez la capture à votre assistant IA avec ce prompt :</p>
+<blockquote class="exercise">Lis cette capture d&#x27;écran et extrais chaque ressource dans un tableau Markdown avec les colonnes : n°, nom, URL, description en français, catégorie (inspiration / composants UI / animation / design system / prompts).</blockquote>
+<p>Contrôle : il doit y avoir 25 lignes. Comparez avec l&#x27;image. L&#x27;IA a-t-elle oublié, inventé ou déformé une URL ?</p></div>
+<div class="slide"><h1>Étape 2 – Lire le dépôt awesome (20 min)</h1><blockquote class="exercise">Lis le README de https://github.com/Scap-Mehdi/awesome-vibecoding et liste les outils par tâche (Code, App &amp; UI, Context &amp; specs, Test &amp; review, Deploy &amp; run…) avec la colonne « Access / scope » et la date de vérification.</blockquote>
+<p>Repérez les <strong>changements de politique</strong> qui y sont signalés : accès retirés, outils arrêtés, passage au payant, bêtas gratuites, licences. Par exemple, la liste précise que l&#x27;accès à Gemini CLI par abonnement grand public a été retiré. Elle indique aussi qu&#x27;elle est passée de 156 à 40 outils après avoir écarté les produits arrêtés ou fermés aux nouveaux utilisateurs.</p>
+<div class="warning">Les chiffres et politiques cités sont ceux du document de l’exercice. Vérifiez le README actuel et datez vos constats : ils peuvent évoluer.</div></div>
+<div class="slide"><h1>Étape 3 – Comparer et garder un regard critique (20 min)</h1><div style='overflow-x:auto'><table style='width:100%;font-size:15px;text-align:left'><thead><tr><th scope='col'>Question</th><th scope='col'>Source A (post X)</th><th scope='col'>Source B (awesome)</th></tr></thead><tbody><tr><td>Qui écrit, dans quel but ?</td><td></td><td></td></tr><tr><td>Les informations sont-elles datées et sourcées ?</td><td></td><td></td></tr><tr><td>Le prix et les conditions d&#x27;accès sont-ils indiqués ?</td><td></td><td></td></tr><tr><td>Y a-t-il des liens d&#x27;intérêt ? (indice : la ressource n° 1 et la réponse de l&#x27;auteur sous son propre post)</td><td></td><td></td></tr><tr><td>Quels types d&#x27;outils couvre la liste ? (design/UI ou outils de code)</td><td></td><td></td></tr></tbody></table></div>
+<p>Observation attendue : les deux listes se complètent. Le post rassemble surtout des ressources de design et d&#x27;interface (inspiration, composants, animation). Le dépôt awesome rassemble surtout des outils pour coder, tester et déployer.</p></div>
+<div class="slide"><h1>Étape 4 – Vérifier la politique de 3 outils (20 min, en binôme)</h1><p>Chaque binôme choisit 3 outils, au moins un dans chaque source. Sur la page officielle de chaque outil, il relève :</p>
+<ul><li>gratuit, freemium ou payant, et les quotas ;</li><li>si un compte, une carte bancaire ou une clé API est nécessaire ;</li><li>la licence (open source ou non) et les droits sur ce que l&#x27;outil produit ;</li><li>l&#x27;utilisation de vos données ou de votre code pour l&#x27;entraînement des modèles ;</li><li>la date à laquelle vous avez vérifié, et le lien de la source.</li></ul></div>
+<div class="slide"><h1>Étape 5 – Publier (20 min)</h1><ol><li>Créer une branche <code>outils</code>.</li><li>Demander à l&#x27;IA de générer <code>outils.html</code> à partir du tableau, avec un filtre par catégorie.</li><li>Faire un commit et un push, puis vérifier l&#x27;URL d&#x27;aperçu Cloudflare.</li><li>Ouvrir une pull request, la faire relire par l&#x27;autre binôme, puis la fusionner. La version en production se met à jour.</li></ol></div>
+<div class="slide"><h1>Les 25 ressources du post (corrigé de l&#x27;étape 1)</h1><div style='overflow-x:auto'><table style='width:100%;font-size:15px;text-align:left'><thead><tr><th scope='col'>N°</th><th scope='col'>Ressource</th><th scope='col'>URL</th><th scope='col'>Catégorie</th></tr></thead><tbody><tr><td>1</td><td>Scrolltide</td><td><a href="https://scrolltide.co">scrolltide.co</a></td><td>Prompts + code (sites 3D / scroll)</td></tr><tr><td>2</td><td>Minimal Gallery</td><td><a href="https://minimal.gallery">minimal.gallery</a></td><td>Inspiration</td></tr><tr><td>3</td><td>Godly</td><td><a href="https://godly.website">godly.website</a></td><td>Inspiration</td></tr><tr><td>4</td><td>Refero Styles</td><td><a href="https://styles.refero.design">styles.refero.design</a></td><td>Design system / typographie</td></tr><tr><td>5</td><td>Component Gallery</td><td><a href="https://component.gallery">component.gallery</a></td><td>Design system</td></tr><tr><td>6</td><td>Mobbin</td><td><a href="https://mobbin.com">mobbin.com</a></td><td>Inspiration (parcours d&#x27;apps)</td></tr><tr><td>7</td><td>DESIGNmd</td><td><a href="https://designmd.ai">designmd.ai</a></td><td>Design system en Markdown pour agents</td></tr><tr><td>8</td><td>VibePrompt</td><td><a href="https://vibeprompts.dev">vibeprompts.dev</a></td><td>Prompts</td></tr><tr><td>9</td><td>21st.dev</td><td><a href="https://21st.dev">21st.dev</a></td><td>Composants UI (MCP)</td></tr><tr><td>10</td><td>Kinetics</td><td><a href="https://kinetics.colorion.co">kinetics.colorion.co</a></td><td>Animation</td></tr><tr><td>11</td><td>shadcn/ui</td><td><a href="https://ui.shadcn.com">ui.shadcn.com</a></td><td>Composants UI</td></tr><tr><td>12</td><td>Aceternity UI</td><td><a href="https://ui.aceternity.com">ui.aceternity.com</a></td><td>Composants UI animés</td></tr><tr><td>13</td><td>Magic UI</td><td><a href="https://magicui.design">magicui.design</a></td><td>Composants UI</td></tr><tr><td>14</td><td>Motion Primitives</td><td><a href="https://motion-primitives.com">motion-primitives.com</a></td><td>Animation</td></tr><tr><td>15</td><td>Uiverse</td><td><a href="https://uiverse.io">uiverse.io</a></td><td>Composants UI (communauté)</td></tr><tr><td>16</td><td>Shadcnblocks</td><td><a href="https://shadcnblocks.com">shadcnblocks.com</a></td><td>Blocs UI</td></tr><tr><td>17</td><td>mapcn</td><td><a href="https://mapcn.dev">mapcn.dev</a></td><td>Composants de carte</td></tr><tr><td>18</td><td>Awwwards</td><td><a href="https://awwwards.com">awwwards.com</a></td><td>Inspiration</td></tr><tr><td>19</td><td>Liquid Glass</td><td><a href="https://glass.samasante.com">glass.samasante.com</a></td><td>Effets UI</td></tr><tr><td>20</td><td>CSS Text Effects</td><td><a href="https://text-effects.colorion.co">text-effects.colorion.co</a></td><td>Animation texte</td></tr><tr><td>21</td><td>Circle Loaders</td><td><a href="https://circleloaders.dominikakissi.com">circleloaders.dominikakissi.com</a></td><td>Animation</td></tr><tr><td>22</td><td>Gradient Buttons</td><td><a href="https://gradientbuttons.colorion.co">gradientbuttons.colorion.co</a></td><td>Effets UI</td></tr><tr><td>23</td><td>Shadertoy</td><td><a href="https://shadertoy.com">shadertoy.com</a></td><td>Shaders</td></tr><tr><td>24</td><td>3Dicons</td><td><a href="https://3dicons.co">3dicons.co</a></td><td>Icônes 3D</td></tr><tr><td>25</td><td>Anime.js</td><td><a href="https://animejs.com">animejs.com</a></td><td>Bibliothèque d&#x27;animation JS</td></tr></tbody></table></div></div>
+
+        <div class="slide">
+            <h1>Livrables attendus</h1>
+            <ul>
+                <li>docs/ux.md (carte, <span class="tooltip-trigger" data-tooltip="Croquis simples sans couleurs montrant la place réservée aux textes et aux photos.">wireframes</span>, checklist a11y)</li>
+<li>Critères d&#x27;acceptation UX par écran</li>
+<li>Tableaux des deux sources et comparaison critique</li>
+<li>Fiches de vérification de trois outils, datées et sourcées</li>
+<li>outils.html avec filtre par catégorie, <span class="tooltip-trigger" data-tooltip="Adresse web unique tapée dans votre navigateur pour accéder directement à une page sur Internet.">URL</span> de production et <span class="tooltip-trigger" data-tooltip="Action de rapatrier sur votre ordinateur le travail récent effectué par votre équipe.">pull</span> request relue</li>
+            </ul>
+            <div class="highlight">
+                <strong>Pour la suite :</strong> Séance 4 — Cloudflare, formulaires et stockage R2 ou OVH.
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Récapitulatif</h1>
+            <h2>Séance 3 — Maquettes, UX et inventaire des outils</h2>
+            <ul>
+                <li>Cartographier les écrans du <span class="tooltip-trigger" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l&#x27;idée.">MVP</span></li>
+<li>Rédiger des <span class="tooltip-trigger" data-tooltip="Descriptions écrites structurées des blocs d&#x27;un écran avant de le dessiner ou le coder.">wireframes textuels</span> actionnables</li>
+<li>Prévoir états vides, chargement, erreurs, confirmations</li>
+<li>Appliquer une checklist d&#x27;<span class="tooltip-trigger" data-tooltip="Conception permettant aux personnes en situation de handicap d&#x27;utiliser l&#x27;application sans gêne.">accessibilité</span> minimale</li>
+<li>Comparer deux sources et vérifier les conditions de trois outils</li>
+<li>Publier outils.html via une <span class="tooltip-trigger" data-tooltip="Piste de travail parallèle pour essayer une idée sans casser la version officielle.">branche</span>, une <span class="tooltip-trigger" data-tooltip="Action de rapatrier sur votre ordinateur le travail récent effectué par votre équipe.">pull</span> request et <span class="tooltip-trigger" data-tooltip="Service mondial rapide et gratuit pour héberger et sécuriser votre site web.">Cloudflare Pages</span></li>
+            </ul>
+            <p>Conservez toutes les productions dans le <span class="tooltip-trigger" data-tooltip="Dossier surveillé par Git contenant tous les fichiers et l&#x27;historique complet du projet.">dépôt Git</span> dès maintenant.</p>
+        </div>
+    </div>
+
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Plein écran</button>
+    <a href="lexique.html" class="lexique-btn" title="Consulter le lexique FALC">Lexique</a>
+    <a href="index.html" class="home-btn">Sommaire</a>
+    <button class="pdf-btn" onclick="downloadPDF()">PDF</button>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">0</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prev-btn" onclick="changeSlide(-1)">Précédent</button>
+        <button class="nav-button" id="next-btn" onclick="changeSlide(1)">Suivant</button>
+        <span style="margin: 0 15px;">Flèches du clavier</span>
+    </div>
+
+    
+
+</body>
+</html>

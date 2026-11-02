@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Séance 6 — API et règles métier</title>
+<style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            background: #ffffff;
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            display: none;
+            position: relative;
+            overflow-y: auto;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            color: #ecf0f1;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            font-family: 'Yanone Kaffeesatz';
+        }
+
+        .title-slide h2, .title-slide h3, .title-slide p {
+            color: #e2e8f0;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+            color: #1e3a5f;
+        }
+
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; color: #0f766e; }
+        h3 { font-size: 1.4em; }
+
+        .highlight {
+            background-color: #0f766e;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .exercise {
+            background: #ecfdf5;
+            border-left: 5px solid #059669;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .code-block {
+            font-family: 'Ubuntu Mono', monospace;
+            background: #1e293b;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .stats {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #14b8a6;
+            transition: width 0.3s ease;
+            z-index: 1000;
+            width: 0%;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-button:hover { background: #0d9488; }
+        .nav-button:disabled { background: #7f8c8d; cursor: not-allowed; }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .lexique-btn {
+            position: fixed;
+            top: 20px;
+            right: 195px;
+            background: rgba(30, 58, 95, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .lexique-btn:hover { background: #1e3a5f; }
+
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 90px;
+            background: rgba(15, 118, 110, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .pdf-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        /* Tooltip Serhat Bek (https://codepen.io/serhatbek/pen/vYwKdaG) */
+        .tooltip-trigger {
+            position: relative;
+            display: inline;
+            cursor: help;
+            border-bottom: 2px dotted #0f766e;
+            color: inherit;
+            font-weight: inherit;
+            transition: color 0.15s ease;
+        }
+
+        .tooltip-trigger:hover,
+        .tooltip-trigger:focus-visible {
+            color: #0f766e;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background-color: #0f172a;
+            color: #f8fafc;
+            text-align: left;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: normal;
+            width: max-content;
+            max-width: 280px;
+            min-width: 170px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+
+        .tooltip.tooltip--bottom {
+            bottom: auto;
+            top: calc(100% + 8px);
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .tooltip.tooltip--bottom::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #0f172a transparent;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media print {
+            .fullscreen-btn, .home-btn, .pdf-btn, .lexique-btn, .navigation, .slide-counter, .progress-bar {
+                display: none !important;
+            }
+            body { background: white !important; overflow: visible !important; }
+            .slideshow-container { display: block !important; height: auto !important; }
+            .slide {
+                display: block !important;
+                page-break-after: always !important;
+                max-width: 100% !important;
+                height: auto !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="session5.html">← Séance 5</a><span class="local-nav-title">Séance 6 — API et règles métier</span><a href="session7.html">Séance 7 →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/session6.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slideshow-container">
+
+        <div class="slide title-slide active">
+            <h1>VIBE-CODING</h1>
+            <h2>Séance 6 : <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span> et règles métier</h2>
+            <h3><span class="tooltip-trigger" data-tooltip="Adresses web précises sur le serveur pour demander une action ou une donnée.">Endpoints</span>, autorisations, validations</h3>
+            <p><strong>Durée :</strong> 3 h · Application web &amp; mobile avec IA</p>
+        </div>
+
+        <div class="slide">
+            <h1>Planning de la séance</h1>
+            <div class="highlight">
+                <strong>18h30 – 18h45</strong> : Rappel <span class="tooltip-trigger" data-tooltip="Plan de construction listant les données stockées et les liaisons entre elles.">modèle de données</span><br>
+<strong>18h45 – 19h30</strong> : Inventaire des ressources<br>
+<strong>19h30 – 19h45</strong> : Pause<br>
+<strong>19h45 – 20h45</strong> : Contrats <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span> et sécurité<br>
+<strong>20h45 – 21h30</strong> : Tests prioritaires
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Objectifs de la séance</h1>
+            <ul>
+                <li>Définir les <span class="tooltip-trigger" data-tooltip="Adresses web précises sur le serveur pour demander une action ou une donnée.">endpoints</span> du <span class="tooltip-trigger" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l&#x27;idée.">MVP</span></li>
+<li>Préciser <span class="tooltip-trigger" data-tooltip="Numéros indiquant le résultat d&#x27;une demande au serveur (200 = succès, 404 = introuvable).">codes HTTP</span> et exemples <span class="tooltip-trigger" data-tooltip="Format de texte universel avec étiquettes et valeurs pour transmettre des fiches de données.">JSON</span></li>
+<li>Formaliser les règles d&#x27;autorisation</li>
+<li>Lister les <span class="tooltip-trigger" data-tooltip="Série de contrôles exécutés par ordinateur pour valider le code à chaque changement.">tests automatisés</span> prioritaires</li>
+            </ul>
+            <div class="stats">
+                <strong>Fil rouge :</strong> chaque séance alimente le même projet <span class="tooltip-trigger" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l&#x27;idée.">MVP</span>, versionné dès la séance 1.
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Sécurité dès la conception <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span></h1>
+            <ul>
+                <li><span class="tooltip-trigger" data-tooltip="Procédure vérifiant l&#x27;identité d&#x27;un membre avant d&#x27;ouvrir l&#x27;accès aux pages réservées.">Auth</span>, contrôle d&#x27;accès, validation des entrées.</li>
+<li>Limitation de débit si pertinent.</li>
+<li><span class="tooltip-trigger" data-tooltip="Action d&#x27;enregistrer chronologiquement les événements et erreurs du système.">Journalisation</span> sans données sensibles.</li>
+<li>Messages d&#x27;erreur sûrs (pas de fuite d&#x27;info).</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1><span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l&#x27;assistant IA pour fabriquer un élément.">Prompt</span> séance 6 — <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span></h1>
+            <p>Copiez le <span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l&#x27;assistant IA pour fabriquer un élément.">prompt</span> dans votre <span class="tooltip-trigger" data-tooltip="Programme informatique dialoguant qui comprend vos demandes en français et propose du code.">assistant IA</span>. Remplacez les éléments entre crochets.</p>
+            <pre class="code-block">Agis comme un développeur back-end attentif à la sécurité.
+
+À partir de ce modèle de données : [coller le modèle ou le lien vers sa description], définis l&#x27;API du MVP de [nom du projet].
+
+Pour chaque ressource, fournis :
+1. Les endpoints REST ou les opérations équivalentes.
+2. La méthode HTTP, le chemin, les paramètres, le corps de requête et les réponses attendues.
+3. Les codes d&#x27;état HTTP appropriés.
+4. Les règles d&#x27;autorisation : qui peut lire, créer, modifier ou supprimer.
+5. Les validations côté serveur et messages d&#x27;erreur sûrs.
+6. Un exemple de requête et de réponse JSON.
+7. Une liste de tests automatisés prioritaires.
+
+Ajoute une courte section sécurité couvrant authentification, contrôle d&#x27;accès, validation des entrées, limitation de débit, journalisation sans données sensibles et gestion des erreurs. Reste compatible avec [framework back-end].</pre>
+        </div>
+
+        <div class="slide">
+            <h1>Cadre commun (à coller si besoin)</h1>
+            <div class="warning">
+                À ajouter en fin de <span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l&#x27;assistant IA pour fabriquer un élément.">prompt</span> pour ancrer le <span class="tooltip-trigger" data-tooltip="Espace de mémoire temporaire contenant les règles de votre projet et vos échanges récents.">contexte</span> formation et les contraintes de sécurité.
+            </div>
+            <pre class="code-block">Contexte : je suis en formation et je développe [nom du projet], une application [web/mobile] destinée à [public cible].
+
+Contraintes :
+- Explique chaque choix avec un vocabulaire accessible.
+- Procède étape par étape et attends ma validation entre les grandes étapes.
+- Ne génère pas de secret, clé API ou mot de passe dans le code.
+- Indique les prérequis, les commandes à exécuter et les fichiers à créer ou modifier.
+- Quand tu proposes du code, donne des blocs complets, testables, et précise où les placer.
+- Signale les risques de sécurité, de confidentialité et d&#x27;accessibilité.</pre>
+        </div>
+
+        <div class="slide">
+            <h1>Atelier pratique</h1>
+            <div class="exercise">
+                <ol>
+                    <li>Générer le contrat <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span> à partir du modèle.</li>
+<li>Vérifier chaque Must a au moins un <span class="tooltip-trigger" data-tooltip="Adresse web précise sur le serveur pour demander une action ou une donnée.">endpoint</span>.</li>
+<li>Rédiger 5 tests prioritaires.</li>
+<li><span class="tooltip-trigger" data-tooltip="Enregistrer une nouvelle étape propre de votre code dans l&#x27;historique du projet.">Committer</span> docs/<span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">api</span>.md.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Livrables attendus</h1>
+            <ul>
+                <li>docs/<span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">api</span>.md</li>
+<li>Liste de tests <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span> prioritaires</li>
+<li>Section sécurité <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span></li>
+            </ul>
+            <div class="highlight">
+                <strong>Pour la suite :</strong> Séance 7 — <span class="tooltip-trigger" data-tooltip="Vérification stricte de l&#x27;identité d&#x27;un utilisateur par son identifiant et son mot de passe.">Authentification</span> et <span class="tooltip-trigger" data-tooltip="Statuts attribués aux utilisateurs (visiteur, membre, administrateur) pour régler leurs droits.">rôles</span>.
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>Récapitulatif</h1>
+            <h2>Séance 6 — <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span> et règles métier</h2>
+            <ul>
+                <li>Définir les <span class="tooltip-trigger" data-tooltip="Adresses web précises sur le serveur pour demander une action ou une donnée.">endpoints</span> du <span class="tooltip-trigger" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l&#x27;idée.">MVP</span></li>
+<li>Préciser <span class="tooltip-trigger" data-tooltip="Numéros indiquant le résultat d&#x27;une demande au serveur (200 = succès, 404 = introuvable).">codes HTTP</span> et exemples <span class="tooltip-trigger" data-tooltip="Format de texte universel avec étiquettes et valeurs pour transmettre des fiches de données.">JSON</span></li>
+<li>Formaliser les règles d&#x27;autorisation</li>
+<li>Lister les <span class="tooltip-trigger" data-tooltip="Série de contrôles exécutés par ordinateur pour valider le code à chaque changement.">tests automatisés</span> prioritaires</li>
+            </ul>
+            <p>Conservez toutes les productions dans le <span class="tooltip-trigger" data-tooltip="Dossier surveillé par Git contenant tous les fichiers et l&#x27;historique complet du projet.">dépôt Git</span> dès maintenant.</p>
+        </div>
+    </div>
+
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Plein écran</button>
+    <a href="lexique.html" class="lexique-btn" title="Consulter le lexique FALC">Lexique</a>
+    <a href="index.html" class="home-btn">Sommaire</a>
+    <button class="pdf-btn" onclick="downloadPDF()">PDF</button>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">0</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prev-btn" onclick="changeSlide(-1)">Précédent</button>
+        <button class="nav-button" id="next-btn" onclick="changeSlide(1)">Suivant</button>
+        <span style="margin: 0 15px;">Flèches du clavier</span>
+    </div>
+
+    
+
+</body>
+</html>

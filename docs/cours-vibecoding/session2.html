@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Séance 2 — Projet, GitHub et MVP</title>
+<style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            background: #ffffff;
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            display: none;
+            position: relative;
+            overflow-y: auto;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            color: #ecf0f1;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            font-family: 'Yanone Kaffeesatz';
+        }
+
+        .title-slide h2, .title-slide h3, .title-slide p {
+            color: #e2e8f0;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+            color: #1e3a5f;
+        }
+
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; color: #0f766e; }
+        h3 { font-size: 1.4em; }
+
+        .highlight {
+            background-color: #0f766e;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .exercise {
+            background: #ecfdf5;
+            border-left: 5px solid #059669;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .code-block {
+            font-family: 'Ubuntu Mono', monospace;
+            background: #1e293b;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .stats {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #14b8a6;
+            transition: width 0.3s ease;
+            z-index: 1000;
+            width: 0%;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-button:hover { background: #0d9488; }
+        .nav-button:disabled { background: #7f8c8d; cursor: not-allowed; }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .lexique-btn {
+            position: fixed;
+            top: 20px;
+            right: 195px;
+            background: rgba(30, 58, 95, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .lexique-btn:hover { background: #1e3a5f; }
+
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 90px;
+            background: rgba(15, 118, 110, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .pdf-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        /* Tooltip Serhat Bek (https://codepen.io/serhatbek/pen/vYwKdaG) */
+        .tooltip-trigger {
+            position: relative;
+            display: inline;
+            cursor: help;
+            border-bottom: 2px dotted #0f766e;
+            color: inherit;
+            font-weight: inherit;
+            transition: color 0.15s ease;
+        }
+
+        .tooltip-trigger:hover,
+        .tooltip-trigger:focus-visible {
+            color: #0f766e;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background-color: #0f172a;
+            color: #f8fafc;
+            text-align: left;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: normal;
+            width: max-content;
+            max-width: 280px;
+            min-width: 170px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+
+        .tooltip.tooltip--bottom {
+            bottom: auto;
+            top: calc(100% + 8px);
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .tooltip.tooltip--bottom::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #0f172a transparent;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+
+        /* --- Composants session 2 --- */
+        a { color: #0f766e; }
+        .slide a:focus-visible, .slide button:focus-visible, .slide input:focus-visible, .slide textarea:focus-visible {
+            outline: 3px solid rgba(20, 184, 166, 0.5);
+            outline-offset: 2px;
+        }
+
+        .subtitle { font-size: 1.15em; }
+
+        .goal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin: 25px 0;
+            text-align: left;
+        }
+        .goal-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.9em;
+        }
+        .goal-card strong {
+            display: block;
+            font-family: 'Yanone Kaffeesatz';
+            font-size: 1.3em;
+            font-weight: normal;
+            color: #5eead4;
+        }
+        .duration-badge {
+            display: inline-block;
+            background: #ea580c;
+            color: #fff;
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-weight: bold;
+        }
+
+        .toc { columns: 2; column-gap: 30px; padding-left: 20px; }
+        .toc li { margin-bottom: 6px; break-inside: avoid; }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .card {
+            background: #f1f5f9;
+            border-top: 4px solid #0f766e;
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 0.92em;
+        }
+        .card h3 { margin: 0 0 6px; color: #0f766e; }
+        .card p { margin: 0; }
+
+        .table-scroll { overflow-x: auto; margin: 12px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.82em; min-width: 640px; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; vertical-align: top; }
+        thead th { background: #1e3a5f; color: #fff; font-weight: bold; }
+        tbody th { background: #f1f5f9; color: #1e3a5f; }
+        tbody tr:nth-child(even) td { background: #f8fafc; }
+
+        .retenir {
+            background: #fffbeb;
+            border: 2px solid #d97706;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 15px 0;
+        }
+        .retenir::before {
+            content: "À retenir";
+            display: block;
+            font-family: 'Yanone Kaffeesatz';
+            font-size: 1.3em;
+            color: #b45309;
+        }
+        .retenir ul { margin: 6px 0 0; }
+
+        .steps { counter-reset: step; list-style: none; padding: 0; margin: 10px 0; }
+        .steps li {
+            counter-increment: step;
+            position: relative;
+            padding: 5px 0 5px 42px;
+            font-size: 0.95em;
+        }
+        .steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #0f766e;
+            color: #fff;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: sans-serif;
+            font-size: 0.85em;
+        }
+
+        .definition {
+            font-size: 1.15em;
+            border-left: 6px solid #0f766e;
+            background: #f0fdfa;
+            padding: 15px 18px;
+            margin: 15px 0;
+        }
+
+        .formula {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .formula .term { background: #ccfbf1; color: #134e4a; border-radius: 999px; padding: 6px 14px; }
+        .formula .term--main { background: #1e3a5f; color: #fff; }
+        .formula .op { color: #c2410c; font-size: 1.3em; }
+
+        .rule {
+            background: #c2410c;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }
+        .tags li { background: #fff7ed; border: 1px solid #fdba74; color: #9a3412; border-radius: 999px; padding: 4px 12px; font-size: 0.9em; }
+
+        /* Formulaires */
+        .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; align-items: start; }
+        .field { display: grid; gap: 4px; }
+        .field--full { grid-column: 1 / -1; }
+        fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+        legend, .field > label { font-weight: bold; font-size: 0.9em; color: #1e3a5f; padding: 0; }
+        .slide input[type="text"], .slide textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #94a3b8;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font: inherit;
+            font-size: 0.88em;
+        }
+        .slide textarea { min-height: 58px; resize: vertical; }
+        .choices { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+        .choice {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 0.88em;
+            cursor: pointer;
+        }
+        .choice input { accent-color: #0f766e; }
+        .hint { color: #475569; font-size: 0.85em; margin: 2px 0 0; }
+        .counter.is-over { color: #b91c1c; font-weight: bold; }
+
+        .action-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+        .btn {
+            border: none;
+            border-radius: 6px;
+            padding: 9px 16px;
+            font: inherit;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-primary { background: #0f766e; color: #fff; }
+        .btn-primary:hover { background: #0d9488; }
+        .btn-secondary { background: #e2e8f0; color: #1e3a5f; }
+        .btn-secondary:hover { background: #cbd5e1; }
+
+        .checklist { list-style: none; padding: 0; display: grid; gap: 8px; }
+        .checklist label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        .checklist input { width: 20px; height: 20px; accent-color: #0f766e; }
+        .checklist input:checked + span { text-decoration: line-through; color: #64748b; }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 80px;
+            transform: translateX(-50%) translateY(10px);
+            background: #0f766e;
+            color: #fff;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 14px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+            z-index: 2000;
+        }
+        .toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 760px) {
+            .slide { width: 94%; padding: 70px 18px 80px; font-size: 16px; height: 88vh; }
+            .goal-grid, .form-grid { grid-template-columns: 1fr; }
+            .toc { columns: 1; }
+            .lexique-btn, .home-btn { top: auto; bottom: 70px; }
+            .lexique-btn { right: auto; left: 20px; }
+            .home-btn { right: 20px; }
+            .pdf-btn { display: none; }
+        }
+
+        @media print {
+            .fullscreen-btn, .home-btn, .pdf-btn, .lexique-btn, .navigation, .slide-counter, .progress-bar, .toast, .action-row {
+                display: none !important;
+            }
+            body { background: white !important; overflow: visible !important; }
+            .slideshow-container { display: block !important; height: auto !important; }
+            .slide {
+                display: block !important;
+                page-break-after: always !important;
+                max-width: 100% !important;
+                height: auto !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="session1.html">← Séance 1</a><span class="local-nav-title">Séance 2 — Projet, GitHub et MVP</span><a href="session3.html">Séance 3 →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/session2.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+    <div class="progress-bar" id="progressBar" role="progressbar" aria-label="Progression dans le diaporama" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    <main class="slideshow-container">
+
+        <!-- 1. En-tête -->
+        <section class="slide title-slide active" id="accueil" aria-label="Diapositive de titre">
+            <h1>VIBE-CODING</h1>
+            <h2>Session 2 — Choisir son projet, créer son espace GitHub et définir son <span class="tooltip-trigger" tabindex="0" data-tooltip="Première version fonctionnelle minimale de votre projet avec les fonctions vitales pour tester l’idée.">MVP</span></h2>
+            <p class="subtitle">Cette séance transforme une idée générale en projet réalisable.</p>
+            <div class="goal-grid" role="list" aria-label="Objectifs de la séance">
+                <div class="goal-card" role="listitem"><strong>1 · Décider</strong>Choisir le format de son projet et son mode de travail.</div>
+                <div class="goal-card" role="listitem"><strong>2 · S’équiper</strong>Créer ou vérifier son compte GitHub et ouvrir son premier dépôt.</div>
+                <div class="goal-card" role="listitem"><strong>3 · Cadrer</strong>Définir un MVP réaliste, utile, testable et réalisable.</div>
+            </div>
+            <p><span class="duration-badge">Durée indicative : 3 h (dont 15 min de pause)</span></p>
+        </section>
+
+        <!-- Sommaire -->
+        <section class="slide" id="sommaire" aria-labelledby="t-sommaire">
+            <h1 id="t-sommaire">Sommaire</h1>
+            <nav aria-label="Sommaire de la séance">
+                <ol class="toc">
+                    <li><a href="#objectifs">Objectifs d’apprentissage</a></li>
+                    <li><a href="#deroule">Déroulé de la séance</a></li>
+                    <li><a href="#projet">Choisir son projet</a></li>
+                    <li><a href="#exercice">Exercice : décider de son projet</a></li>
+                    <li><a href="#github">GitHub : le minimum utile</a></li>
+                    <li><a href="#readme">Modèle de README</a></li>
+                    <li><a href="#mvp">Comprendre le MVP</a></li>
+                    <li><a href="#test-mvp">Test du MVP</a></li>
+                    <li><a href="#atelier-mvp">Atelier : fiche MVP</a></li>
+                    <li><a href="#restitution">Restitution</a></li>
+                    <li><a href="#livrables">Livrables avant la séance suivante</a></li>
+                </ol>
+            </nav>
+            <p class="hint">Navigation : flèches du clavier, boutons « Précédent / Suivant » ou clic sur la diapositive. Touche F : plein écran.</p>
+        </section>
+
+        <!-- 2. Objectifs d'apprentissage -->
+        <section class="slide" id="objectifs" aria-labelledby="t-objectifs">
+            <h1 id="t-objectifs">Objectifs d’apprentissage</h1>
+            <p>À la fin de la séance, chaque participant·e sait :</p>
+            <div class="card-grid">
+                <article class="card"><h3>Choisir un cadre</h3><p>Projet par séance, fil rouge ou hybride ; seul·e, à deux ou à trois.</p></article>
+                <article class="card"><h3>Créer un dépôt GitHub</h3><p>L’espace où le projet vivra pendant toute la formation.</p></article>
+                <article class="card"><h3>Rédiger un README</h3><p>Dire ce que fait le projet, pour qui, et où il en est.</p></article>
+                <article class="card"><h3>Parler GitHub</h3><p>Dépôt, commit, branche, issue, pull request : savoir de quoi on parle.</p></article>
+                <article class="card"><h3>Formuler un MVP</h3><p>Décrire la plus petite version utile et testable.</p></article>
+                <article class="card"><h3>Trier les fonctionnalités</h3><p>Distinguer l’indispensable de ce qui peut attendre.</p></article>
+                <article class="card"><h3>Démarrer</h3><p>Identifier une première tâche de construction concrète.</p></article>
+            </div>
+        </section>
+
+        <!-- 3. Déroulé -->
+        <section class="slide" id="deroule" aria-labelledby="t-deroule">
+            <h1 id="t-deroule">Déroulé de la séance</h1>
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Déroulé, défilable horizontalement">
+                <table>
+                    <thead>
+                        <tr><th scope="col">Séquence</th><th scope="col">Durée</th><th scope="col">Activité</th><th scope="col">Résultat attendu</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><th scope="row">Accueil et rappel de la séance précédente</th><td>10 min</td><td>Ce qu’on retient de la séance 1, questions restées ouvertes.</td><td>Le groupe reprend le fil et connaît les objectifs du jour.</td></tr>
+                        <tr><th scope="row">Choisir le format de son projet</th><td>25 min</td><td>Comparaison des formats et des modes de travail, fiche « Décider de son projet ».</td><td>Chaque personne a choisi un format et un mode de travail.</td></tr>
+                        <tr><th scope="row">Découvrir GitHub</th><td>20 min</td><td>Le vocabulaire minimum, montré sur un dépôt réel.</td><td>Les mots dépôt, commit, issue… ne font plus peur.</td></tr>
+                        <tr><th scope="row">Créer son compte et son dépôt</th><td>30 min</td><td>Compte, dépôt avec README, premier commit.</td><td>Chaque projet dispose d’un dépôt fonctionnel.</td></tr>
+                        <tr><th scope="row">Pause</th><td>15 min</td><td>—</td><td>On souffle.</td></tr>
+                        <tr><th scope="row">Comprendre le MVP</th><td>25 min</td><td>Définition, formule, exemple commenté, test en 7 questions.</td><td>Le groupe sait ce qu’un MVP contient… et ce qu’il ne contient pas.</td></tr>
+                        <tr><th scope="row">Atelier de cadrage du MVP</th><td>40 min</td><td>Fiche MVP seul·e ou en groupe, relecture croisée.</td><td>Une fiche MVP complète et une première tâche identifiée.</td></tr>
+                        <tr><th scope="row">Restitution et clôture</th><td>15 min</td><td>Pitch d’une minute par projet, rappel des livrables.</td><td>Chacun·e sait quoi préparer pour la séance suivante.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="hint">Total : 180 minutes.</p>
+        </section>
+
+        <!-- 4. Choisir son projet -->
+        <section class="slide" id="projet" aria-labelledby="t-projet">
+            <h1 id="t-projet">Choisir son projet</h1>
+            <div class="highlight">Le bon projet est assez motivant pour donner envie d’y revenir chaque semaine, et assez petit pour être réalisé, testé et amélioré pendant la formation.</div>
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Comparatif des formats de projet, défilable horizontalement">
+                <table>
+                    <thead>
+                        <tr><th scope="col">Format</th><th scope="col">Principe</th><th scope="col">Avantages</th><th scope="col">Points de vigilance</th><th scope="col">Adapté à qui ?</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><th scope="row">Un projet par séance</th><td>Un petit projet indépendant à chaque séance.</td><td>Démarrage facile, variété, droit à l’erreur.</td><td>Peu de profondeur ; progression difficile à montrer ; rien de durable à la fin.</td><td>Aux personnes qui veulent explorer, sans idée précise.</td></tr>
+                        <tr><th scope="row">Un projet fil rouge</th><td>Un seul projet enrichi de séance en séance.</td><td>Un vrai résultat à la fin ; motivation forte.</td><td>Blocage si l’idée est floue ou trop ambitieuse.</td><td>Aux personnes qui ont déjà un besoin concret.</td></tr>
+                        <tr><th scope="row">Un modèle hybride</th><td>Un fil rouge personnel + de petits exercices communs.</td><td>On pratique sur un cas simple, puis on applique à son projet.</td><td>Bien distinguer temps d’exercice et temps de projet.</td><td>À la plupart des participant·es.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="slide" aria-labelledby="t-hybride">
+            <h1 id="t-hybride">Notre recommandation : le modèle hybride</h1>
+            <div class="retenir">
+                <ul>
+                    <li>des <strong>exercices courts et communs</strong> à chaque séance, pour apprendre une notion sur un cas simple ;</li>
+                    <li>un <strong>projet fil rouge</strong> personnel ou collectif, où l’on réinvestit ce qu’on vient d’apprendre ;</li>
+                    <li>une <strong>progression par itérations</strong> : une petite amélioration à chaque séance ;</li>
+                    <li>la possibilité d’<strong>avancer même si l’idée finale</strong> n’est pas encore stabilisée.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="slide" aria-labelledby="t-modes">
+            <h1 id="t-modes">Seul·e, à deux ou à trois ?</h1>
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Comparatif des modes de travail, défilable horizontalement">
+                <table>
+                    <thead>
+                        <tr><th scope="col">Format</th><th scope="col">Atouts</th><th scope="col">Risques</th><th scope="col">Règle de fonctionnement conseillée</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><th scope="row">Projet individuel</th><td>Liberté totale, rythme personnel, décisions rapides.</td><td>Isolement, peu de retours, découragement en cas de blocage.</td><td>Faire relire son travail par une autre personne à chaque séance.</td></tr>
+                        <tr><th scope="row">Binôme</th><td>Entraide, complémentarité, motivation partagée.</td><td>Déséquilibre si l’une des deux personnes fait tout.</td><td>Alterner les rôles : l’une pilote l’IA, l’autre relit et teste, puis on échange.</td></tr>
+                        <tr><th scope="row">Petit groupe (3 max.)</th><td>Plus d’idées, répartition des tâches.</td><td>Discussions longues, décisions lentes, décrochage de certain·es.</td><td>Désigner une personne qui tranche ; répartir les tâches via les issues GitHub.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="warning" role="note">Pour conserver une dynamique de fabrication, les groupes ne devraient pas dépasser trois personnes.</div>
+        </section>
+
+        <!-- 5. Exercice -->
+        <section class="slide" id="exercice" aria-labelledby="t-exercice">
+            <h1 id="t-exercice">Exercice : décider de son projet</h1>
+            <form id="projectForm" class="exercise" aria-labelledby="t-exercice" onsubmit="return false;">
+                <div class="form-grid">
+                    <fieldset class="field">
+                        <legend>Quel format choisis-tu ?</legend>
+                        <div class="choices">
+                            <label class="choice"><input type="radio" name="format-projet" value="Projet fil rouge"> Projet fil rouge</label>
+                            <label class="choice"><input type="radio" name="format-projet" value="Mini-projet par séance"> Mini-projet par séance</label>
+                            <label class="choice"><input type="radio" name="format-projet" value="Modèle hybride"> Modèle hybride</label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="field">
+                        <legend>Quel est ton mode de travail ?</legend>
+                        <div class="choices">
+                            <label class="choice"><input type="radio" name="mode-travail" value="Individuel"> Individuel</label>
+                            <label class="choice"><input type="radio" name="mode-travail" value="Binôme"> Binôme</label>
+                            <label class="choice"><input type="radio" name="mode-travail" value="Groupe"> Groupe</label>
+                        </div>
+                    </fieldset>
+                    <div class="field"><label for="nom-projet">Nom provisoire du projet</label><input type="text" id="nom-projet" placeholder="Ex. : Prépa-Podcast"></div>
+                    <div class="field"><label for="public-cible">À qui s’adresse-t-il ?</label><input type="text" id="public-cible" placeholder="Ex. : personnes qui animent un podcast"></div>
+                    <div class="field field--full"><label for="probleme">Quel problème, besoin ou désir concerne-t-il ?</label><textarea id="probleme"></textarea></div>
+                    <div class="field"><label for="premiere-version">Quelle serait une première version très simple ?</label><textarea id="premiere-version"></textarea></div>
+                    <div class="field"><label for="hors-perimetre">Qu’est-ce que tu ne construiras pas pendant cette formation ?</label><textarea id="hors-perimetre"></textarea></div>
+                </div>
+                <div class="action-row">
+                    <button type="button" class="btn btn-primary" id="copyProjectButton">Copier ma fiche projet</button>
+                    <button type="button" class="btn btn-secondary" id="clearProjectButton">Effacer mes réponses</button>
+                </div>
+                <p class="hint">Réponses enregistrées uniquement dans ce navigateur, aucun envoi sur Internet.</p>
+            </form>
+        </section>
+
+        <!-- 6. GitHub -->
+        <section class="slide" id="github" aria-labelledby="t-github">
+            <h1 id="t-github">GitHub : le minimum utile</h1>
+            <div class="highlight">GitHub est à la fois un espace de sauvegarde, d’historique, de documentation et de collaboration pour votre projet.</div>
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Vocabulaire GitHub, défilable horizontalement">
+                <table>
+                    <thead><tr><th scope="col">Terme</th><th scope="col">Ce que ça veut dire</th></tr></thead>
+                    <tbody>
+                        <tr><th scope="row">Git</th><td>Un logiciel qui garde l’historique de toutes les versions de vos fichiers. On peut revenir en arrière à tout moment.</td></tr>
+                        <tr><th scope="row">GitHub</th><td>Un site web qui héberge des projets Git, pour les sauvegarder, les partager et y travailler à plusieurs.</td></tr>
+                        <tr><th scope="row">Compte</th><td>Votre identité sur GitHub, personnelle et durable.</td></tr>
+                        <tr><th scope="row">Dépôt / repository</th><td>Le dossier de votre projet sur GitHub : les fichiers et tout leur historique.</td></tr>
+                        <tr><th scope="row">README</th><td>Le fichier de présentation du projet, affiché sur la page d’accueil du dépôt.</td></tr>
+                        <tr><th scope="row">Commit</th><td>Un enregistrement daté d’une modification, avec un court message qui dit ce qui a changé.</td></tr>
+                        <tr><th scope="row">Branche</th><td>Une copie de travail pour essayer quelque chose sans abîmer la version principale.</td></tr>
+                        <tr><th scope="row">Issue</th><td>Une fiche pour noter une tâche, une idée ou un bug : la liste de choses à faire.</td></tr>
+                        <tr><th scope="row">Pull request</th><td>Une demande pour intégrer les changements d’une branche dans la version principale, après relecture.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="slide" aria-labelledby="t-depot">
+            <h1 id="t-depot">Créer son premier <span class="tooltip-trigger" tabindex="0" data-tooltip="Dossier surveillé contenant tous les fichiers de votre projet et l’historique des versions.">dépôt</span></h1>
+            <ol class="steps">
+                <li>Aller sur <strong>github.com</strong>.</li>
+                <li>Créer son compte (<em>Sign up</em>) ou l’ouvrir (<em>Sign in</em>).</li>
+                <li>Choisir un nom d’utilisateur lisible et durable : il apparaîtra dans l’adresse de vos projets.</li>
+                <li>Créer un nouveau dépôt : bouton <strong>+</strong> en haut à droite, puis <strong>New repository</strong>.</li>
+                <li>Choisir un nom court, en minuscules avec des tirets (ex. : <code>prepa-podcast</code>).</li>
+                <li>Cocher <strong>Add a README file</strong>.</li>
+                <li>Choisir <strong>Public</strong> ou <strong>Private</strong>.</li>
+                <li>Cliquer sur <strong>Create repository</strong>.</li>
+                <li>Faire un premier commit : modifier le README (crayon), coller le modèle, puis <strong>Commit changes</strong>.</li>
+            </ol>
+            <div class="warning" role="note"><strong>Public ou privé ?</strong> Un dépôt public est visible par tout le monde : pratique pour montrer son travail et demander de l’aide. Un dépôt privé n’est visible que par vous et les personnes invitées. Dans les deux cas : jamais de mot de passe, de clé d’API ni de données personnelles dans un dépôt.</div>
+            <div class="retenir">Un dépôt = un projet. Le README le présente, les commits racontent son histoire, les issues listent ce qu’il reste à faire.</div>
+        </section>
+
+        <!-- 7. README -->
+        <section class="slide" id="readme" aria-labelledby="t-readme">
+            <h1 id="t-readme">Modèle de <span class="tooltip-trigger" tabindex="0" data-tooltip="Fiche d’accueil essentielle d’un dépôt expliquant le but du projet et comment l’exécuter.">README</span></h1>
+            <p>À copier dans le fichier <code>README.md</code> de votre dépôt, puis à compléter.</p>
+            <pre class="code-block" id="readmeTemplate" tabindex="0" aria-label="Modèle de README au format Markdown"># Nom du projet
+
+## En une phrase
+Une phrase qui décrit clairement ce que fait le projet.
+
+## Pour qui ?
+Décrire la ou les personnes concernées.
+
+## Le problème ou besoin
+Quel problème le projet cherche-t-il à résoudre ?
+Quel usage ou désir veut-il rendre possible ?
+
+## MVP
+La première version permettra de :
+- …
+- …
+- …
+
+## Hors périmètre pour le moment
+- …
+- …
+- …
+
+## État du projet
+- [ ] Idée cadrée
+- [ ] MVP défini
+- [ ] Première version construite
+- [ ] Testée avec une ou plusieurs personnes
+- [ ] Améliorée</pre>
+            <div class="action-row">
+                <button type="button" class="btn btn-primary" id="copyReadmeButton">Copier le modèle</button>
+            </div>
+        </section>
+
+        <!-- 8. MVP -->
+        <section class="slide" id="mvp" aria-labelledby="t-mvp">
+            <h1 id="t-mvp">Comprendre le MVP</h1>
+            <p class="definition">Un <strong>MVP</strong> (<em lang="en">Minimum Viable Product</em>, produit minimum viable) est la plus petite version d’un produit qui permet à une personne réelle d’accomplir l’action centrale du projet, afin d’apprendre quelque chose de vérifiable sur son usage.</p>
+            <p>Ce n’est ni un produit bâclé, ni une maquette vide.</p>
+            <div class="card-grid">
+                <article class="card"><h3>Minimum</h3><p>Retirer ce qui n’est pas nécessaire à l’action centrale.</p></article>
+                <article class="card"><h3>Viable</h3><p>L’outil doit vraiment fonctionner, pas seulement en avoir l’air.</p></article>
+                <article class="card"><h3>Produit</h3><p>Une personne réelle doit pouvoir l’utiliser.</p></article>
+            </div>
+        </section>
+
+        <section class="slide" aria-labelledby="t-formule">
+            <h1 id="t-formule">La formule du MVP</h1>
+            <p class="formula" role="img" aria-label="MVP égale une cible plus un problème plus une action centrale plus un résultat observable">
+                <span class="term term--main">MVP</span><span class="op" aria-hidden="true">=</span>
+                <span class="term">une cible</span><span class="op" aria-hidden="true">+</span>
+                <span class="term">un problème</span><span class="op" aria-hidden="true">+</span>
+                <span class="term">une action centrale</span><span class="op" aria-hidden="true">+</span>
+                <span class="term">un résultat observable</span>
+            </p>
+            <h2>Exemple : préparer des entretiens de podcast</h2>
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Exemple de MVP, défilable horizontalement">
+                <table>
+                    <thead><tr><th scope="col">Élément</th><th scope="col">Exemple</th></tr></thead>
+                    <tbody>
+                        <tr><th scope="row">Cible</th><td>Des personnes qui préparent des entretiens de podcast.</td></tr>
+                        <tr><th scope="row">Problème</th><td>Leurs notes, questions et sources sont dispersées.</td></tr>
+                        <tr><th scope="row">Action centrale</th><td>Créer et consulter une fiche d’entretien structurée.</td></tr>
+                        <tr><th scope="row">Résultat observable</th><td>Une fiche est réellement utilisée pour préparer un échange.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="slide" aria-labelledby="t-idee">
+            <h1 id="t-idee">De l’idée large au bon MVP</h1>
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Comparatif de l’idée large au bon MVP, défilable horizontalement">
+                <table>
+                    <thead><tr><th scope="col">Niveau</th><th scope="col">Exemple (podcast)</th><th scope="col">Pourquoi</th></tr></thead>
+                    <tbody>
+                        <tr><th scope="row">Idée large</th><td>« Un outil pour mieux préparer ses podcasts. »</td><td>Motivant, mais trop vague : on ne sait pas quoi construire.</td></tr>
+                        <tr><th scope="row">Produit complet imaginé</th><td>Recherche automatique de sources, fiches, agenda des invité·es, transcription, résumé par IA, partage d’équipe, application mobile.</td><td>Utile pour rêver, impossible à construire en quelques séances.</td></tr>
+                        <tr><th scope="row">Mauvais MVP</th><td>Une belle page d’accueil dont les boutons ne font rien, ou un chatbot qui « trouve des idées de questions ».</td><td>Rien n’est vraiment utilisable ; on n’apprend rien sur le besoin.</td></tr>
+                        <tr><th scope="row">Bon MVP</th><td>Une page où l’on crée une fiche (invité·e, angle, 10 questions, sources) qu’on retrouve et relit avant l’enregistrement.</td><td>Petit, fonctionnel, testable dès la semaine prochaine.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="retenir">Un MVP répond à une seule question : « Une vraie personne peut-elle accomplir l’action centrale, et est-ce que ça l’aide ? »</div>
+        </section>
+
+        <!-- 9. Test du MVP -->
+        <section class="slide" id="test-mvp" aria-labelledby="t-test">
+            <h1 id="t-test">Test du MVP</h1>
+            <ol class="steps">
+                <li>Qui utilisera cette première version ?</li>
+                <li>Quel problème concret cette personne rencontre-t-elle ?</li>
+                <li>Quelle est l’unique action qu’elle doit pouvoir accomplir ?</li>
+                <li>Quel résultat lui prouve que le produit est utile ?</li>
+                <li>Que peut-on supprimer sans empêcher cette action ?</li>
+                <li>Peut-on montrer ou tester une version dans le temps disponible ?</li>
+                <li>Quelle hypothèse apprend-on à vérifier grâce à cette version ?</li>
+            </ol>
+            <p class="rule">Limitez votre MVP à trois fonctionnalités indispensables maximum.</p>
+        </section>
+
+        <section class="slide" aria-labelledby="t-reporter">
+            <h1 id="t-reporter">Ce qu’il vaut mieux reporter</h1>
+            <p>Ces fonctions sont tentantes, mais elles prennent du temps, ajoutent des risques et sont rarement nécessaires pour vérifier qu’un besoin est réel :</p>
+            <ul class="tags">
+                <li>authentification</li>
+                <li>paiement</li>
+                <li>profils</li>
+                <li>partage social</li>
+                <li>notifications</li>
+                <li>synchronisation</li>
+                <li>application mobile</li>
+                <li>IA ajoutée sans besoin utilisateur précis</li>
+            </ul>
+            <div class="retenir">Reporter n’est pas renoncer : ces fonctions vont dans la rubrique « Hors périmètre pour le moment » du README.</div>
+        </section>
+
+        <!-- 10. Atelier fiche MVP -->
+        <section class="slide" id="atelier-mvp" aria-labelledby="t-atelier">
+            <h1 id="t-atelier">Atelier : fiche MVP</h1>
+            <form id="mvpForm" class="exercise" aria-labelledby="t-atelier" onsubmit="return false;">
+                <div class="form-grid">
+                    <div class="field"><label for="mvp-nom">Nom provisoire</label><input type="text" id="mvp-nom"></div>
+                    <div class="field"><label for="mvp-public">Pour qui ?</label><input type="text" id="mvp-public"></div>
+                    <div class="field"><label for="mvp-probleme">Le problème</label><textarea id="mvp-probleme"></textarea></div>
+                    <div class="field"><label for="mvp-promesse">La promesse</label><textarea id="mvp-promesse" placeholder="Ce que l’outil apporte, en une phrase."></textarea></div>
+                    <div class="field"><label for="mvp-action">Action principale</label><textarea id="mvp-action"></textarea></div>
+                    <div class="field"><label for="mvp-scenario">Scénario d’usage</label><textarea id="mvp-scenario" placeholder="Quand…, je veux…, afin de…"></textarea></div>
+                    <div class="field">
+                        <label for="mvp-fonctions">Fonctionnalités indispensables (3 max., une par ligne)</label>
+                        <textarea id="mvp-fonctions" aria-describedby="mvp-fonctions-compteur"></textarea>
+                        <p class="hint counter" id="mvp-fonctions-compteur" aria-live="polite">0 / 3 fonctionnalité</p>
+                    </div>
+                    <div class="field"><label for="mvp-report">Fonctionnalités à reporter</label><textarea id="mvp-report"></textarea></div>
+                    <div class="field"><label for="mvp-critere">Critère de réussite</label><textarea id="mvp-critere"></textarea></div>
+                    <div class="field"><label for="mvp-premiere-tache">Première tâche de construction</label><textarea id="mvp-premiere-tache"></textarea></div>
+                </div>
+                <div class="action-row">
+                    <button type="button" class="btn btn-primary" id="copyMvpButton">Copier ma fiche MVP</button>
+                    <button type="button" class="btn btn-secondary" id="clearMvpButton">Effacer mes réponses</button>
+                </div>
+                <p class="hint">La fiche copiée (Markdown) peut être collée dans une issue GitHub ou dans le README.</p>
+            </form>
+        </section>
+
+        <!-- 11. Restitution -->
+        <section class="slide" id="restitution" aria-labelledby="t-restitution">
+            <h1 id="t-restitution">Restitution</h1>
+            <p>Chaque personne ou groupe présente son projet en <strong>une minute</strong> :</p>
+            <pre class="code-block">Nous construisons [nom] pour [public].
+Le problème est [problème].
+Dans notre MVP, la personne pourra [action principale].
+Nous ne construisons pas encore [éléments exclus].
+Notre première étape est [action de construction].</pre>
+            <div class="stats">Le reste du groupe peut poser une seule question : « Qu’est-ce qu’on pourrait encore enlever ? »</div>
+        </section>
+
+        <!-- 12. Livrables -->
+        <section class="slide" id="livrables" aria-labelledby="t-livrables">
+            <h1 id="t-livrables"><span class="tooltip-trigger" tabindex="0" data-tooltip="Documents ou travaux concrets remis pour prouver l’avancement réel du projet.">Livrables</span> avant la séance suivante</h1>
+            <ul class="checklist" id="deliverables" aria-label="Livrables à cocher">
+                <li><label><input type="checkbox" id="livrable-compte"> <span>Un compte GitHub actif</span></label></li>
+                <li><label><input type="checkbox" id="livrable-depot"> <span>Un dépôt GitHub créé</span></label></li>
+                <li><label><input type="checkbox" id="livrable-readme"> <span>Un README renseigné</span></label></li>
+                <li><label><input type="checkbox" id="livrable-fiche"> <span>Une fiche MVP complétée</span></label></li>
+                <li><label><input type="checkbox" id="livrable-issue"> <span>Une première issue créée dans GitHub</span></label></li>
+                <li><label><input type="checkbox" id="livrable-tache"> <span>Une première tâche de construction définie</span></label></li>
+                <li><label><input type="checkbox" id="livrable-prototype"> <span>Si possible, un début de prototype</span></label></li>
+            </ul>
+        </section>
+
+        <section class="slide title-slide" aria-labelledby="t-conclusion">
+            <h1 id="t-conclusion">Pour conclure</h1>
+            <p class="subtitle">Un bon projet de vibe-coding ne commence pas par une technologie ou une longue liste de fonctionnalités. Il commence par une situation d’usage précise, une première version volontairement limitée et la capacité d’itérer à partir de ce qui fonctionne réellement.</p>
+            <p><strong>Pour la suite :</strong> Séance 3 — Maquettes et expérience utilisateur.</p>
+        </section>
+    </main>
+
+    <button class="fullscreen-btn" type="button" onclick="toggleFullscreen()">Plein écran</button>
+    <a href="lexique.html" class="lexique-btn" title="Consulter le lexique FALC">Lexique</a>
+    <a href="index.html" class="home-btn">Sommaire</a>
+    <button class="pdf-btn" type="button" onclick="downloadPDF()">PDF</button>
+    <div class="slide-counter" aria-live="polite">
+        <span id="current-slide">1</span> / <span id="total-slides">0</span>
+    </div>
+
+    <nav class="navigation" aria-label="Navigation entre les diapositives">
+        <button class="nav-button" type="button" id="prev-btn" onclick="changeSlide(-1)">Précédent</button>
+        <button class="nav-button" type="button" id="next-btn" onclick="changeSlide(1)">Suivant</button>
+        <span style="margin: 0 15px;">Flèches du clavier</span>
+    </nav>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    
+
+</body>
+</html>

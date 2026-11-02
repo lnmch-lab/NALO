@@ -1,0 +1,1207 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Séance 1 — Découverte, cadre & méthode</title>
+<style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide {
+            background: #ffffff;
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            display: none;
+            position: relative;
+            overflow-y: auto;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .title-slide h1 {
+            color: #ecf0f1;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            font-family: 'Yanone Kaffeesatz';
+        }
+
+        .title-slide h2, .title-slide h3, .title-slide p {
+            color: #e2e8f0;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+            color: #1e3a5f;
+        }
+
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; color: #0f766e; }
+        h3 { font-size: 1.4em; }
+
+        .highlight {
+            background-color: #0f766e;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .exercise {
+            background: #ecfdf5;
+            border-left: 5px solid #059669;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff7ed;
+            border-left: 5px solid #ea580c;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .code-block {
+            font-family: 'Ubuntu Mono', monospace;
+            background: #1e293b;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .stats {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #14b8a6;
+            transition: width 0.3s ease;
+            z-index: 1000;
+            width: 0%;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-button:hover { background: #0d9488; }
+        .nav-button:disabled { background: #7f8c8d; cursor: not-allowed; }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .lexique-btn {
+            position: fixed;
+            top: 20px;
+            right: 195px;
+            background: rgba(30, 58, 95, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+        .lexique-btn:hover { background: #1e3a5f; }
+
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 90px;
+            background: rgba(15, 118, 110, 0.95);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .pdf-btn {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        /* Tooltip Serhat Bek (https://codepen.io/serhatbek/pen/vYwKdaG) */
+        .tooltip-trigger {
+            position: relative;
+            display: inline;
+            cursor: help;
+            border-bottom: 2px dotted #0f766e;
+            color: inherit;
+            font-weight: inherit;
+            transition: color 0.15s ease;
+        }
+
+        .tooltip-trigger:hover,
+        .tooltip-trigger:focus-visible {
+            color: #0f766e;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background-color: #0f172a;
+            color: #f8fafc;
+            text-align: left;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.4;
+            white-space: normal;
+            width: max-content;
+            max-width: 280px;
+            min-width: 170px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+        }
+
+        .tooltip.tooltip--bottom {
+            bottom: auto;
+            top: calc(100% + 8px);
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .tooltip.tooltip--bottom::after {
+            top: auto;
+            bottom: 100%;
+            border-color: transparent transparent #0f172a transparent;
+        }
+
+        .tooltip.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        
+        /* Phase badges */
+        .badge-phase {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        .badge-phase.phase-accueil {
+            background: #f0fdf4;
+            color: #166534;
+            border-color: #86efac;
+        }
+        .badge-phase.phase-brise-glace {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fcd34d;
+        }
+        .badge-phase.phase-histoire {
+            background: #eff6ff;
+            color: #1e40af;
+            border-color: #93c5fd;
+        }
+        .badge-phase.phase-outils {
+            background: #f5f3ff;
+            color: #5b21b6;
+            border-color: #c4b5fd;
+        }
+        .badge-phase.phase-pause {
+            background: #fdf2f8;
+            color: #9d174d;
+            border-color: #fbcfe8;
+        }
+        .badge-phase.phase-pratique {
+            background: #ecfdf5;
+            color: #065f46;
+            border-color: #6ee7b7;
+        }
+        .badge-phase.phase-cloture {
+            background: #f8fafc;
+            color: #334155;
+            border-color: #cbd5e1;
+        }
+
+        @media print {
+            .fullscreen-btn, .home-btn, .pdf-btn, .lexique-btn, .navigation, .slide-counter, .progress-bar {
+                display: none !important;
+            }
+            body { background: white !important; overflow: visible !important; }
+            .slideshow-container { display: block !important; height: auto !important; }
+            .slide {
+                display: block !important;
+                page-break-after: always !important;
+                max-width: 100% !important;
+                height: auto !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+<style>
+/* --- Mise en lecture locale (ajout) --- */
+html { scroll-behavior: smooth; }
+body { overflow: auto !important; height: auto !important; min-height: 100vh; }
+.slideshow-container { display: block !important; height: auto !important; padding: 28px 16px 60px !important; }
+.slide { display: block !important; position: static !important; opacity: 1 !important;
+  transform: none !important; animation: none !important; margin: 0 auto 28px !important;
+  width: 92% !important; max-width: 900px !important; height: auto !important; }
+.progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
+nav.slide-nav, .nav-button { display: none !important; }
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+  backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
+  gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a:hover { text-decoration: underline; }
+.local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
+.local-nav .sep { color: #475569; }
+.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.answer-gate, .answer-unlocked { display: none !important; }
+.protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
+  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  cursor: default; margin-bottom: 6px; }
+.protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
+</style>
+</head>
+<body>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="local-nav-title">Séance 1 — Découverte, cadre & méthode</span><a href="session2.html">Séance 2 →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/session1.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slideshow-container">
+        <!-- DIAPO 1 : TITRE -->
+        <div class="slide title-slide active">
+            <h1>VIBE-CODING</h1>
+            <h2>Séance 1 : Découverte, Cadre &amp; Méthode</h2>
+            <h3>Comprendre le <span class="tooltip-trigger" data-tooltip="Programmation assistée par intelligence artificielle où vous formulez vos besoins en langage naturel.">vibe-coding</span>, poser le cadre d'apprentissage et réussir un premier prototype</h3>
+            <p><strong>Durée :</strong> 3 h · Cours Municipaux d'Adultes (SCAP Paris)</p>
+        </div>
+
+        <!-- DIAPO 2 : PLANNING ÉTENDU PLEINE PAGE AVEC CAPTURE D'ÉCRAN SCAP -->
+        <div class="slide">
+            <div class="badge-phase phase-accueil">Phase 1 : Accueil &amp; cadre</div>
+            <h1 style="margin-top: 4px; margin-bottom: 14px;">Programme détaillé de la séance (18h30 – 21h30)</h1>
+            <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 20px; align-items: start;">
+                <div>
+                    <div class="highlight" style="font-size: 14.5px; line-height: 1.6; padding: 15px 18px; margin: 0 0 12px 0;">
+                        <div style="margin-bottom: 5px;"><strong>18h30 – 18h50</strong> · <span style="color: #a7f3d0;">Accueil &amp; cadre :</span> Règles du distanciel SCAP &amp; contrat pédagogique</div>
+                        <div style="margin-bottom: 5px;"><strong>18h50 – 19h05</strong> · <span style="color: #fed7aa;">Brise-glace :</span> Présentation mutuelle &amp; mini-projet d'équipe en sous-groupes Zoom</div>
+                        <div style="margin-bottom: 5px;"><strong>19h05 – 19h15</strong> · <span style="color: #fed7aa;">Débrief :</span> Restitution des 4 rôles et dynamique collective (10 min)</div>
+                        <div style="margin-bottom: 5px;"><strong>19h15 – 19h30</strong> · <span style="color: #bfdbfe;">Anthologie de l'IA :</span> Les 4 actes historiques &amp; genèse du Vibe-Coding</div>
+                        <div style="margin-bottom: 5px;"><strong>19h30 – 19h45</strong> · <span style="color: #ddd6fe;">Outils pratiques :</span> Présentation du Web Sandbox &amp; assistants conversationnels</div>
+                        <div style="margin-bottom: 5px;"><strong>19h45 – 20h00</strong> · <span style="color: #fbcfe8;">Pause (15 min) :</span> Repos des yeux, café et aération</div>
+                        <div style="margin-bottom: 5px;"><strong>20h00 – 20h15</strong> · <span style="color: #a7f3d0;">Exercice réflexif :</span> Cadrer son intention au stylo sur le carnet sans écran</div>
+                        <div style="margin-bottom: 5px;"><strong>20h15 – 20h45</strong> · <span style="color: #a7f3d0;">Atelier pratique :</span> Bac à sable web en direct (zéro installation locale requise)</div>
+                        <div style="margin-bottom: 5px;"><strong>20h45 – 21h10</strong> · <span style="color: #a7f3d0;">Démonstration live :</span> De l'idée au Web déployé (workflow complet en SVG)</div>
+                        <div><strong>21h10 – 21h30</strong> · <span style="color: #e2e8f0;">Clôture :</span> Bilan de séance, conseils d'organisation (ratio 1:2) &amp; forum</div>
+                    </div>
+                    <div style="background: #f1f5f9; border-left: 4px solid #0f766e; padding: 10px 14px; font-size: 13.5px; color: #334155; border-radius: 4px;">
+                        💡 <strong>Principe de la séance :</strong> Aucune installation technique complexe ce soir — nous privilégions la compréhension de la méthode, la pratique immédiate dans le navigateur et l'ancrage manuscrit au stylo.
+                    </div>
+                </div>
+                <div>
+                    <div style="background: #ffffff; border: 2px solid #0f766e; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.12);">
+                        <img src="/images/cours/vibe-coding/planning_seance1.png" onerror="this.onerror=null; this.src='images/planning_seance1.png';" alt="Règles du distanciel SCAP : Prérequis techniques &amp; Règles de la classe" style="width: 100%; height: auto; display: block; object-fit: contain;">
+                        <div style="padding: 7px 10px; background: #0f766e; color: white; font-size: 12px; text-align: center; font-weight: bold;">
+                            Règles officielles du distanciel au SCAP (Prérequis &amp; Classe)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIAPO 3 : INTRODUCTION & ENGAGEMENT -->
+        <div class="slide">
+            <div class="badge-phase phase-accueil">Phase 1 : Accueil &amp; cadre</div>
+            <h1>Introduction à la formation : Découvrir et s'engager</h1>
+            <div class="warning">
+                <strong>Une méthode révolutionnaire mais exigeante :</strong> Le Vibe-Coding décuple la vitesse mais exige rigueur, méthode et engagement personnel.
+            </div>
+            <ul>
+                <li><strong>Découvrir sans barrière technique :</strong> vivre dès ce soir l'expérience concrète du <span class="tooltip-trigger" data-tooltip="Programmation assistée par intelligence artificielle où vous formulez vos besoins en langage naturel.">vibe-coding</span> sans bloquer sur des lignes de commande ou des installations complexes.</li>
+                <li><strong>Comprendre l'engagement :</strong> mesurer l'effort réel exigé pour concevoir, structurer et déployer une application complète en 15 séances.</li>
+                <li><strong>Tester son envie :</strong> vérifier que la pédagogie active par projets correspond pleinement à vos objectifs professionnels ou personnels.</li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 4 : CADRE DE SÉCURITÉ & RECOMMANDATIONS DOCS/FORMATEUR -->
+        <div class="slide">
+            <div class="badge-phase phase-accueil">Phase 1 : Accueil &amp; cadre</div>
+            <h1>Cadre de sécurité, respect du groupe &amp; règles SCAP</h1>
+            
+            <div class="highlight" style="background-color: #991b1b; margin-bottom: 16px;">
+                <strong>Règle fondamentale absolue : Ne pas enregistrer ma voix ni filmer la classe</strong>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #991b1b; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #991b1b; margin-bottom: 6px;">🛡️ Espace de confiance &amp; Droit à l'image</div>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.5; color: #334155;">
+                        <li><strong>Libre parole et droit à l'erreur :</strong> La visioconférence doit être un lieu sécurisant où chacun ose se tromper, questionner et expérimenter sans crainte d'être diffusé.</li>
+                        <li><strong>Aucune captation autorisée :</strong> Il est strictement interdit d'enregistrer le son, l'image du formateur ou des participants.</li>
+                        <li><strong>Prise de notes au stylo :</strong> Le carnet papier personnel est votre support exclusif et pérenne de mémorisation.</li>
+                    </ul>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #0f766e; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #0f766e; margin-bottom: 6px;">💻 Règles impératives du distanciel (SCAP)</div>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.5; color: #334155;">
+                        <li><strong>Ordinateur ou tablette obligatoire :</strong> Les téléphones portables ne sont pas acceptés pour suivre le cours.</li>
+                        <li><strong>Caméra et micro toujours allumés :</strong> Condition essentielle d'assiduité, de suivi et de dynamique collective.</li>
+                        <li><strong>Environnement calme :</strong> Isolé de toute perturbation ou bruit extérieur.</li>
+                        <li><strong>Assiduité et ponctualité :</strong> Présence requise dès 18h30 précises pour chaque séance.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="exercise" style="margin: 0; padding: 12px 16px; font-size: 14px;">
+                <strong>Plateforme officielle Scapenligne (Moodle du SCAP) :</strong> Votre espace de cours regroupe l'ensemble des ressources, les liens de visioconférence Zoom, les activités hebdomadaires et le forum d'entraide asynchrone.
+            </div>
+        </div>
+
+        <!-- DIAPO 5 : POURQUOI ÉCRIRE AU STYLO -->
+        <div class="slide">
+            <div class="badge-phase phase-accueil">Phase 1 : Accueil &amp; cadre</div>
+            <h1>Pourquoi écrire au stylo ? (Carnet de bord)</h1>
+            <div class="exercise">
+                <strong>Le stylo précède toujours le <span class="tooltip-trigger" data-tooltip="Consigne écrite précise que vous donnez à l'assistant IA pour fabriquer un élément.">prompt</span>.</strong>
+            </div>
+            <ul>
+                <li>Face à la vitesse des générateurs de code, l'esprit humain est vite submergé par une fausse impression de facilité.</li>
+                <li>Écrire à la main oblige à <strong>ralentir</strong>, structurer sa pensée et dessiner l'architecture avant d'interroger la machine.</li>
+                <li>Votre carnet recueille vos intentions, vos schémas de données, vos règles métier et le journal des prompts qui fonctionnent.</li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 6 : L'ÉQUATION 45H = 150H -->
+        <div class="slide">
+            <div class="badge-phase phase-accueil">Phase 1 : Accueil &amp; cadre</div>
+            <h1>L'équation 45 h = 150 h (L'amplificateur IA)</h1>
+            <div class="stats">
+                <strong>En 45 heures de cours, nous allons accomplir ce qui nécessitait autrefois 150 heures de programmation classique.</strong>
+            </div>
+            <ul>
+                <li>L'intelligence artificielle supprime le travail répétitif de saisie de syntaxe mais <strong>augmente la charge d'architecture et de vérification</strong>.</li>
+                <li>Nous allons traverser tout le cycle produit : cadrage, maquettes, base de données, <span class="tooltip-trigger" data-tooltip="Passerelle logicielle permettant à votre application de communiquer avec un autre programme.">API</span>, authentification, mobile, sécurité et <span class="tooltip-trigger" data-tooltip="Installation de votre application sur un serveur connecté pour l'ouvrir à tous sur Internet.">déploiement</span>.</li>
+                <li>Cette densité exige une concentration totale pendant les 3 heures de chaque séance.</li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 7 : RÈGLE DU RATIO 1:2 -->
+        <div class="slide">
+            <div class="badge-phase phase-accueil">Phase 1 : Accueil &amp; cadre</div>
+            <h1>La règle du ratio 1:2 : Le travail en dehors</h1>
+            <div class="warning">
+                <strong>3 heures de cours en classe = au moins 6 heures de pratique personnelle par semaine chez vous.</strong>
+            </div>
+            <ul>
+                <li>On n'apprend pas à piloter un avion en restant assis à regarder le formateur.</li>
+                <li>La mémoire technique et l'aisance de dialogue avec l'IA se forgent en butant sur des cas concrets entre deux cours.</li>
+                <li>Sans ce temps de travail hebdomadaire personnel, le décrochage est inévitable dès la 4ᵉ séance.</li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 8 : IL Y A DES CHOSES À FAIRE EN CLASSE -->
+        <div class="slide">
+            <div class="badge-phase phase-accueil">Phase 1 : Accueil &amp; cadre</div>
+            <h1>Il y a des choses à faire en classe</h1>
+            <div class="highlight">
+                <strong>La classe est un atelier de fabrication, pas un amphithéâtre passif.</strong>
+            </div>
+            <ul>
+                <li><strong>Action immédiate :</strong> chaque séance comporte des défis pratiques à réaliser en direct.</li>
+                <li><strong>Partage d'expérience :</strong> la véritable richesse du cours réside dans l'hétérogénéité du groupe (métiers, profils débutants, profils techniques).</li>
+                <li><strong>Déblocage collectif :</strong> les erreurs insolites de l'IA et les pannes rencontrées par les uns servent d'apprentissage à tous.</li>
+                <li><strong>Supervision critique :</strong> l'humain est l'architecte et le juge — refuser le copier-coller aveugle sans comprendre la logique.</li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 9 : LE FORUM SCAPENLIGNE (DÉPLACÉ DANS L'ACCUEIL) -->
+        <div class="slide">
+            <div class="badge-phase phase-accueil">Phase 1 : Accueil &amp; cadre</div>
+            <h1>Le Forum Scapenligne : continuité et entraide asynchrone</h1>
+            <div class="highlight">
+                <strong>Ne restez jamais bloqué seul plus de 20 minutes : utilisez le forum d'entraide !</strong>
+            </div>
+            <ul>
+                <li>Le <span class="tooltip-trigger" data-tooltip="Espace d'échange en ligne pour poser des questions techniques et partager ses solutions.">forum</span> sur Scapenligne est le cordon ombilical entre deux séances hebdomadaires.</li>
+                <li><strong>L'entraide entre pairs :</strong> les blocages résolus par les uns profitent immédiatement à tous les participants.</li>
+                <li><strong>Comment formuler une question efficace sur le forum :</strong>
+                    <ol>
+                        <li><strong>Mon intention :</strong> Ce que j'essaie d'accomplir précisément (le besoin fonctionnel).</li>
+                        <li><strong>Mon prompt :</strong> La consigne exacte que j'ai transmise à l'assistant IA.</li>
+                        <li><strong>Le résultat :</strong> Le code obtenu et le message d'erreur précis (copier-coller du texte d'erreur).</li>
+                        <li><strong>Mes tentatives :</strong> Ce que j'ai déjà essayé pour corriger avant de poster.</li>
+                    </ol>
+                </li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 10 : PHASE BRISE-GLACE (ATELIER ZOOM 10 MIN) -->
+        <div class="slide">
+            <div class="badge-phase phase-brise-glace">Phase 2 : Brise-glace</div>
+            <h2>Atelier en sous-groupes Zoom (10 minutes)</h2>
+            <h1>Atelier : Présentation mutuelle &amp; Projet d'équipe</h1>
+            <div class="highlight" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <span><strong>Objectif :</strong> Faire connaissance, confronter vos envies d'application et tester l'intelligence collective en sous-groupes Zoom de 3 à 4 personnes.</span>
+                <span style="background: rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 12px; font-weight: bold; font-size: 0.9em; white-space: nowrap;">⏱️ 10 min en sous-groupe</span>
+            </div>
+
+            <div class="stats" style="margin: 12px 0; padding: 10px 15px;">
+                <strong>Consigne :</strong> Choisissez <em>un</em> projet parmi les idées des participants (ou inventez un besoin concret). Répartissez-vous les rôles suivants :
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 12px; margin: 12px 0;">
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #0f766e; padding: 12px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #0f766e; margin-bottom: 4px;">🎤 1. Le Porte-parole (Projet)</div>
+                    <div style="font-size: 0.85em; color: #334155; line-height: 1.45;">
+                        Pitch de l'idée : nom du projet, intention générale, promesse utilisateur et valeur ajoutée en 60 secondes.
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #ea580c; padding: 12px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #ea580c; margin-bottom: 4px;">⚠️ 2. Les Difficultés</div>
+                    <div style="font-size: 0.85em; color: #334155; line-height: 1.45;">
+                        Obstacles et risques : ce qui fait peur, défis techniques, incertitudes, sécurité ou données manquantes.
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #2563eb; padding: 12px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #2563eb; margin-bottom: 4px;">👥 3. Publics &amp; Besoins</div>
+                    <div style="font-size: 0.85em; color: #334155; line-height: 1.45;">
+                        Cible et usages : qui utilisera l'outil ? Quel problème concret du quotidien résout-il véritablement ?
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #7c3aed; padding: 12px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #7c3aed; margin-bottom: 4px;">🎨 4. L'Interface (si 4e)</div>
+                    <div style="font-size: 0.85em; color: #334155; line-height: 1.45;">
+                        Croquis à main levée au stylo : esquisser l'écran principal sur son carnet et décrire les boutons d'action clés.
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise" style="margin-top: 12px; padding: 10px 15px;">
+                <strong>Gestion du temps (10 minutes en salle Zoom) :</strong>
+                <ul style="margin: 4px 0 0 0; padding-left: 20px; font-size: 0.88em; line-height: 1.45;">
+                    <li><strong>0 – 2 min :</strong> Tour de table rapide, choix du sujet et attribution des rôles.</li>
+                    <li><strong>2 – 7 min :</strong> Préparation manuscrite au stylo (carnet papier obligatoire, pas de code ni de prompt).</li>
+                    <li><strong>7 – 10 min :</strong> Répétition collective du pitch avant retour automatique en plénière (1 min chrono par équipe).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DIAPO 11 : DÉBRIEF DES PROJETS BRISE-GLACE (10 MINUTES) -->
+        <div class="slide">
+            <div class="badge-phase phase-brise-glace">Phase 2 : Brise-glace</div>
+            <h2>Restitution en plénière (10 minutes)</h2>
+            <h1>Débrief des projets du brise-glace</h1>
+            <div class="highlight" style="margin-bottom: 14px;">
+                <strong>Tour de table rapide : 1 minute chrono par sous-groupe pour partager l'essentiel</strong>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 12px; margin: 14px 0;">
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #0f766e; padding: 12px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #0f766e; margin-bottom: 4px;">🎤 1. Pitch du Projet (30s)</div>
+                    <div style="font-size: 0.88em; color: #334155; line-height: 1.45;">
+                        Le <strong>Porte-parole</strong> résume le nom de l'application et la promesse clé en une phrase limpide.
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #ea580c; padding: 12px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #ea580c; margin-bottom: 4px;">⚠️ 2. Difficultés identifiées</div>
+                    <div style="font-size: 0.88em; color: #334155; line-height: 1.45;">
+                        L'équipier <strong>Difficultés</strong> pointe le risque technique majeur (données, API, sécurité, complexité).
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #2563eb; padding: 12px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #2563eb; margin-bottom: 4px;">👥 3. Publics &amp; Besoins</div>
+                    <div style="font-size: 0.88em; color: #334155; line-height: 1.45;">
+                        L'équipier <strong>Publics</strong> précise le profil type de l'usager et le gain de temps ou confort apporté.
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #7c3aed; padding: 12px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #7c3aed; margin-bottom: 4px;">🎨 4. Esquisse Interface</div>
+                    <div style="font-size: 0.88em; color: #334155; line-height: 1.45;">
+                        L'équipier <strong>Interface</strong> montre son croquis au stylo devant sa webcam (les 2 boutons d'action clés).
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise" style="margin-top: 14px; padding: 12px 16px; font-size: 14.5px;">
+                <strong>Ce que cet exercice nous apprend pour la suite du cours :</strong>
+                <ul style="margin: 6px 0 0 0; padding-left: 18px; line-height: 1.5;">
+                    <li><strong>Cadrer avant de coder :</strong> Un projet flou produit du code inutile. Les 4 rôles incarnent les piliers de toute conception logicielle.</li>
+                    <li><strong>L'hétérogénéité fait la force :</strong> Les compétences variées du groupe (métier, graphisme, technique) vont s'épauler sur le forum.</li>
+                    <li><strong>La genèse des idées :</strong> Pour concevoir ces projets avec l'IA, comprenons d'abord d'où vient cette révolution technique.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DIAPO 12 : ANTHOLOGIE DE L'IA (1/4) -->
+        <div class="slide">
+            <div class="badge-phase phase-histoire">19h15 – 19h30 · Anthologie de l'IA</div>
+            <h2>Anthologie de l'IA (1/4)</h2>
+            <h1>Début balbutiant</h1>
+            <div class="stats">
+                <strong>1946–1970 : Des premiers calculs synaptiques au rêve d'une machine pensante.</strong>
+            </div>
+            <ul>
+                <li><strong>1946 – Article sur les réseaux de neurones :</strong> Warren McCulloch et Walter Pitts publient les travaux fondateurs sur les neurones formels. Pour la première fois, des chercheurs modélisent mathématiquement un réseau de neurones artificiels capable d'exécuter des opérations logiques et d'imiter l'activité cérébrale.</li>
+                <li><strong>1950 – Alan Turing et le "test de Turing" :</strong> Alan Turing propose le "test de Turing" comme mesure de l'intelligence d'une machine dans son article séminal <em>« Computing Machinery and Intelligence »</em>. Si un observateur humain ne peut distinguer la machine d'un être humain lors d'un dialogue textuel, la machine est réputée intelligente.</li>
+                <li><strong>1956 – Le baptême de Dartmouth :</strong> John McCarthy, Marvin Minsky, Claude Shannon et Nathaniel Rochester forgent officiellement le terme <em>« Intelligence Artificielle »</em>. L'optimisme est total : on promet une machine à intelligence générale en vingt ans.</li>
+                <li><strong>Années 1970 – Le premier hiver de l'IA :</strong> Confrontée à la faiblesse du matériel et des mémoires, l'IA symbolique échoue face à l'ambiguïté du monde réel. Les financements publics s'assèchent.</li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 13 : ANTHOLOGIE DE L'IA (2/4) -->
+        <div class="slide">
+            <div class="badge-phase phase-histoire">19h15 – 19h30 · Anthologie de l'IA</div>
+            <h2>Anthologie de l'IA (2/4)</h2>
+            <h1>Ordi perso + guerre froide = psychose</h1>
+            <div class="stats">
+                <strong>1980–1989 : Quand les systèmes experts rencontrent la terreur atomique et l'ordinateur familial.</strong>
+            </div>
+            <ul>
+                <li><strong>1980–1987 – Renaissance de l'IA avec les Systèmes Experts :</strong> Renaissance de l'IA avec le développement des <span class="tooltip-trigger" data-tooltip="Programmes informatiques qui imitent la capacité de prise de décision d'un expert humain.">systèmes experts</span>, qui sont des programmes informatiques qui imitent la capacité de prise de décision d'un expert humain dans des domaines spécialisés (diagnostic médical avec MYCIN, prospection pétrolière, finance) via des bases de connaissances et des moteurs d'inférence (« SI... ALORS... »).</li>
+                <li><strong>L'avènement de l'ordinateur personnel (Apple II, IBM PC, Commodore) :</strong> L'informatique quitte les centres de calcul militaires et pénètre les chambres et les salons. La machine devient familière, fascinante et anxiogène.</li>
+                <li><strong>Guerre froide &amp; psychose du bouton nucléaire :</strong> Au paroxysme des tensions Est-Ouest, la crainte d'ordinateurs prenant des décisions de tir autonome engendre une véritable psychose collective. La DARPA américaine finance massivement le programme <em>Strategic Computing</em> pour automatiser la gestion du champ de bataille.</li>
+                <li><strong>La pop-culture comme avertisseur (1983–1984) :</strong>
+                    <ul>
+                        <li><em>WarGames</em> (1983) : Le supercalculateur du Pentagone (WOPR) joue au morpion et manque de déclencher l'apocalypse thermonucléaire par incapacité à distinguer simulation et réalité.</li>
+                        <li><em>Terminator</em> (1984) : Le réseau de défense autonome <em>Skynet</em> prend conscience de lui-même et décrète l'extermination de l'espèce humaine.</li>
+                    </ul>
+                </li>
+                <li><strong>Fin des années 80 – Deuxième hiver de l'IA :</strong> Les systèmes experts s'effondrent sous le poids de leur maintenance (« explosion combinatoire ») : trop rigides, ils ne savent pas apprendre seuls.</li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 14 : ANTHOLOGIE DE L'IA (3/4) -->
+        <div class="slide">
+            <div class="badge-phase phase-histoire">19h15 – 19h30 · Anthologie de l'IA</div>
+            <h2>Anthologie de l'IA (3/4)</h2>
+            <h1>sur les tablettes d'echecs s'écrivaient le futur</h1>
+            <div class="stats">
+                <strong>1997–2016 : De la force brute aux intuitions créatives du Deep Learning.</strong>
+            </div>
+            <ul>
+                <li><strong>1997 – Deep Blue bat Garry Kasparov :</strong> Deep Blue, un ordinateur conçu par IBM, bat le champion du monde d'échecs Garry Kasparov (3,5 à 2,5). Grâce à des processeurs dédiés évaluant 200 millions de positions par seconde, la machine terrasse pour la première fois le champion du monde de la discipline reine de la réflexion humaine.</li>
+                <li><strong>2011 – Watson triomphe à Jeopardy! :</strong> Watson, un autre système d'IA d'IBM, gagne le jeu télévisé Jeopardy face aux plus grands champions historiques. Il ne s'agit plus de déplacer des pions : la machine doit comprendre des calembours, devinettes, allusions littéraires et la subtilité culturelle du langage naturel en direct.</li>
+                <li><strong>2012 – Révolution du Deep Learning (ImageNet &amp; Geoffrey Hinton) :</strong> Un réseau neuronal convolutif entraîné par Geoffrey Hinton remporte le concours ImageNet, marquant le début de l'ère moderne de l'apprentissage profond. La machine cesse d'obéir à des règles programmées à la main pour apprendre directement à partir de masses de données.</li>
+                <li><strong>2014–2016 – Google acquiert DeepMind &amp; le miracle AlphaGo :</strong> En 2014, Google acquiert DeepMind, une start-up britannique spécialisée dans l'apprentissage profond. Plus tard, le programme AlphaGo de DeepMind bat le champion du monde de Go, un jeu de stratégie complexe réputé inaccessible à la force brute. En apprenant par renforcement contre lui-même, AlphaGo invente le mythique « Coup 37 », bouleversant 3 000 ans de certitudes humaines.</li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 15 : ANTHOLOGIE DE L'IA (4/4) -->
+        <div class="slide">
+            <div class="badge-phase phase-histoire">19h15 – 19h30 · Anthologie de l'IA</div>
+            <h2>Anthologie de l'IA (4/4)</h2>
+            <h1>la collecte des réseaux sociaux enfin mis au service de la fin de l'humanité...</h1>
+            <div class="stats">
+                <strong>2018–2026 : Du siphonnage géant du Web au Vibe-Coding et au vertige de l'automatisation.</strong>
+            </div>
+            <ul>
+                <li><strong>Le carburant invisible : Les réseaux sociaux siphonnés (2010–2020) :</strong> Reddit, Twitter/X, Facebook, forums, Wikipedia, dépôts ouverts de GitHub : des milliards de conversations, débats, états d'âme et lignes de code rédigés gratuitement par l'humanité sont aspirés (Common Crawl) pour fabriquer les corpus géants d'entraînement des <span class="tooltip-trigger" data-tooltip="Grand moteur de calcul qui lit des millions de textes pour deviner la réponse la plus logique.">LLM</span>.</li>
+                <li><strong>La lignée des modèles GPT d'OpenAI (2018–2023) :</strong>
+                    <ul>
+                        <li><strong>2018 (GPT-1) :</strong> Le modèle original de GPT (GPT-1) a été introduit par OpenAI en juin 2018, pionnier de l'architecture <em>Transformer</em> pour le texte non supervisé.</li>
+                        <li><strong>2019 (GPT-2) :</strong> OpenAI a annoncé GPT-2 en février 2019 mais a initialement refusé de publier le modèle complet en raison de préoccupations concernant l'utilisation abusive potentielle (vague massive de désinformation).</li>
+                        <li><strong>2020 (GPT-3) :</strong> OpenAI a annoncé GPT-3 en juin 2020 (175 milliards de paramètres), capable de rédiger, argumenter et amorcer la génération de code (naissance de Codex).</li>
+                        <li><strong>2023 (GPT-4 &amp; AI-Store) :</strong> Sortie de GPT-4 avec raisonnement multimodal, et un AI-store avec les plugins GPT connectant l'IA aux outils et au Web.</li>
+                    </ul>
+                </li>
+                <li><strong>Après 2023 : Raisonnement, Agents autonomes et Vibe-Coding (2024–2026) :</strong>
+                    <ul>
+                        <li><strong>2024–2025 :</strong> Modèles de raisonnement par chaîne de pensée (o1, o3-mini) et contextes géants d'1 million de tokens (Claude 3.5 Sonnet, Gemini).</li>
+                        <li><strong>Février 2025 (Le Vibe-Coding) :</strong> Andrej Karpathy formule le terme : on ne tape plus la syntaxe, on dialogue et on orchestre en langage naturel.</li>
+                        <li><strong>2026 (Le vertige et l'éthique) :</strong> Des nuées d'agents autonomes génèrent des applications complètes en quelques minutes. La menace d'une perte totale de contrôle, d'une dépendance cognitive et d'un océan de code toxique (« slop » de code) impose une exigence absolue : l'esprit critique, le carnet au stylo et la responsabilité éthique du concepteur.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 16 : KARPATHY & ACTE DE NAISSANCE -->
+        <div class="slide">
+            <div class="badge-phase phase-histoire">19h15 – 19h30 · Anthologie de l'IA</div>
+            <h1>Février 2025 : L'acte de naissance du concept</h1>
+            <div class="exercise" style="display: flex; gap: 20px; align-items: center;">
+                <div style="flex-shrink: 0; text-align: center;">
+                    <img src="/images/andrej_karpathy.png" onerror="this.onerror=null; this.src='https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Andrej_Karpathy%2C_OpenAI.png/250px-Andrej_Karpathy%2C_OpenAI.png';" alt="Andrej Karpathy" style="width: 105px; height: 140px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 2px solid #0f766e; display: block;">
+                    <span style="display: block; font-size: 11px; color: #475569; font-weight: bold; margin-top: 4px;">Andrej Karpathy</span>
+                </div>
+                <div style="flex-1;">
+                    <strong>Andrej Karpathy</strong> (cofondateur d'OpenAI, ancien directeur de l'IA chez Tesla) forge le terme en février 2025 sur X :
+                    <blockquote style="font-style: italic; margin-top: 8px; color: #1e3a5f; border-left: 3px solid #0f766e; padding-left: 10px;">
+                        « There is a new kind of coding I call "vibe coding", where you fully give in to the vibes, embrace exponentials, and forget that the code even exists. I just see stuff, say stuff, run stuff, and copy paste stuff, and it mostly works. »
+                    </blockquote>
+                </div>
+            </div>
+            <ul>
+                <li><strong>Mars 2026 (Enquête du New York Times) :</strong> Clive Thompson publie <em>« Coding After Coders »</em>.</li>
+                <li>Les ingénieurs ne passent plus leurs journées penchés sur la syntaxe, mais à dialoguer et piloter des nuées d'agents (Claude Code, Cursor, Windsurf).</li>
+                <li><strong>La métaphore clé :</strong> Le développeur n'est plus un maçon sur le chantier, il est l'architecte qui conçoit et vérifie la solidité du bâtiment.</li>
+            </ul>
+        </div>
+
+        <!-- DIAPO 17 : DEUX VISIONS & ÉTHIQUE -->
+        <div class="slide">
+            <div class="badge-phase phase-histoire">19h15 – 19h30 · Anthologie de l'IA</div>
+            <h1>Deux visions : Vibe-Coding naïf vs Ingénierie</h1>
+            <div class="warning">
+                <strong>Attention au piège de l'illusion de facilité !</strong>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0;">
+                <div style="background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #ef4444; padding: 12px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #b91c1c; margin-bottom: 4px;">❌ Le Vibe-Coding naïf (« Magique »)</div>
+                    <ul style="margin: 0; padding-left: 16px; font-size: 13.5px; color: #7f1d1d; line-height: 1.45;">
+                        <li>Copier-coller aveugle sans lire le code généré.</li>
+                        <li>Empilement chaotique de bibliothèques inconnues.</li>
+                        <li>Dette technique invisible et blocage fatal dès la séance 4.</li>
+                    </ul>
+                </div>
+                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a; padding: 12px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #166534; margin-bottom: 4px;">✅ Le Vibe-Coding d'ingénierie (Notre cours)</div>
+                    <ul style="margin: 0; padding-left: 16px; font-size: 13.5px; color: #14532d; line-height: 1.45;">
+                        <li><strong>Cadrage au stylo :</strong> spécifications et intentions claires.</li>
+                        <li><strong>Vérification systématique :</strong> tests unitaires et revues sécurité.</li>
+                        <li><strong>Pilote dans la boucle :</strong> l'humain garde la maîtrise totale.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight" style="font-size: 14px; padding: 10px 14px; margin-top: 10px;">
+                <strong>Exigence éthique :</strong> Responsabilité juridique du développeur, respect strict du RGPD (aucun secret ni donnée sensible confiés aux modèles publics), sobriété numérique.
+            </div>
+        </div>
+
+        <!-- DIAPO 18 : LES OUTILS DE L'ATELIER PRATIQUE (19H30 – 19H45) -->
+        <div class="slide">
+            <div class="badge-phase phase-outils">19h30 – 19h45 · Outils pratiques</div>
+            <h1>Les outils de l'atelier pratique : Zéro installation locale</h1>
+            <div class="highlight" style="margin-bottom: 16px;">
+                <strong>Ce soir, aucun logiciel complexe à installer : tout fonctionne directement dans votre navigateur web !</strong>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #0f766e; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #0f766e; font-size: 15px; margin-bottom: 6px;">🌐 1. Le Bac à sable Web (StackBlitz / Web IDE)</div>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; color: #334155;">
+                        <li><strong>Environnement de dev dans le navigateur :</strong> Exécute du code HTML, CSS et JavaScript sans rien installer sur votre disque dur.</li>
+                        <li><strong>Aperçu en direct (Live Preview) :</strong> Vos modifications s'affichent instantanément à l'écran dès la modification du code.</li>
+                        <li><strong>Accessible à tous :</strong> Fonctionne sur Mac, Windows, Linux et tablettes récentes.</li>
+                    </ul>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #7c3aed; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #7c3aed; font-size: 15px; margin-bottom: 6px;">🤖 2. Les Assistants IA Conversationnels</div>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; color: #334155;">
+                        <li><strong>Claude, ChatGPT, Gemini :</strong> Dialogue en français naturel pour exprimer vos besoins fonctionnels.</li>
+                        <li><strong>Génération de briques de code :</strong> Demande ciblée d'un composant, d'un bouton, d'une palette de styles ou d'une fonction.</li>
+                        <li><strong>Vérification itérative :</strong> Copier le code dans le bac à sable, observer le comportement, ajuster la consigne.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #ea580c; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #ea580c; font-size: 15px; margin-bottom: 6px;">📝 3. Le Carnet de bord &amp; le Stylo</div>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; color: #334155;">
+                        <li><strong>L'ancre indispensable :</strong> Poser la consigne au propre sur le papier avant de copier-coller.</li>
+                        <li><strong>Journal de bord :</strong> Noter ce qui a fonctionné du premier coup et ce qui a provoqué une erreur.</li>
+                    </ul>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #2563eb; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #2563eb; font-size: 15px; margin-bottom: 6px;">🔗 4. Modalités de partage de l'atelier</div>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; color: #334155;">
+                        <li><strong>Lien direct :</strong> Transmis dans la discussion Zoom et sur Scapenligne.</li>
+                        <li><strong>Un clic suffit :</strong> Le projet modèle démarre prêt à être manipulé.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIAPO 19 : DIAPO INSÉRÉE AVANT LA PAUSE (VÉRIFICATION ACCÈS) -->
+        <div class="slide">
+            <div class="badge-phase phase-outils">19h45 · Transition vers la pause</div>
+            <h1>Vérification des accès &amp; Consignes avant la pause</h1>
+            <div class="exercise" style="margin-bottom: 16px;">
+                <strong>Vérification technique immédiate (2 minutes) :</strong>
+                <ol style="margin-top: 6px; padding-left: 20px; font-size: 15px; line-height: 1.6;">
+                    <li>Cliquez sur le lien du <strong>Bac à sable Web</strong> transmis dans la discussion Zoom.</li>
+                    <li>Vérifiez que la page d'accueil du projet s'affiche correctement dans un onglet de votre navigateur.</li>
+                    <li>En cas de difficulté de chargement, signalez-le au formateur immédiatement avant de partir en pause.</li>
+                </ol>
+            </div>
+
+            <div class="highlight" style="background: #1e3a5f;">
+                <strong>Consigne pendant la pause (15 minutes) :</strong>
+                <ul style="margin: 6px 0 0 0; padding-left: 20px; font-size: 15px; line-height: 1.5;">
+                    <li>Éloignez-vous de votre écran, hydratez-vous et reposez vos yeux.</li>
+                    <li>Reprise précise à <strong>20h00</strong> : nous commencerons directement par l'exercice réflexif au stylo sur votre carnet de bord !</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DIAPO 20 : PAUSE (19H45 – 20H00) -->
+        <div class="slide" style="text-align: center;">
+            <div class="badge-phase phase-pause">19h45 – 20h00 · Pause</div>
+            <h1 style="font-size: 2.8em; margin: 20px 0 10px 0;">☕ Pause (15 minutes)</h1>
+            <div style="font-size: 24px; color: #0f766e; font-weight: bold; margin-bottom: 25px;">
+                19h45 à 20h00 · Reprise précise à 20h00
+            </div>
+
+            <div style="max-width: 650px; margin: 0 auto; background: #f8fafc; border: 2px dashed #0f766e; border-radius: 12px; padding: 25px; text-align: left;">
+                <h3 style="color: #0f766e; margin-top: 0;">Règles d'or de la pause cognitive :</h3>
+                <ul style="font-size: 16px; line-height: 1.6; color: #334155; padding-left: 20px;">
+                    <li><strong>Quitter les yeux de l'écran :</strong> Le cerveau a besoin de déconnecter pour assimiler les concepts découverts.</li>
+                    <li><strong>S'aérer et s'hydrater :</strong> Prendre un verre d'eau, un café ou du thé, marcher quelques pas.</li>
+                    <li><strong>À 20h00 précises :</strong> Revenez avec votre carnet papier et votre stylo prêts sur votre table.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DIAPO 21 : EXERCICE RÉFLEXIF AU STYLO (20H00 – 20H15) -->
+        <div class="slide">
+            <div class="badge-phase phase-pratique">20h00 – 20h15 · Cadrage sans écran</div>
+            <h1>Exercice réflexif au stylo (15 minutes)</h1>
+            <div class="warning" style="margin-bottom: 16px;">
+                <strong>Fermez les ordinateurs ou tournez le dos à l'écran. Prenez votre stylo et votre carnet de bord.</strong>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #059669; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                <div style="font-weight: bold; color: #059669; font-size: 16px; margin-bottom: 8px;">Cadrez votre intention personnelle en 4 questions précises sur le papier :</div>
+                <ol style="margin: 0; padding-left: 22px; font-size: 14.5px; line-height: 1.6; color: #1e293b;">
+                    <li><strong>1. Le problème concret :</strong> Quel est le besoin précis, le gain de temps ou la douleur que votre futur outil va résoudre ? (en 2 phrases maximum).</li>
+                    <li><strong>2. L'usager cible :</strong> Pour qui concevez-vous ce projet ? Décrivez une personne réelle dans son contexte quotidien d'utilisation.</li>
+                    <li><strong>3. L'action clé :</strong> Quel est le bouton ou le calcul interactif central que l'utilisateur viendra chercher ?</li>
+                    <li><strong>4. Données &amp; Sécurité :</strong> L'outil manipulera-t-il des informations sensibles (mots de passe, données privées, RGPD) ? Quelles précautions s'imposent ?</li>
+                </ol>
+            </div>
+
+            <div class="exercise" style="margin: 0; padding: 12px 16px; font-size: 14px;">
+                ⏱️ <strong>Déroulé :</strong> 10 minutes d'écriture solitaire au stylo sur votre carnet, puis 5 minutes de relecture attentive avant de passer au clavier.
+            </div>
+        </div>
+
+        <!-- DIAPO 22 : ATELIER PRATIQUE DU SOIR (20H15 – 20H45) -->
+        <div class="slide">
+            <div class="badge-phase phase-pratique">20h15 – 20h45 · Atelier pratique</div>
+            <h1>Atelier pratique du soir : Bac à sable Web</h1>
+            <div class="exercise" style="margin-bottom: 16px;">
+                <strong>Zéro installation locale : Votre première boucle de Vibe-Coding dans le navigateur.</strong>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #0f766e; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #0f766e; font-size: 15px; margin-bottom: 6px;">Étape 1 · Ouvrir le projet modèle</div>
+                    <div style="font-size: 13.5px; color: #334155; line-height: 1.5;">
+                        Ouvrez le lien du bac à sable dans votre navigateur. Observez la séparation entre les fichiers de code et le panneau de prévisualisation en direct.
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #2563eb; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #2563eb; font-size: 15px; margin-bottom: 6px;">Étape 2 · Premier prompt d'adaptation</div>
+                    <div style="font-size: 13.5px; color: #334155; line-height: 1.5;">
+                        Demandez à votre assistant IA en langage naturel de personnaliser le titre, l'en-tête et les couleurs pour correspondre au thème de votre projet.
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #7c3aed; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #7c3aed; font-size: 15px; margin-bottom: 6px;">Étape 3 · Ajout d'une interactivité</div>
+                    <div style="font-size: 13.5px; color: #334155; line-height: 1.5;">
+                        Formulez une consigne précise : <em>« Ajoute un bouton compteur de clics »</em> ou <em>« Ajoute un calculateur simple avec un champ de saisie »</em>. Intégrez le code et testez.
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #ea580c; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #ea580c; font-size: 15px; margin-bottom: 6px;">Étape 4 · Observation critique au stylo</div>
+                    <div style="font-size: 13.5px; color: #334155; line-height: 1.5;">
+                        Le bouton réagit-il comme prévu ? Y a-t-il une anomalie ? Notez sur votre carnet la consigne exacte qui a fonctionné et le comportement inattendu observé.
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats" style="margin: 0; padding: 10px 14px; font-size: 13.5px;">
+                💡 <strong>Objectif de l'atelier :</strong> Démystifier le dialogue avec la machine. Vous n'avez pas écrit de syntaxe cryptique : vous avez guidé l'IA et validé le résultat.
+            </div>
+        </div>
+
+        <!-- DIAPO 23 : DÉMONSTRATION EN DIRECT TRANSFORMÉE EN SVG PLEINE PAGE (20H45 – 21H10) -->
+        <div class="slide" style="padding: 20px 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div>
+                    <div class="badge-phase phase-pratique" style="margin-bottom: 2px;">20h45 – 21h10 · Démonstration live</div>
+                    <h1 style="font-size: 1.8em; margin: 0; line-height: 1.2;">Démonstration : De l'Idée au Web en direct</h1>
+                </div>
+                <div style="font-size: 13px; color: #475569; background: #f1f5f9; padding: 6px 12px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                    ⚡ <strong>Workflow complet du Vibe-Coding d'ingénierie</strong>
+                </div>
+            </div>
+
+            <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center;">
+                <svg viewBox="0 0 940 450" style="width: 100%; height: auto; max-height: 68vh; display: block;" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="gradCard1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0f766e" />
+                            <stop offset="100%" stop-color="#115e59" />
+                        </linearGradient>
+                        <linearGradient id="gradCard2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#1e3a5f" />
+                            <stop offset="100%" stop-color="#0f2b48" />
+                        </linearGradient>
+                        <linearGradient id="gradCard3" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#6d28d9" />
+                            <stop offset="100%" stop-color="#4c1d95" />
+                        </linearGradient>
+                        <linearGradient id="gradCard4" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ea580c" />
+                            <stop offset="100%" stop-color="#c2410c" />
+                        </linearGradient>
+                        <linearGradient id="gradCard5" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#059669" />
+                            <stop offset="100%" stop-color="#047857" />
+                        </linearGradient>
+                        <linearGradient id="gradCard6" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0284c7" />
+                            <stop offset="100%" stop-color="#0369a1" />
+                        </linearGradient>
+
+                        <filter id="shadow" x="-5%" y="-5%" width="115%" height="120%">
+                            <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000000" flood-opacity="0.18" />
+                        </filter>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 1 L 9 5 L 0 9 z" fill="#0f766e" />
+                        </marker>
+                        <marker id="arrow-return" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 1 L 9 5 L 0 9 z" fill="#ea580c" />
+                        </marker>
+                    </defs>
+
+                    <!-- Arrière-plan du canevas -->
+                    <rect x="0" y="0" width="940" height="450" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+
+                    <!-- LIGNE 1 : ÉTAPES 1, 2, 3 -->
+                    <!-- CARTE 1 : Carnet papier -->
+                    <g transform="translate(30, 25)" filter="url(#shadow)">
+                        <rect width="260" height="155" rx="12" fill="url(#gradCard1)" />
+                        <rect x="14" y="14" width="34" height="34" rx="8" fill="rgba(255,255,255,0.2)" />
+                        <text x="31" y="37" font-family="sans-serif" font-size="18" fill="#ffffff" text-anchor="middle">📝</text>
+                        <text x="58" y="32" font-family="sans-serif" font-size="12" font-weight="bold" fill="#a7f3d0" letter-spacing="1">ÉTAPE 1 · CADRAGE</text>
+                        <text x="58" y="47" font-family="'Yanone Kaffeesatz', sans-serif" font-size="19" font-weight="bold" fill="#ffffff">Idée &amp; Carnet papier</text>
+                        <line x1="16" y1="58" x2="244" y2="58" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                        <text x="16" y="80" font-family="sans-serif" font-size="12" fill="#f0fdf4">• Intention utilisateur claire</text>
+                        <text x="16" y="100" font-family="sans-serif" font-size="12" fill="#f0fdf4">• Règles métier posées au stylo</text>
+                        <text x="16" y="120" font-family="sans-serif" font-size="12" fill="#f0fdf4">• Schéma d'interface à la main</text>
+                        <text x="16" y="140" font-family="sans-serif" font-size="11" font-style="italic" fill="#a7f3d0">« Le stylo précède le prompt »</text>
+                    </g>
+
+                    <!-- Flèche 1 -> 2 -->
+                    <path d="M 295 102 L 335 102" fill="none" stroke="#0f766e" stroke-width="3" marker-end="url(#arrow)" />
+
+                    <!-- CARTE 2 : Prompt structuré -->
+                    <g transform="translate(340, 25)" filter="url(#shadow)">
+                        <rect width="260" height="155" rx="12" fill="url(#gradCard2)" />
+                        <rect x="14" y="14" width="34" height="34" rx="8" fill="rgba(255,255,255,0.2)" />
+                        <text x="31" y="37" font-family="sans-serif" font-size="18" fill="#ffffff" text-anchor="middle">💬</text>
+                        <text x="58" y="32" font-family="sans-serif" font-size="12" font-weight="bold" fill="#93c5fd" letter-spacing="1">ÉTAPE 2 · INSTRUCTION</text>
+                        <text x="58" y="47" font-family="'Yanone Kaffeesatz', sans-serif" font-size="19" font-weight="bold" fill="#ffffff">Prompt cadré &amp; précis</text>
+                        <line x1="16" y1="58" x2="244" y2="58" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                        <text x="16" y="80" font-family="sans-serif" font-size="12" fill="#e0f2fe">• Rôle : expert frontend HTML/JS</text>
+                        <text x="16" y="100" font-family="sans-serif" font-size="12" fill="#e0f2fe">• Contexte &amp; données d'entrée</text>
+                        <text x="16" y="120" font-family="sans-serif" font-size="12" fill="#e0f2fe">• Contraintes strictes &amp; formats</text>
+                        <text x="16" y="140" font-family="sans-serif" font-size="11" font-style="italic" fill="#93c5fd">« Pas de copier-coller aveugle »</text>
+                    </g>
+
+                    <!-- Flèche 2 -> 3 -->
+                    <path d="M 605 102 L 645 102" fill="none" stroke="#0f766e" stroke-width="3" marker-end="url(#arrow)" />
+
+                    <!-- CARTE 3 : Génération IA -->
+                    <g transform="translate(650, 25)" filter="url(#shadow)">
+                        <rect width="260" height="155" rx="12" fill="url(#gradCard3)" />
+                        <rect x="14" y="14" width="34" height="34" rx="8" fill="rgba(255,255,255,0.2)" />
+                        <text x="31" y="37" font-family="sans-serif" font-size="18" fill="#ffffff" text-anchor="middle">⚡</text>
+                        <text x="58" y="32" font-family="sans-serif" font-size="12" font-weight="bold" fill="#c4b5fd" letter-spacing="1">ÉTAPE 3 · FABRICATION</text>
+                        <text x="58" y="47" font-family="'Yanone Kaffeesatz', sans-serif" font-size="19" font-weight="bold" fill="#ffffff">Génération du code</text>
+                        <line x1="16" y1="58" x2="244" y2="58" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                        <text x="16" y="80" font-family="sans-serif" font-size="12" fill="#ede9fe">• Assistant LLM (Claude, ChatGPT)</text>
+                        <text x="16" y="100" font-family="sans-serif" font-size="12" fill="#ede9fe">• Production instantanée du composant</text>
+                        <text x="16" y="120" font-family="sans-serif" font-size="12" fill="#ede9fe">• Intégration dans le bac à sable</text>
+                        <text x="16" y="140" font-family="sans-serif" font-size="11" font-style="italic" fill="#c4b5fd">« Vitesse multipliée par 5 »</text>
+                    </g>
+
+                    <!-- Transition Ligne 1 vers Ligne 2 : Flèche coudée à droite -->
+                    <path d="M 780 185 L 780 205 L 780 220" fill="none" stroke="#ea580c" stroke-width="3" marker-end="url(#arrow)" />
+
+                    <!-- LIGNE 2 : ÉTAPES 4, 5, 6 -->
+                    <!-- CARTE 4 : Incident provoqué & Test -->
+                    <g transform="translate(650, 225)" filter="url(#shadow)">
+                        <rect width="260" height="155" rx="12" fill="url(#gradCard4)" />
+                        <rect x="14" y="14" width="34" height="34" rx="8" fill="rgba(255,255,255,0.2)" />
+                        <text x="31" y="37" font-family="sans-serif" font-size="18" fill="#ffffff" text-anchor="middle">⚠️</text>
+                        <text x="58" y="32" font-family="sans-serif" font-size="12" font-weight="bold" fill="#fed7aa" letter-spacing="1">ÉTAPE 4 · VÉRIFICATION</text>
+                        <text x="58" y="47" font-family="'Yanone Kaffeesatz', sans-serif" font-size="19" font-weight="bold" fill="#ffffff">Test live &amp; Hallucination</text>
+                        <line x1="16" y1="58" x2="244" y2="58" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                        <text x="16" y="80" font-family="sans-serif" font-size="12" fill="#fff7ed">• Exécution directe dans le navigateur</text>
+                        <text x="16" y="100" font-family="sans-serif" font-size="12" fill="#fff7ed">• Constat d'un piège / bug provoqué</text>
+                        <text x="16" y="120" font-family="sans-serif" font-size="12" fill="#fff7ed">• L'IA invente ou oublie un cas limite</text>
+                        <text x="16" y="140" font-family="sans-serif" font-size="11" font-style="italic" fill="#fed7aa">« L'incident est pédagogique »</text>
+                    </g>
+
+                    <!-- Flèche de retour 4 -> 5 -->
+                    <path d="M 645 302 L 605 302" fill="none" stroke="#059669" stroke-width="3" marker-end="url(#arrow)" />
+
+                    <!-- CARTE 5 : Correction réflexive -->
+                    <g transform="translate(340, 225)" filter="url(#shadow)">
+                        <rect width="260" height="155" rx="12" fill="url(#gradCard5)" />
+                        <rect x="14" y="14" width="34" height="34" rx="8" fill="rgba(255,255,255,0.2)" />
+                        <text x="31" y="37" font-family="sans-serif" font-size="18" fill="#ffffff" text-anchor="middle">🧠</text>
+                        <text x="58" y="32" font-family="sans-serif" font-size="12" font-weight="bold" fill="#a7f3d0" letter-spacing="1">ÉTAPE 5 · RÉGULATION</text>
+                        <text x="58" y="47" font-family="'Yanone Kaffeesatz', sans-serif" font-size="19" font-weight="bold" fill="#ffffff">Correction par l'humain</text>
+                        <line x1="16" y1="58" x2="244" y2="58" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                        <text x="16" y="80" font-family="sans-serif" font-size="12" fill="#ecfdf5">• Diagnostic critique de l'erreur</text>
+                        <text x="16" y="100" font-family="sans-serif" font-size="12" fill="#ecfdf5">• Réajustement guidé du prompt</text>
+                        <text x="16" y="120" font-family="sans-serif" font-size="12" fill="#ecfdf5">• Validation du fonctionnement attendu</text>
+                        <text x="16" y="140" font-family="sans-serif" font-size="11" font-style="italic" fill="#a7f3d0">« L'humain reste le maître à bord »</text>
+                    </g>
+
+                    <!-- Flèche 5 -> 6 -->
+                    <path d="M 335 302 L 295 302" fill="none" stroke="#0284c7" stroke-width="3" marker-end="url(#arrow)" />
+
+                    <!-- CARTE 6 : Déploiement Web -->
+                    <g transform="translate(30, 225)" filter="url(#shadow)">
+                        <rect width="260" height="155" rx="12" fill="url(#gradCard6)" />
+                        <rect x="14" y="14" width="34" height="34" rx="8" fill="rgba(255,255,255,0.2)" />
+                        <text x="31" y="37" font-family="sans-serif" font-size="18" fill="#ffffff" text-anchor="middle">🚀</text>
+                        <text x="58" y="32" font-family="sans-serif" font-size="12" font-weight="bold" fill="#bae6fd" letter-spacing="1">ÉTAPE 6 · DÉPLOIEMENT</text>
+                        <text x="58" y="47" font-family="'Yanone Kaffeesatz', sans-serif" font-size="19" font-weight="bold" fill="#ffffff">Mise en ligne accessible</text>
+                        <line x1="16" y1="58" x2="244" y2="58" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                        <text x="16" y="80" font-family="sans-serif" font-size="12" fill="#f0f9ff">• Publication instantanée sur le Web</text>
+                        <text x="16" y="100" font-family="sans-serif" font-size="12" fill="#f0f9ff">• Test immédiat sur smartphone via QR code</text>
+                        <text x="16" y="120" font-family="sans-serif" font-size="12" fill="#f0f9ff">• Partage du lien avec le groupe</text>
+                        <text x="16" y="140" font-family="sans-serif" font-size="11" font-style="italic" fill="#bae6fd">« De l'idée au public en 20 minutes »</text>
+                    </g>
+
+                    <!-- Boucle de feedback réflexif entre étape 4/5 et étape 2 (courbe en pointillés) -->
+                    <path d="M 470 225 C 470 200, 470 200, 470 185" fill="none" stroke="#ea580c" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow-return)" />
+                    <text x="480" y="208" font-family="sans-serif" font-size="10.5" font-weight="bold" fill="#ea580c">Boucle de re-prompting</text>
+
+                    <!-- Bandeau de conclusion pédagogique au bas du SVG -->
+                    <g transform="translate(30, 395)">
+                        <rect width="880" height="42" rx="8" fill="#1e293b" />
+                        <text x="440" y="26" font-family="sans-serif" font-size="13.5" font-weight="bold" fill="#f8fafc" text-anchor="middle">
+                            💡 LEÇON CLÉ : L'IA ne remplace pas le développeur · Elle transforme le codeur en architecte et pilote critique.
+                        </text>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <!-- DIAPO 24 : FIN DE SÉANCE ET CONSEILS D'ORGANISATION (SANS INSCRIPTION) -->
+        <div class="slide">
+            <div class="badge-phase phase-cloture">21h10 – 21h30 · Clôture</div>
+            <h1>Fin de séance &amp; Conseils d'organisation du travail</h1>
+            <div class="highlight" style="margin-bottom: 16px;">
+                <strong>Adopter les bonnes habitudes dès ce soir pour réussir sereinement votre parcours</strong>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #0f766e; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #0f766e; font-size: 15px; margin-bottom: 6px;">⏱️ 1. Sanctuariser le ratio 1:2</div>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; color: #334155;">
+                        <li><strong>6 heures personnelles par semaine :</strong> Bloquez dès maintenant 2 créneaux de 3h (ou 3 créneaux de 2h) dans votre agenda.</li>
+                        <li><strong>La régularité plutôt que l'urgence :</strong> Pratiquez régulièrement tout au long de la semaine plutôt que de tout faire la veille du cours.</li>
+                    </ul>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #7c3aed; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #7c3aed; font-size: 15px; margin-bottom: 6px;">📓 2. Le carnet de bord au stylo</div>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; color: #334155;">
+                        <li><strong>Journal de bord personnel :</strong> Consignez vos idées, vos schémas d'interface et vos règles de calcul avant de prompter.</li>
+                        <li><strong>Mémoire des prompts :</strong> Notez les tournures de phrases qui ont marché et les bugs d'IA sur lesquels vous avez buté.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #ea580c; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #ea580c; font-size: 15px; margin-bottom: 6px;">💬 3. Le forum Scapenligne : réflexe anti-blocage</div>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; color: #334155;">
+                        <li><strong>La règle des 20 minutes :</strong> Si un bug résiste plus de 20 min, posez votre question sur le forum au lieu de tourner en rond.</li>
+                        <li><strong>Structure du post :</strong> Intention + Prompt envoyé + Message d'erreur + Ce que vous avez déjà tenté.</li>
+                    </ul>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-left: 4px solid #2563eb; padding: 14px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #2563eb; font-size: 15px; margin-bottom: 6px;">🚀 4. Préparation de la Séance 2</div>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; color: #334155;">
+                        <li><strong>Cadrage formel du projet :</strong> Formaliser sur carnet l'arborescence et les 3 fonctionnalités indispensables de votre application.</li>
+                        <li><strong>Comptes prêts :</strong> Disposer d'un compte GitHub ou GitLab et d'un accès opérationnel à votre assistant IA.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="stats" style="margin: 0; padding: 10px 14px; font-size: 13.5px;">
+                <strong>Cap sur la Séance 2 :</strong> Cadrage formel de votre projet, arborescence, architecture logicielle et initialisation de l'environnement de développement professionnel !
+            </div>
+        </div>
+
+        </div>
+
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">Plein écran</button>
+    <a href="lexique.html" class="lexique-btn" title="Consulter le lexique FALC">Lexique</a>
+    <a href="index.html" class="home-btn">Sommaire</a>
+    <button class="pdf-btn" onclick="downloadPDF()">PDF</button>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">0</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-button" id="prev-btn" onclick="changeSlide(-1)">Précédent</button>
+        <button class="nav-button" id="next-btn" onclick="changeSlide(1)">Suivant</button>
+        <span style="margin: 0 15px;">Flèches du clavier</span>
+    </div>
+
+    
+
+</body>
+</html>
