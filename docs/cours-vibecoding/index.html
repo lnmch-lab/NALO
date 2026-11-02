@@ -9,10 +9,14 @@
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
 
 :root {
-  --teal: #0f766e;
-  --teal-light: #14b8a6;
-  --navy: #1e3a5f;
-  --mint: #5eead4;
+  --jade: #0d8c5f;
+  --jade-light: #22b37a;
+  --jade-pastel: #7eeab0;
+  --indigo: #2d2a6e;
+  --indigo-nuit: #1b1640;
+  --or: #c9941e;
+  --lotus: #db2777;
+  --batrang: #2563eb;
   --paper: #f8fafc;
 }
 
@@ -26,7 +30,7 @@ body {
 }
 
 header.hero {
-  background: linear-gradient(135deg, #134e4a 0%, var(--navy) 100%);
+  background: linear-gradient(135deg, var(--indigo-nuit) 0%, var(--indigo) 100%);
   color: #fff;
   padding: 56px 24px 64px;
   text-align: center;
@@ -65,7 +69,7 @@ header.hero .meta span {
 header.hero a.source {
   display: inline-block;
   margin-top: 22px;
-  color: var(--mint);
+  color: var(--jade-pastel);
   text-decoration: none;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 0.9em;
@@ -86,7 +90,7 @@ section.block h2 {
   font-family: 'Yanone Kaffeesatz';
   font-weight: normal;
   font-size: 2em;
-  color: var(--navy);
+  color: var(--indigo);
   margin: 0 0 6px;
   display: flex;
   align-items: center;
@@ -112,47 +116,48 @@ a.card {
   color: inherit;
   background: var(--paper);
   border: 1px solid #e2e8f0;
-  border-top: 4px solid var(--teal);
+  border-top: 4px solid var(--jade);
   border-radius: 10px;
   padding: 16px 18px;
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 a.card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(15, 118, 110, 0.18);
-  border-top-color: var(--teal-light);
+  box-shadow: 0 10px 20px rgba(13, 140, 95, 0.18);
+  border-top-color: var(--jade-light);
 }
 a.card .num {
   font-family: 'Yanone Kaffeesatz';
   font-size: 1.5em;
-  color: var(--teal);
+  color: var(--jade);
   display: block;
 }
 a.card .title {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-weight: 700;
   font-size: 0.95em;
-  color: var(--navy);
+  color: var(--indigo);
   display: block;
   margin-top: 2px;
 }
 
-a.card.annexe { border-top-color: #ea580c; }
-a.card.annexe:hover { box-shadow: 0 10px 20px rgba(234, 88, 12, 0.18); border-top-color: #f97316; }
-a.card.annexe .num { color: #ea580c; }
+a.card.annexe { border-top-color: var(--or); }
+a.card.annexe:hover { box-shadow: 0 10px 20px rgba(201, 148, 30, 0.2); border-top-color: #e0ac2f; }
+a.card.annexe .num { color: var(--or); }
 
-a.card.misc { border-top-color: #7c3aed; }
-a.card.misc:hover { box-shadow: 0 10px 20px rgba(124, 58, 237, 0.18); border-top-color: #8b5cf6; }
-a.card.misc .num { color: #7c3aed; }
+a.card.misc { border-top-color: var(--lotus); }
+a.card.misc:hover { box-shadow: 0 10px 20px rgba(219, 39, 119, 0.18); border-top-color: #ec4899; }
+a.card.misc .num { color: var(--lotus); }
 
 .note {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 0.85em;
   color: #64748b;
   margin-top: 18px;
-  border-top: 1px dashed #e2e8f0;
+  border-top: 1px dashed var(--batrang);
   padding-top: 14px;
 }
+.note a { color: var(--batrang); }
 
 footer {
   text-align: center;
@@ -189,21 +194,21 @@ footer {
     <h2>📘 Les 15 séances</h2>
     <p class="lead">Du cadrage produit au déploiement, chaque séance produit un livrable versionné dans le dépôt du projet.</p>
     <div class="grid">
-      <a class="card" href="session1.html"><span class="num">01</span><span class="title">Découverte, cadre &amp; méthode</span></a>
-      <a class="card" href="session2.html"><span class="num">02</span><span class="title">Projet, GitHub et MVP</span></a>
-      <a class="card" href="session3.html"><span class="num">03</span><span class="title">Maquettes, UX et outils</span></a>
-      <a class="card" href="session4.html"><span class="num">04</span><span class="title">Cloudflare, formulaires et stockage</span></a>
-      <a class="card" href="session5.html"><span class="num">05</span><span class="title">Modélisation des données</span></a>
-      <a class="card" href="session6.html"><span class="num">06</span><span class="title">API et règles métier</span></a>
-      <a class="card" href="session7.html"><span class="num">07</span><span class="title">Authentification et rôles</span></a>
-      <a class="card" href="session8.html"><span class="num">08</span><span class="title">Front-end</span></a>
-      <a class="card" href="session9.html"><span class="num">09</span><span class="title">Développement mobile</span></a>
-      <a class="card" href="session10.html"><span class="num">10</span><span class="title">Tests et débogage</span></a>
-      <a class="card" href="session11.html"><span class="num">11</span><span class="title">Sécurité et confidentialité</span></a>
-      <a class="card" href="session12.html"><span class="num">12</span><span class="title">Déploiement Cloudflare</span></a>
-      <a class="card" href="session13.html"><span class="num">13</span><span class="title">Serveur Linux / VPS</span></a>
-      <a class="card" href="session14.html"><span class="num">14</span><span class="title">Documentation et démo</span></a>
-      <a class="card" href="session15.html"><span class="num">15</span><span class="title">Revue finale</span></a>
+      <a class="card" href="session1.html"><span class="num">01</span><span class="title">🧭 Découverte, cadre &amp; méthode</span></a>
+      <a class="card" href="session2.html"><span class="num">02</span><span class="title">🐙 Projet, GitHub et MVP</span></a>
+      <a class="card" href="session3.html"><span class="num">03</span><span class="title">🎨 Maquettes, UX et outils</span></a>
+      <a class="card" href="session4.html"><span class="num">04</span><span class="title">☁️ Cloudflare, formulaires et stockage</span></a>
+      <a class="card" href="session5.html"><span class="num">05</span><span class="title">🗃️ Modélisation des données</span></a>
+      <a class="card" href="session6.html"><span class="num">06</span><span class="title">🔌 API et règles métier</span></a>
+      <a class="card" href="session7.html"><span class="num">07</span><span class="title">🔐 Authentification et rôles</span></a>
+      <a class="card" href="session8.html"><span class="num">08</span><span class="title">🖥️ Front-end</span></a>
+      <a class="card" href="session9.html"><span class="num">09</span><span class="title">📱 Développement mobile</span></a>
+      <a class="card" href="session10.html"><span class="num">10</span><span class="title">🐞 Tests et débogage</span></a>
+      <a class="card" href="session11.html"><span class="num">11</span><span class="title">🛡️ Sécurité et confidentialité</span></a>
+      <a class="card" href="session12.html"><span class="num">12</span><span class="title">🚀 Déploiement Cloudflare</span></a>
+      <a class="card" href="session13.html"><span class="num">13</span><span class="title">🐧 Serveur Linux / VPS</span></a>
+      <a class="card" href="session14.html"><span class="num">14</span><span class="title">📝 Documentation et démo</span></a>
+      <a class="card" href="session15.html"><span class="num">15</span><span class="title">🏁 Revue finale</span></a>
     </div>
   </section>
 
@@ -211,13 +216,13 @@ footer {
     <h2>🧰 Annexes — préparation des outils</h2>
     <p class="lead">Les guides d'installation pour chaque outil utilisé pendant le cours.</p>
     <div class="grid">
-      <a class="card annexe" href="annexes.html"><span class="num">·</span><span class="title">Sommaire des annexes</span></a>
-      <a class="card annexe" href="annexe-a-github-gitlab.html"><span class="num">A</span><span class="title">Git, GitHub &amp; GitLab</span></a>
-      <a class="card annexe" href="annexe-b-cloudflare.html"><span class="num">B</span><span class="title">Compte Cloudflare</span></a>
-      <a class="card annexe" href="annexe-c-android-studio.html"><span class="num">C</span><span class="title">Android Studio</span></a>
-      <a class="card annexe" href="annexe-d-xcode.html"><span class="num">D</span><span class="title">Xcode</span></a>
-      <a class="card annexe" href="annexe-e-vm-linux.html"><span class="num">E</span><span class="title">VM Linux (simulation VPS)</span></a>
-      <a class="card annexe" href="annexe-f-cloud-s3-vps-pages.html"><span class="num">F</span><span class="title">Comparatif hébergement S3/VPS/Pages</span></a>
+      <a class="card annexe" href="annexes.html"><span class="num">🧰</span><span class="title">Sommaire des annexes</span></a>
+      <a class="card annexe" href="annexe-a-github-gitlab.html"><span class="num">A</span><span class="title">🔧 Git, GitHub &amp; GitLab</span></a>
+      <a class="card annexe" href="annexe-b-cloudflare.html"><span class="num">B</span><span class="title">☁️ Compte Cloudflare</span></a>
+      <a class="card annexe" href="annexe-c-android-studio.html"><span class="num">C</span><span class="title">🤖 Android Studio</span></a>
+      <a class="card annexe" href="annexe-d-xcode.html"><span class="num">D</span><span class="title">🍎 Xcode</span></a>
+      <a class="card annexe" href="annexe-e-vm-linux.html"><span class="num">E</span><span class="title">🐧 VM Linux (simulation VPS)</span></a>
+      <a class="card annexe" href="annexe-f-cloud-s3-vps-pages.html"><span class="num">F</span><span class="title">📦 Comparatif hébergement S3/VPS/Pages</span></a>
     </div>
   </section>
 

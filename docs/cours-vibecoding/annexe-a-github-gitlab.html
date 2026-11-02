@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Annexe A — Git, GitHub & GitLab</title>
+<title>🔧 Annexe A — Git, GitHub & GitLab</title>
 <style>
         @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
         @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
@@ -11,7 +11,7 @@
 
         body {
             font-family: 'Droid Serif', Georgia, serif;
-            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            background: linear-gradient(135deg, #0d8c5f 0%, #2d2a6e 100%);
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -53,7 +53,7 @@
         }
 
         .title-slide {
-            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            background: linear-gradient(135deg, #0a4a34 0%, #2d2a6e 100%);
             color: white;
             text-align: center;
             display: flex;
@@ -70,7 +70,7 @@
         }
 
         .title-slide h2 {
-            color: #5eead4;
+            color: #7eeab0;
             font-size: 2em;
             margin-top: 0;
             margin-bottom: 0.3em;
@@ -92,35 +92,35 @@
         h1, h2, h3 {
             font-family: 'Yanone Kaffeesatz', sans-serif;
             font-weight: normal;
-            color: #1e3a5f;
+            color: #2d2a6e;
             margin-top: 0;
         }
 
         h1 { font-size: 2.2em; margin-bottom: 0.3em; }
-        h2 { font-size: 1.7em; color: #0f766e; margin-bottom: 0.3em; }
-        h3 { font-size: 1.3em; color: #1e3a5f; }
+        h2 { font-size: 1.7em; color: #0d8c5f; margin-bottom: 0.3em; }
+        h3 { font-size: 1.3em; color: #2d2a6e; }
 
         .highlight {
-            background-color: #0f766e;
+            background-color: #0d8c5f;
             color: white;
             padding: 15px;
             border-radius: 8px;
             margin: 14px 0;
         }
 
-        .highlight strong { color: #ccfbf1; }
+        .highlight strong { color: #d2f3e1; }
 
         .exercise {
-            background: #ecfdf5;
-            border-left: 5px solid #059669;
+            background: #eafaf0;
+            border-left: 5px solid #159a63;
             padding: 15px;
             border-radius: 6px;
             margin: 14px 0;
         }
 
         .warning {
-            background: #fff7ed;
-            border-left: 5px solid #ea580c;
+            background: #fff8e8;
+            border-left: 5px solid #c9941e;
             padding: 15px;
             border-radius: 6px;
             margin: 14px 0;
@@ -157,7 +157,7 @@
 
         .card {
             background: #f8fafc;
-            border-top: 4px solid #0f766e;
+            border-top: 4px solid #0d8c5f;
             border-radius: 8px;
             padding: 14px 16px;
             font-size: 0.94em;
@@ -166,7 +166,7 @@
 
         .card h3 {
             margin: 0 0 8px;
-            color: #0f766e;
+            color: #0d8c5f;
             font-size: 1.25em;
         }
 
@@ -204,7 +204,7 @@
         }
 
         thead th {
-            background: #1e3a5f;
+            background: #2d2a6e;
             color: #ffffff;
             font-weight: 600;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -213,7 +213,7 @@
 
         tbody th {
             background: #f1f5f9;
-            color: #1e3a5f;
+            color: #2d2a6e;
             font-weight: 600;
         }
 
@@ -246,19 +246,19 @@
         }
 
         .git-zone.zone-active {
-            border-color: #0f766e;
-            background: #f0fdfa;
+            border-color: #0d8c5f;
+            background: #effaf4;
         }
 
         .git-zone.zone-remote {
-            border-color: #1e3a5f;
+            border-color: #2d2a6e;
             background: #f1f5f9;
         }
 
         .git-zone-title {
             font-weight: bold;
             font-size: 1.1em;
-            color: #1e3a5f;
+            color: #2d2a6e;
             margin-bottom: 4px;
         }
 
@@ -272,7 +272,7 @@
         .git-zone-tag {
             display: inline-block;
             background: #e2e8f0;
-            color: #0f172a;
+            color: #1b1640;
             font-size: 0.78em;
             font-family: 'Ubuntu Mono', monospace;
             padding: 3px 8px;
@@ -293,7 +293,7 @@
         }
 
         .git-flow .step-cmd {
-            color: #5eead4;
+            color: #7eeab0;
             font-weight: bold;
         }
 
@@ -306,7 +306,7 @@
             top: 0;
             left: 0;
             height: 4px;
-            background: #14b8a6;
+            background: #22b37a;
             transition: width 0.3s ease;
             z-index: 1000;
             width: 0%;
@@ -328,7 +328,7 @@
         }
 
         .nav-button {
-            background: #0f766e;
+            background: #0d8c5f;
             color: white;
             border: none;
             padding: 8px 14px;
@@ -340,7 +340,7 @@
             transition: background 0.2s ease;
         }
 
-        .nav-button:hover { background: #0d9488; }
+        .nav-button:hover { background: #129c73; }
         .nav-button:disabled { background: #64748b; cursor: not-allowed; }
 
         .slide-counter {
@@ -388,7 +388,7 @@
             display: inline-block;
             transition: background 0.2s ease;
         }
-        .lexique-btn:hover { background: #1e3a5f; }
+        .lexique-btn:hover { background: #2d2a6e; }
 
         .home-btn {
             position: fixed;
@@ -406,7 +406,7 @@
             display: inline-block;
             transition: background 0.2s ease;
         }
-        .home-btn:hover { background: #0f766e; }
+        .home-btn:hover { background: #0d8c5f; }
 
         .pdf-btn {
             position: fixed;
@@ -429,7 +429,7 @@
             position: relative;
             display: inline;
             cursor: help;
-            border-bottom: 2px dotted #0f766e;
+            border-bottom: 2px dotted #0d8c5f;
             color: inherit;
             font-weight: inherit;
             transition: color 0.15s ease;
@@ -437,7 +437,7 @@
 
         .tooltip-trigger:hover,
         .tooltip-trigger:focus-visible {
-            color: #0f766e;
+            color: #0d8c5f;
         }
 
         .tooltip {
@@ -445,7 +445,7 @@
             bottom: calc(100% + 8px);
             left: 50%;
             transform: translateX(-50%) translateY(4px);
-            background-color: #0f172a;
+            background-color: #1b1640;
             color: #f8fafc;
             text-align: left;
             padding: 9px 13px;
@@ -478,7 +478,7 @@
             transform: translateX(-50%);
             border-width: 6px;
             border-style: solid;
-            border-color: #0f172a transparent transparent transparent;
+            border-color: #1b1640 transparent transparent transparent;
         }
 
         .tooltip.tooltip--bottom {
@@ -490,7 +490,7 @@
         .tooltip.tooltip--bottom::after {
             top: auto;
             bottom: 100%;
-            border-color: transparent transparent #0f172a transparent;
+            border-color: transparent transparent #1b1640 transparent;
         }
 
         .tooltip.active {
@@ -526,25 +526,25 @@ body { overflow: auto !important; height: auto !important; min-height: 100vh; }
   width: 92% !important; max-width: 900px !important; height: auto !important; }
 .progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
 nav.slide-nav, .nav-button { display: none !important; }
-.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(27, 22, 64, 0.94);
   backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
   gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
-.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a { color: #7eeab0; text-decoration: none; font-weight: 600; white-space: nowrap; }
 .local-nav a:hover { text-decoration: underline; }
 .local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
-.local-nav .sep { color: #475569; }
-.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.local-nav .sep { color: #6b67a8; }
+.local-nav .ext { color: #c9941e; font-weight: 400; }
 .answer-gate, .answer-unlocked { display: none !important; }
 .protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
-  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
-.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  background: #effaf4; border-left: 4px solid #0d8c5f; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0d8c5f; list-style: none;
   cursor: default; margin-bottom: 6px; }
 .protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
 </style>
 </head>
 <body>
-<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="annexes.html">← Annexes</a><span class="local-nav-title">Annexe A — Git, GitHub & GitLab</span><a href="annexe-b-cloudflare.html">Annexe B →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/annexe-a-github-gitlab.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="annexes.html">← 🧰 Annexes</a><span class="local-nav-title">🔧 Annexe A — Git, GitHub & GitLab</span><a href="annexe-b-cloudflare.html">☁️ Annexe B →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/annexe-a-github-gitlab.html" target="_blank" rel="noopener">🔗 Source officielle ↗</a></div>
 
     <div class="progress-bar" id="progressBar"></div>
     <div class="slideshow-container">
@@ -791,7 +791,7 @@ which git</div>
 git config --global user.name "Prénom Nom"
 
 # 2. Votre adresse e-mail (utilisez la même que sur GitHub ou GitLab !)
-git config --global user.email "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f8959796d59d95999194b89d809d9588949dd69b9795">[email&#160;protected]</a>"
+git config --global user.email "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9cf1f3f2b1f9f1fdf5f0dcf9e4f9f1ecf0f9b2fff3f1">[email&#160;protected]</a>"
 
 # 3. Définir le nom standard de la branche principale par défaut
 git config --global init.defaultBranch main
@@ -818,7 +818,7 @@ git config --global color.ui auto</div>
                     <h3>Option 1 : Clé SSH (Recommandée &amp; Définitive)</h3>
                     <p>Une clé SSH vous identifie automatiquement et en toute sécurité sans jamais devoir retaper de mot de passe :</p>
                     <div class="code-block"># Générer la clé (appuyez sur Entrée aux questions)
-ssh-keygen -t ed25519 -C "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="61170e1513044c040c00080d210419040c110d044f020e0c">[email&#160;protected]</a>"
+ssh-keygen -t ed25519 -C "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f68099828493db939b979f9ab6938e939b869a93d895999b">[email&#160;protected]</a>"
 
 # Afficher et copier la clé publique générée :
 cat ~/.ssh/id_ed25519.pub</div>
@@ -826,7 +826,7 @@ cat ~/.ssh/id_ed25519.pub</div>
                     <ul>
                         <li><strong>GitHub :</strong> Settings ➔ SSH and GPG keys ➔ New SSH Key.</li>
                         <li><strong>GitLab :</strong> Preferences ➔ SSH Keys ➔ Add new key.</li>
-                        <li><em>Tester :</em> <code>ssh -T <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="20474954604749544855420e434f4d">[email&#160;protected]</a></code></li>
+                        <li><em>Tester :</em> <code>ssh -T <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="23444a5763444a574b56410d404c4e">[email&#160;protected]</a></code></li>
                     </ul>
                 </div>
                 <div class="card">
@@ -867,7 +867,7 @@ git commit -m "chore: initialiser le dépôt"
 git branch -M main
 
 # 6. Relier au dépôt GitHub/GitLab créé en ligne
-git remote add origin <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="89eee0fdc9eee0fde1fceba7eae6e4">[email&#160;protected]</a>:votre-compte/mon-projet.git
+git remote add origin <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="187f716c587f716c706d7a367b7775">[email&#160;protected]</a>:votre-compte/mon-projet.git
 
 # 7. Envoyer pour la première fois
 git push -u origin main</div>
@@ -876,7 +876,7 @@ git push -u origin main</div>
                     <h3>Cas B : Récupérer un projet déjà existant en ligne</h3>
                     <p>Si le dépôt a déjà été créé avec un modèle sur GitHub ou GitLab :</p>
                     <div class="code-block"># Cloner le projet sur votre machine
-git clone <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a7d736e5a7d736e726f7834797577">[email&#160;protected]</a>:votre-compte/mon-projet.git
+git clone <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dcbbb5a89cbbb5a8b4a9bef2bfb3b1">[email&#160;protected]</a>:votre-compte/mon-projet.git
 
 # Entrer dans le dossier téléchargé
 cd mon-projet
@@ -1021,7 +1021,7 @@ git push</div>
                 <ul>
                     <li><strong>Git est installé et opérationnel :</strong> <code>git --version</code> répond sans erreur dans le terminal.</li>
                     <li><strong>Identité configurée :</strong> <code>user.name</code> et <code>user.email</code> sont renseignés dans la configuration globale.</li>
-                    <li><strong>Authentification prête :</strong> Clé SSH testée (<code>ssh -T <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="26414f5266414f524e53440845494b">[email&#160;protected]</a></code>) ou jeton personnel enregistré.</li>
+                    <li><strong>Authentification prête :</strong> Clé SSH testée (<code>ssh -T <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e5828c91a5828c918d9087cb868a88">[email&#160;protected]</a></code>) ou jeton personnel enregistré.</li>
                     <li><strong>Double authentification (2FA) :</strong> 2FA activée sur GitHub/GitLab avec les codes de récupération sauvegardés en lieu sûr.</li>
                     <li><strong>Fichier <code>.gitignore</code> en place :</strong> <code>node_modules/</code>, <code>.env</code> et fichiers temporaires ignorés dès le premier commit.</li>
                     <li><strong>Premier push validé :</strong> Le dépôt est visible sur le site web GitHub ou GitLab avec un fichier <code>README.md</code> d'accueil.</li>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Séance 4 — Cloudflare, formulaires et stockage</title>
+<title>☁️ Séance 4 — Cloudflare, formulaires et stockage</title>
 <style>
         @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
         @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
@@ -11,7 +11,7 @@
 
         body {
             font-family: 'Droid Serif';
-            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            background: linear-gradient(135deg, #0d8c5f 0%, #2d2a6e 100%);
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -52,7 +52,7 @@
         }
 
         .title-slide {
-            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            background: linear-gradient(135deg, #0a4a34 0%, #2d2a6e 100%);
             color: white;
             text-align: center;
         }
@@ -71,15 +71,15 @@
         h1, h2, h3 {
             font-family: 'Yanone Kaffeesatz';
             font-weight: normal;
-            color: #1e3a5f;
+            color: #2d2a6e;
         }
 
         h1 { font-size: 2.2em; }
-        h2 { font-size: 1.8em; color: #0f766e; }
+        h2 { font-size: 1.8em; color: #0d8c5f; }
         h3 { font-size: 1.4em; }
 
         .highlight {
-            background-color: #0f766e;
+            background-color: #0d8c5f;
             color: white;
             padding: 15px;
             border-radius: 5px;
@@ -87,15 +87,15 @@
         }
 
         .exercise {
-            background: #ecfdf5;
-            border-left: 5px solid #059669;
+            background: #eafaf0;
+            border-left: 5px solid #159a63;
             padding: 15px;
             margin: 15px 0;
         }
 
         .warning {
-            background: #fff7ed;
-            border-left: 5px solid #ea580c;
+            background: #fff8e8;
+            border-left: 5px solid #c9941e;
             padding: 15px;
             margin: 15px 0;
         }
@@ -126,7 +126,7 @@
             top: 0;
             left: 0;
             height: 4px;
-            background: #14b8a6;
+            background: #22b37a;
             transition: width 0.3s ease;
             z-index: 1000;
             width: 0%;
@@ -146,7 +146,7 @@
         }
 
         .nav-button {
-            background: #0f766e;
+            background: #0d8c5f;
             color: white;
             border: none;
             padding: 8px 12px;
@@ -156,7 +156,7 @@
             font-size: 14px;
         }
 
-        .nav-button:hover { background: #0d9488; }
+        .nav-button:hover { background: #129c73; }
         .nav-button:disabled { background: #7f8c8d; cursor: not-allowed; }
 
         .slide-counter {
@@ -201,7 +201,7 @@
             display: inline-block;
             transition: background 0.2s ease;
         }
-        .lexique-btn:hover { background: #1e3a5f; }
+        .lexique-btn:hover { background: #2d2a6e; }
 
         .home-btn {
             position: fixed;
@@ -238,7 +238,7 @@
             position: relative;
             display: inline;
             cursor: help;
-            border-bottom: 2px dotted #0f766e;
+            border-bottom: 2px dotted #0d8c5f;
             color: inherit;
             font-weight: inherit;
             transition: color 0.15s ease;
@@ -246,7 +246,7 @@
 
         .tooltip-trigger:hover,
         .tooltip-trigger:focus-visible {
-            color: #0f766e;
+            color: #0d8c5f;
         }
 
         .tooltip {
@@ -254,7 +254,7 @@
             bottom: calc(100% + 8px);
             left: 50%;
             transform: translateX(-50%) translateY(4px);
-            background-color: #0f172a;
+            background-color: #1b1640;
             color: #f8fafc;
             text-align: left;
             padding: 9px 13px;
@@ -287,7 +287,7 @@
             transform: translateX(-50%);
             border-width: 6px;
             border-style: solid;
-            border-color: #0f172a transparent transparent transparent;
+            border-color: #1b1640 transparent transparent transparent;
         }
 
         .tooltip.tooltip--bottom {
@@ -299,7 +299,7 @@
         .tooltip.tooltip--bottom::after {
             top: auto;
             bottom: 100%;
-            border-color: transparent transparent #0f172a transparent;
+            border-color: transparent transparent #1b1640 transparent;
         }
 
         .tooltip.active {
@@ -324,8 +324,8 @@
         }
         table { width: 100%; border-collapse: collapse; font-size: 15px; }
         th, td { text-align: left; vertical-align: top; border-bottom: 1px solid #cbd5e1; padding: 8px; }
-        summary { cursor: pointer; font-weight: bold; padding: 12px; background: #ecfdf5; }
-        details[open] { border-left: 4px solid #0f766e; padding: 10px; }
+        summary { cursor: pointer; font-weight: bold; padding: 12px; background: #eafaf0; }
+        details[open] { border-left: 4px solid #0d8c5f; padding: 10px; }
         a { overflow-wrap: anywhere; }
         @media (max-width: 600px) { .slide { padding: 20px; box-sizing: border-box; font-size: 16px; } table { font-size: 12px; } }
         [hidden] { display: none !important; }
@@ -334,26 +334,26 @@
         .answer-controls { display: flex; flex-wrap: wrap; gap: 8px; }
         .answer-controls input { min-width: 0; max-width: 100%; box-sizing: border-box; font: inherit; padding: 8px; border: 1px solid #64748b; border-radius: 4px; }
         .answer-status { margin-bottom: 0; }
-        .answer-unlocked { color: #134e4a; font-size: 15px; margin: 12px 0; }
+        .answer-unlocked { color: #0a4a34; font-size: 15px; margin: 12px 0; }
         .flow-figure { margin: 18px 0; background: #f1f5f9; padding: 18px; border-radius: 12px; }
         .flow-row { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); align-items: center; gap: 10px; }
         .flow-node { border: 2px solid #64748b; background: white; border-radius: 9px; padding: 15px 10px; text-align: center; overflow-wrap: anywhere; }
         .flow-node strong, .flow-node span, .flow-node small { display: block; }
-        .flow-node strong { color: #1e3a5f; }
+        .flow-node strong { color: #2d2a6e; }
         .flow-node span { margin-top: 8px; font-size: 15px; }
         .flow-node small { margin-top: 8px; font-size: 12px; }
-        .storage-node { border: 3px solid #0f766e; background: #ccfbf1; }
-        .flow-arrow { text-align: center; color: #0f766e; font-size: 26px; }
+        .storage-node { border: 3px solid #0d8c5f; background: #d2f3e1; }
+        .flow-arrow { text-align: center; color: #0d8c5f; font-size: 26px; }
         .flow-arrow small { display: block; font-size: 11px; color: #334155; }
         figcaption { margin-top: 12px; font-size: 14px; }
-        .return-flow { border-top: 2px dashed #0f766e; margin-top: 16px; padding-top: 10px; color: #134e4a; font-size: 14px; }
+        .return-flow { border-top: 2px dashed #0d8c5f; margin-top: 16px; padding-top: 10px; color: #0a4a34; font-size: 14px; }
         .storage-timeline { padding-left: 24px; }
-        .storage-timeline li { padding: 7px 12px; margin-bottom: 10px; border-left: 4px solid #0f766e; background: #f1f5f9; }
+        .storage-timeline li { padding: 7px 12px; margin-bottom: 10px; border-left: 4px solid #0d8c5f; background: #f1f5f9; }
         .storage-timeline span { display: block; font-size: 16px; }
-        .api-example { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around; gap: 12px; padding: 16px; border: 2px solid #0f766e; border-radius: 8px; background: #ecfdf5; font-size: 15px; text-align: center; }
+        .api-example { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around; gap: 12px; padding: 16px; border: 2px solid #0d8c5f; border-radius: 8px; background: #eafaf0; font-size: 15px; text-align: center; }
         .format-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; }
         .format-grid h3 { font-size: 22px; }
-        .data-card { display: grid; gap: 6px; border-left: 4px solid #0f766e; padding: 12px; background: #ecfdf5; font-size: 15px; }
+        .data-card { display: grid; gap: 6px; border-left: 4px solid #0d8c5f; padding: 12px; background: #eafaf0; font-size: 15px; }
         .source-note { font-size: 13px; }
         td, th { overflow-wrap: anywhere; }
         @media (max-width: 700px) {
@@ -368,8 +368,8 @@
             .flow-figure, .format-grid, .storage-timeline li { break-inside: avoid; }
         }
         .sequence-scroll { overflow-x: auto; }
-        .sequence-diagram { display: block; width: 100%; min-width: 860px; height: auto; font-family: system-ui, sans-serif; fill: #0f172a; }
-        .sequence-scroll:focus-visible { outline: 3px solid #0f766e; outline-offset: 4px; }
+        .sequence-diagram { display: block; width: 100%; min-width: 860px; height: auto; font-family: system-ui, sans-serif; fill: #1b1640; }
+        .sequence-scroll:focus-visible { outline: 3px solid #0d8c5f; outline-offset: 4px; }
         @media print { .sequence-diagram { min-width: 0; } .sequence-scroll { overflow: visible; } }
 
         /* Projection: short foreground content; optional reference material below. */
@@ -377,25 +377,25 @@
         .slide h1 { margin: 0 0 20px; font-size: 2em; line-height: 1.1; }
         .slide h2 { font-size: 1.35em; }
         .slide p { margin: 12px 0; }
-        .key-message { font-size: 1.12em; font-weight: 650; color: #134e4a; }
+        .key-message { font-size: 1.12em; font-weight: 650; color: #0a4a34; }
         .small-note { font-size: 15px; color: #475569; }
         .lesson-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 20px 0; }
-        .lesson-card { border-left: 4px solid #0f766e; background: #f1f5f9; border-radius: 6px; padding: 14px 16px; min-width: 0; overflow-wrap: anywhere; }
-        .lesson-card strong { display: block; color: #134e4a; }
+        .lesson-card { border-left: 4px solid #0d8c5f; background: #f1f5f9; border-radius: 6px; padding: 14px 16px; min-width: 0; overflow-wrap: anywhere; }
+        .lesson-card strong { display: block; color: #0a4a34; }
         .lesson-card p { margin-bottom: 0; font-size: 18px; }
         .visual-path { display: flex; align-items: stretch; gap: 8px; margin: 24px 0; }
-        .path-node { flex: 1; min-width: 0; padding: 16px 10px; background: #ecfdf5; border: 2px solid #0f766e; border-radius: 8px; text-align: center; overflow-wrap: anywhere; }
+        .path-node { flex: 1; min-width: 0; padding: 16px 10px; background: #eafaf0; border: 2px solid #0d8c5f; border-radius: 8px; text-align: center; overflow-wrap: anywhere; }
         .path-node strong, .path-node span { display: block; }
         .path-node span { font-size: 17px; margin-top: 8px; }
-        .path-arrow { align-self: center; color: #0f766e; font-size: 24px; }
-        .mini-timeline { display: flex; flex-wrap: wrap; gap: 12px; font-size: 17px; padding: 12px; background: #ecfdf5; border-radius: 6px; }
+        .path-arrow { align-self: center; color: #0d8c5f; font-size: 24px; }
+        .mini-timeline { display: flex; flex-wrap: wrap; gap: 12px; font-size: 17px; padding: 12px; background: #eafaf0; border-radius: 6px; }
         .lesson-detail { margin: 12px 0; font-size: 17px; }
-        .lesson-detail > summary { padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #134e4a; }
+        .lesson-detail > summary { padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #0a4a34; }
         .lesson-detail[open] { padding: 0; border-left: 0; }
         .lesson-detail-body { padding: 12px 16px; background: #f8fafc; }
         .lesson-detail table { font-size: 16px; }
         .lesson-detail pre { font-size: 15px; }
-        .lesson-link { display: inline-block; padding: 10px 14px; background: #0f766e; color: white; border-radius: 6px; text-decoration: none; }
+        .lesson-link { display: inline-block; padding: 10px 14px; background: #0d8c5f; color: white; border-radius: 6px; text-decoration: none; }
         .sequence-compact { min-width: 800px; width: 90%; margin: 0 auto; }
         @media (max-width: 700px) {
             .slide { width: calc(100% - 24px); padding: 22px 18px; font-size: 18px; height: calc(100dvh - 150px); }
@@ -421,25 +421,25 @@ body { overflow: auto !important; height: auto !important; min-height: 100vh; }
   width: 92% !important; max-width: 900px !important; height: auto !important; }
 .progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
 nav.slide-nav, .nav-button { display: none !important; }
-.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(27, 22, 64, 0.94);
   backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
   gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
-.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a { color: #7eeab0; text-decoration: none; font-weight: 600; white-space: nowrap; }
 .local-nav a:hover { text-decoration: underline; }
 .local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
-.local-nav .sep { color: #475569; }
-.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.local-nav .sep { color: #6b67a8; }
+.local-nav .ext { color: #c9941e; font-weight: 400; }
 .answer-gate, .answer-unlocked { display: none !important; }
 .protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
-  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
-.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  background: #effaf4; border-left: 4px solid #0d8c5f; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0d8c5f; list-style: none;
   cursor: default; margin-bottom: 6px; }
 .protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
 </style>
 </head>
 <body>
-<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="session3.html">← Séance 3</a><span class="local-nav-title">Séance 4 — Cloudflare, formulaires et stockage</span><a href="session5.html">Séance 5 →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/session4.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="session3.html">← 🎨 Séance 3</a><span class="local-nav-title">☁️ Séance 4 — Cloudflare, formulaires et stockage</span><a href="session5.html">🗃️ Séance 5 →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/session4.html" target="_blank" rel="noopener">🔗 Source officielle ↗</a></div>
 
     <div class="progress-bar" id="progressBar"></div>
     <div class="slideshow-container">

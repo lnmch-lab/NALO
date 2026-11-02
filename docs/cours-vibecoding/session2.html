@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Séance 2 — Projet, GitHub et MVP</title>
+<title>🐙 Séance 2 — Projet, GitHub et MVP</title>
 <style>
         @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
         @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
@@ -11,7 +11,7 @@
 
         body {
             font-family: 'Droid Serif';
-            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            background: linear-gradient(135deg, #0d8c5f 0%, #2d2a6e 100%);
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -52,7 +52,7 @@
         }
 
         .title-slide {
-            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            background: linear-gradient(135deg, #0a4a34 0%, #2d2a6e 100%);
             color: white;
             text-align: center;
         }
@@ -71,15 +71,15 @@
         h1, h2, h3 {
             font-family: 'Yanone Kaffeesatz';
             font-weight: normal;
-            color: #1e3a5f;
+            color: #2d2a6e;
         }
 
         h1 { font-size: 2.2em; }
-        h2 { font-size: 1.8em; color: #0f766e; }
+        h2 { font-size: 1.8em; color: #0d8c5f; }
         h3 { font-size: 1.4em; }
 
         .highlight {
-            background-color: #0f766e;
+            background-color: #0d8c5f;
             color: white;
             padding: 15px;
             border-radius: 5px;
@@ -87,15 +87,15 @@
         }
 
         .exercise {
-            background: #ecfdf5;
-            border-left: 5px solid #059669;
+            background: #eafaf0;
+            border-left: 5px solid #159a63;
             padding: 15px;
             margin: 15px 0;
         }
 
         .warning {
-            background: #fff7ed;
-            border-left: 5px solid #ea580c;
+            background: #fff8e8;
+            border-left: 5px solid #c9941e;
             padding: 15px;
             margin: 15px 0;
         }
@@ -126,7 +126,7 @@
             top: 0;
             left: 0;
             height: 4px;
-            background: #14b8a6;
+            background: #22b37a;
             transition: width 0.3s ease;
             z-index: 1000;
             width: 0%;
@@ -146,7 +146,7 @@
         }
 
         .nav-button {
-            background: #0f766e;
+            background: #0d8c5f;
             color: white;
             border: none;
             padding: 8px 12px;
@@ -156,7 +156,7 @@
             font-size: 14px;
         }
 
-        .nav-button:hover { background: #0d9488; }
+        .nav-button:hover { background: #129c73; }
         .nav-button:disabled { background: #7f8c8d; cursor: not-allowed; }
 
         .slide-counter {
@@ -201,7 +201,7 @@
             display: inline-block;
             transition: background 0.2s ease;
         }
-        .lexique-btn:hover { background: #1e3a5f; }
+        .lexique-btn:hover { background: #2d2a6e; }
 
         .home-btn {
             position: fixed;
@@ -238,7 +238,7 @@
             position: relative;
             display: inline;
             cursor: help;
-            border-bottom: 2px dotted #0f766e;
+            border-bottom: 2px dotted #0d8c5f;
             color: inherit;
             font-weight: inherit;
             transition: color 0.15s ease;
@@ -246,7 +246,7 @@
 
         .tooltip-trigger:hover,
         .tooltip-trigger:focus-visible {
-            color: #0f766e;
+            color: #0d8c5f;
         }
 
         .tooltip {
@@ -254,7 +254,7 @@
             bottom: calc(100% + 8px);
             left: 50%;
             transform: translateX(-50%) translateY(4px);
-            background-color: #0f172a;
+            background-color: #1b1640;
             color: #f8fafc;
             text-align: left;
             padding: 9px 13px;
@@ -287,7 +287,7 @@
             transform: translateX(-50%);
             border-width: 6px;
             border-style: solid;
-            border-color: #0f172a transparent transparent transparent;
+            border-color: #1b1640 transparent transparent transparent;
         }
 
         .tooltip.tooltip--bottom {
@@ -299,7 +299,7 @@
         .tooltip.tooltip--bottom::after {
             top: auto;
             bottom: 100%;
-            border-color: transparent transparent #0f172a transparent;
+            border-color: transparent transparent #1b1640 transparent;
         }
 
         .tooltip.active {
@@ -310,7 +310,7 @@
 
 
         /* --- Composants session 2 --- */
-        a { color: #0f766e; }
+        a { color: #0d8c5f; }
         .slide a:focus-visible, .slide button:focus-visible, .slide input:focus-visible, .slide textarea:focus-visible {
             outline: 3px solid rgba(20, 184, 166, 0.5);
             outline-offset: 2px;
@@ -337,11 +337,11 @@
             font-family: 'Yanone Kaffeesatz';
             font-size: 1.3em;
             font-weight: normal;
-            color: #5eead4;
+            color: #7eeab0;
         }
         .duration-badge {
             display: inline-block;
-            background: #ea580c;
+            background: #c9941e;
             color: #fff;
             border-radius: 999px;
             padding: 6px 16px;
@@ -359,24 +359,24 @@
         }
         .card {
             background: #f1f5f9;
-            border-top: 4px solid #0f766e;
+            border-top: 4px solid #0d8c5f;
             border-radius: 8px;
             padding: 12px 14px;
             font-size: 0.92em;
         }
-        .card h3 { margin: 0 0 6px; color: #0f766e; }
+        .card h3 { margin: 0 0 6px; color: #0d8c5f; }
         .card p { margin: 0; }
 
         .table-scroll { overflow-x: auto; margin: 12px 0; }
         table { width: 100%; border-collapse: collapse; font-size: 0.82em; min-width: 640px; }
         th, td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; vertical-align: top; }
-        thead th { background: #1e3a5f; color: #fff; font-weight: bold; }
-        tbody th { background: #f1f5f9; color: #1e3a5f; }
+        thead th { background: #2d2a6e; color: #fff; font-weight: bold; }
+        tbody th { background: #f1f5f9; color: #2d2a6e; }
         tbody tr:nth-child(even) td { background: #f8fafc; }
 
         .retenir {
-            background: #fffbeb;
-            border: 2px solid #d97706;
+            background: #fffaeb;
+            border: 2px solid #c9941e;
             border-radius: 8px;
             padding: 12px 16px;
             margin: 15px 0;
@@ -386,7 +386,7 @@
             display: block;
             font-family: 'Yanone Kaffeesatz';
             font-size: 1.3em;
-            color: #b45309;
+            color: #96730f;
         }
         .retenir ul { margin: 6px 0 0; }
 
@@ -405,7 +405,7 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: #0f766e;
+            background: #0d8c5f;
             color: #fff;
             font-weight: bold;
             display: flex;
@@ -417,8 +417,8 @@
 
         .definition {
             font-size: 1.15em;
-            border-left: 6px solid #0f766e;
-            background: #f0fdfa;
+            border-left: 6px solid #0d8c5f;
+            background: #effaf4;
             padding: 15px 18px;
             margin: 15px 0;
         }
@@ -431,12 +431,12 @@
             margin: 20px 0;
             font-weight: bold;
         }
-        .formula .term { background: #ccfbf1; color: #134e4a; border-radius: 999px; padding: 6px 14px; }
-        .formula .term--main { background: #1e3a5f; color: #fff; }
-        .formula .op { color: #c2410c; font-size: 1.3em; }
+        .formula .term { background: #d2f3e1; color: #0a4a34; border-radius: 999px; padding: 6px 14px; }
+        .formula .term--main { background: #2d2a6e; color: #fff; }
+        .formula .op { color: #a67a18; font-size: 1.3em; }
 
         .rule {
-            background: #c2410c;
+            background: #a67a18;
             color: #fff;
             font-weight: bold;
             text-align: center;
@@ -447,14 +447,14 @@
         }
 
         .tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }
-        .tags li { background: #fff7ed; border: 1px solid #fdba74; color: #9a3412; border-radius: 999px; padding: 4px 12px; font-size: 0.9em; }
+        .tags li { background: #fff8e8; border: 1px solid #f6c860; color: #7a5e14; border-radius: 999px; padding: 4px 12px; font-size: 0.9em; }
 
         /* Formulaires */
         .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; align-items: start; }
         .field { display: grid; gap: 4px; }
         .field--full { grid-column: 1 / -1; }
         fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
-        legend, .field > label { font-weight: bold; font-size: 0.9em; color: #1e3a5f; padding: 0; }
+        legend, .field > label { font-weight: bold; font-size: 0.9em; color: #2d2a6e; padding: 0; }
         .slide input[type="text"], .slide textarea {
             width: 100%;
             box-sizing: border-box;
@@ -477,7 +477,7 @@
             font-size: 0.88em;
             cursor: pointer;
         }
-        .choice input { accent-color: #0f766e; }
+        .choice input { accent-color: #0d8c5f; }
         .hint { color: #475569; font-size: 0.85em; margin: 2px 0 0; }
         .counter.is-over { color: #b91c1c; font-weight: bold; }
 
@@ -491,9 +491,9 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .btn-primary { background: #0f766e; color: #fff; }
-        .btn-primary:hover { background: #0d9488; }
-        .btn-secondary { background: #e2e8f0; color: #1e3a5f; }
+        .btn-primary { background: #0d8c5f; color: #fff; }
+        .btn-primary:hover { background: #129c73; }
+        .btn-secondary { background: #e2e8f0; color: #2d2a6e; }
         .btn-secondary:hover { background: #cbd5e1; }
 
         .checklist { list-style: none; padding: 0; display: grid; gap: 8px; }
@@ -507,7 +507,7 @@
             padding: 8px 12px;
             cursor: pointer;
         }
-        .checklist input { width: 20px; height: 20px; accent-color: #0f766e; }
+        .checklist input { width: 20px; height: 20px; accent-color: #0d8c5f; }
         .checklist input:checked + span { text-decoration: line-through; color: #64748b; }
 
         .toast {
@@ -515,7 +515,7 @@
             left: 50%;
             bottom: 80px;
             transform: translateX(-50%) translateY(10px);
-            background: #0f766e;
+            background: #0d8c5f;
             color: #fff;
             border-radius: 8px;
             padding: 10px 18px;
@@ -562,25 +562,25 @@ body { overflow: auto !important; height: auto !important; min-height: 100vh; }
   width: 92% !important; max-width: 900px !important; height: auto !important; }
 .progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
 nav.slide-nav, .nav-button { display: none !important; }
-.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(27, 22, 64, 0.94);
   backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
   gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
-.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a { color: #7eeab0; text-decoration: none; font-weight: 600; white-space: nowrap; }
 .local-nav a:hover { text-decoration: underline; }
 .local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
-.local-nav .sep { color: #475569; }
-.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.local-nav .sep { color: #6b67a8; }
+.local-nav .ext { color: #c9941e; font-weight: 400; }
 .answer-gate, .answer-unlocked { display: none !important; }
 .protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
-  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
-.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  background: #effaf4; border-left: 4px solid #0d8c5f; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0d8c5f; list-style: none;
   cursor: default; margin-bottom: 6px; }
 .protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
 </style>
 </head>
 <body>
-<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="session1.html">← Séance 1</a><span class="local-nav-title">Séance 2 — Projet, GitHub et MVP</span><a href="session3.html">Séance 3 →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/session2.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="session1.html">← 🧭 Séance 1</a><span class="local-nav-title">🐙 Séance 2 — Projet, GitHub et MVP</span><a href="session3.html">🎨 Séance 3 →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/session2.html" target="_blank" rel="noopener">🔗 Source officielle ↗</a></div>
 
     <div class="progress-bar" id="progressBar" role="progressbar" aria-label="Progression dans le diaporama" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
     <main class="slideshow-container">

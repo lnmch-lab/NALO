@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Annexe C — Android Studio</title>
+<title>🤖 Annexe C — Android Studio</title>
 <style>
         @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
         @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
@@ -11,7 +11,7 @@
 
         body {
             font-family: 'Droid Serif';
-            background: linear-gradient(135deg, #0f766e 0%, #1e3a5f 100%);
+            background: linear-gradient(135deg, #0d8c5f 0%, #2d2a6e 100%);
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -52,7 +52,7 @@
         }
 
         .title-slide {
-            background: linear-gradient(135deg, #134e4a 0%, #1e3a5f 100%);
+            background: linear-gradient(135deg, #0a4a34 0%, #2d2a6e 100%);
             color: white;
             text-align: center;
         }
@@ -71,15 +71,15 @@
         h1, h2, h3 {
             font-family: 'Yanone Kaffeesatz';
             font-weight: normal;
-            color: #1e3a5f;
+            color: #2d2a6e;
         }
 
         h1 { font-size: 2.2em; }
-        h2 { font-size: 1.8em; color: #0f766e; }
+        h2 { font-size: 1.8em; color: #0d8c5f; }
         h3 { font-size: 1.4em; }
 
         .highlight {
-            background-color: #0f766e;
+            background-color: #0d8c5f;
             color: white;
             padding: 15px;
             border-radius: 5px;
@@ -87,15 +87,15 @@
         }
 
         .exercise {
-            background: #ecfdf5;
-            border-left: 5px solid #059669;
+            background: #eafaf0;
+            border-left: 5px solid #159a63;
             padding: 15px;
             margin: 15px 0;
         }
 
         .warning {
-            background: #fff7ed;
-            border-left: 5px solid #ea580c;
+            background: #fff8e8;
+            border-left: 5px solid #c9941e;
             padding: 15px;
             margin: 15px 0;
         }
@@ -126,7 +126,7 @@
             top: 0;
             left: 0;
             height: 4px;
-            background: #14b8a6;
+            background: #22b37a;
             transition: width 0.3s ease;
             z-index: 1000;
             width: 0%;
@@ -146,7 +146,7 @@
         }
 
         .nav-button {
-            background: #0f766e;
+            background: #0d8c5f;
             color: white;
             border: none;
             padding: 8px 12px;
@@ -156,7 +156,7 @@
             font-size: 14px;
         }
 
-        .nav-button:hover { background: #0d9488; }
+        .nav-button:hover { background: #129c73; }
         .nav-button:disabled { background: #7f8c8d; cursor: not-allowed; }
 
         .slide-counter {
@@ -201,7 +201,7 @@
             display: inline-block;
             transition: background 0.2s ease;
         }
-        .lexique-btn:hover { background: #1e3a5f; }
+        .lexique-btn:hover { background: #2d2a6e; }
 
         .home-btn {
             position: fixed;
@@ -238,7 +238,7 @@
             position: relative;
             display: inline;
             cursor: help;
-            border-bottom: 2px dotted #0f766e;
+            border-bottom: 2px dotted #0d8c5f;
             color: inherit;
             font-weight: inherit;
             transition: color 0.15s ease;
@@ -246,7 +246,7 @@
 
         .tooltip-trigger:hover,
         .tooltip-trigger:focus-visible {
-            color: #0f766e;
+            color: #0d8c5f;
         }
 
         .tooltip {
@@ -254,7 +254,7 @@
             bottom: calc(100% + 8px);
             left: 50%;
             transform: translateX(-50%) translateY(4px);
-            background-color: #0f172a;
+            background-color: #1b1640;
             color: #f8fafc;
             text-align: left;
             padding: 9px 13px;
@@ -287,7 +287,7 @@
             transform: translateX(-50%);
             border-width: 6px;
             border-style: solid;
-            border-color: #0f172a transparent transparent transparent;
+            border-color: #1b1640 transparent transparent transparent;
         }
 
         .tooltip.tooltip--bottom {
@@ -299,7 +299,7 @@
         .tooltip.tooltip--bottom::after {
             top: auto;
             bottom: 100%;
-            border-color: transparent transparent #0f172a transparent;
+            border-color: transparent transparent #1b1640 transparent;
         }
 
         .tooltip.active {
@@ -333,25 +333,25 @@ body { overflow: auto !important; height: auto !important; min-height: 100vh; }
   width: 92% !important; max-width: 900px !important; height: auto !important; }
 .progress-bar, .navigation, .slide-counter, .fullscreen-btn, .pdf-btn, .home-btn, .lexique-btn,
 nav.slide-nav, .nav-button { display: none !important; }
-.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(10, 22, 40, 0.94);
+.local-nav { position: sticky; top: 0; z-index: 3000; background: rgba(27, 22, 64, 0.94);
   backdrop-filter: blur(6px); color: #e2e8f0; padding: 10px 18px; display: flex; align-items: center;
   gap: 10px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 13.5px; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
-.local-nav a { color: #5eead4; text-decoration: none; font-weight: 600; white-space: nowrap; }
+.local-nav a { color: #7eeab0; text-decoration: none; font-weight: 600; white-space: nowrap; }
 .local-nav a:hover { text-decoration: underline; }
 .local-nav .local-nav-title { flex: 1 1 auto; color: #f8fafc; font-weight: 600; min-width: 140px; }
-.local-nav .sep { color: #475569; }
-.local-nav .ext { color: #94a3b8; font-weight: 400; }
+.local-nav .sep { color: #6b67a8; }
+.local-nav .ext { color: #c9941e; font-weight: 400; }
 .answer-gate, .answer-unlocked { display: none !important; }
 .protected-answer { display: block !important; margin-top: 12px; padding: 12px 16px;
-  background: #f0fdfa; border-left: 4px solid #0f766e; border-radius: 6px; }
-.protected-answer summary { font-weight: bold; color: #0f766e; list-style: none;
+  background: #effaf4; border-left: 4px solid #0d8c5f; border-radius: 6px; }
+.protected-answer summary { font-weight: bold; color: #0d8c5f; list-style: none;
   cursor: default; margin-bottom: 6px; }
 .protected-answer summary::-webkit-details-marker, .protected-answer summary::marker { display: none; content: ""; }
 </style>
 </head>
 <body>
-<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="annexe-b-cloudflare.html">← Annexe B</a><span class="local-nav-title">Annexe C — Android Studio</span><a href="annexe-d-xcode.html">Annexe D →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/annexe-c-android-studio.html" target="_blank" rel="noopener">Source officielle ↗</a></div>
+<div class="local-nav"><a href="index.html">🏠 Index</a><span class="sep">·</span><a href="annexe-b-cloudflare.html">← ☁️ Annexe B</a><span class="local-nav-title">🤖 Annexe C — Android Studio</span><a href="annexe-d-xcode.html">🍎 Annexe D →</a><span class="sep">·</span><a class="ext" href="https://formations.mehdiguiraud.com/cours/SCAP/VIBE-CODING/annexe-c-android-studio.html" target="_blank" rel="noopener">🔗 Source officielle ↗</a></div>
 
     <div class="progress-bar" id="progressBar"></div>
     <div class="slideshow-container">
