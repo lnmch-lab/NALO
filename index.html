@@ -13,9 +13,25 @@
   <div class="app">
     <main class="screens">
 
+      <!-- ACCUEIL : AVATAR DANS SON MONDE -->
+      <section id="view-landing" class="view-landing">
+        <img class="landing-bg" src="assets/landing-avatar-dragon.png" alt="Ton avatar, un jeune dragon, dans son monde">
+        <div class="landing-veil" aria-hidden="true"></div>
+        <span class="landing-chip" id="landing-chip">🐉 Jeune dragon</span>
+        <div class="landing-dock">
+          <button class="landing-icon" id="landing-profil" aria-label="Ma collection">
+            <img src="assets/icon-profil.png" alt="">
+          </button>
+          <button class="landing-icon landing-icon-cam" id="landing-camera" aria-label="Prendre une photo">
+            <img src="assets/icon-photo.png" alt="">
+          </button>
+        </div>
+      </section>
+
       <!-- COLLECTION -->
-      <section id="view-collection" class="view">
+      <section id="view-collection" class="view hidden">
         <div class="topbar">
+          <button class="chip chip-home" id="btn-home" aria-label="Retour à l'accueil">🏠</button>
           <span class="chip">Ma collection</span>
           <span class="chip" id="collection-count">0 carte</span>
         </div>

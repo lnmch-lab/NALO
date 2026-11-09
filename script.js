@@ -1,6 +1,7 @@
 const STORAGE_KEY = "nalo-cards";
 
 const views = {
+  landing: document.getElementById("view-landing"),
   collection: document.getElementById("view-collection"),
   photo: document.getElementById("view-photo"),
   word: document.getElementById("view-word"),
@@ -386,6 +387,41 @@ document.getElementById("btn-view-back").addEventListener("click", () => {
   showView("collection");
 });
 
+// --- Accueil (avatar) ---
+
+const AVATAR_STAGES = [
+  { min: 0, label: "🥚 Bébé dragon" },
+  { min: 5, label: "🐉 Jeune dragon" },
+  { min: 15, label: "🐲 Dragon" },
+  { min: 30, label: "✨ Dragon céleste" },
+];
+
+function renderLanding() {
+  const count = getCards().length;
+  const stage = AVATAR_STAGES.slice().reverse().find((s) => count >= s.min);
+  document.getElementById("landing-chip").textContent = stage.label;
+}
+
+function startNewCard() {
+  pendingPhotoDataUrl = null;
+  document.getElementById("photo-preview").classList.add("hidden");
+  document.getElementById("photo-drop-hint").classList.remove("hidden");
+  document.getElementById("btn-photo-next").disabled = true;
+  showView("photo");
+}
+
+document.getElementById("landing-profil").addEventListener("click", () => {
+  renderCollection();
+  showView("collection");
+});
+
+document.getElementById("landing-camera").addEventListener("click", startNewCard);
+
+document.getElementById("btn-home").addEventListener("click", () => {
+  renderLanding();
+  showView("landing");
+});
+
 // --- Navigation globale ---
 
 document.getElementById("nav-collection").addEventListener("click", () => {
@@ -393,15 +429,9 @@ document.getElementById("nav-collection").addEventListener("click", () => {
   showView("collection");
 });
 
-document.getElementById("nav-new-card").addEventListener("click", () => {
-  pendingPhotoDataUrl = null;
-  document.getElementById("photo-preview").classList.add("hidden");
-  document.getElementById("photo-drop-hint").classList.remove("hidden");
-  document.getElementById("btn-photo-next").disabled = true;
-  showView("photo");
-});
+document.getElementById("nav-new-card").addEventListener("click", startNewCard);
 
 // --- Démarrage ---
 
-renderCollection();
-showView("collection");
+renderLanding();
+showView("landing");
