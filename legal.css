@@ -1,0 +1,96 @@
+/* Pied de page commun + pages d'info (contact, aide, mentions légales...) */
+
+.site-footer {
+  max-width: 480px;
+  margin: 2rem auto 0;
+  padding: 1rem 1.1rem calc(7rem + env(safe-area-inset-bottom, 0px));
+  border-top: 1px dashed #E4D5B6;
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 0.9rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-nav a {
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.footer-nav a:hover,
+.footer-nav a:focus-visible {
+  color: var(--jade-d);
+  text-decoration: underline;
+}
+
+.doc-page {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem 1.1rem 0;
+}
+
+.doc-back {
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 1.1rem;
+  font-family: var(--body);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--jade-d);
+  text-decoration: none;
+}
+
+.doc-page h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--jade-d);
+  margin: 0 0 0.9rem;
+}
+
+.doc-page p {
+  line-height: 1.6;
+  margin: 0 0 0.9rem;
+}
+
+.doc-page a {
+  color: var(--bat);
+}
+
+.doc-page a.btn-primary {
+  color: #fff;
+}
+
+.doc-legal {
+  margin: 0 0 0.9rem;
+}
+
+.doc-legal dt {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-top: 1rem;
+}
+
+.doc-legal dd {
+  margin: 0.2rem 0 0;
+  line-height: 1.6;
+}
+
+.btn-primary[href] {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+}
