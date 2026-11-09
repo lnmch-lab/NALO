@@ -417,6 +417,28 @@ document.getElementById("landing-profil").addEventListener("click", () => {
 
 document.getElementById("landing-camera").addEventListener("click", startNewCard);
 
+const landingDragon = document.getElementById("landing-dragon");
+const SPARKLES = ["✨", "⭐", "💫"];
+
+landingDragon.addEventListener("click", (e) => {
+  landingDragon.classList.remove("bounce");
+  void landingDragon.offsetWidth;
+  landingDragon.classList.add("bounce");
+
+  const rect = landingDragon.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  for (let i = 0; i < 4; i++) {
+    const sparkle = document.createElement("span");
+    sparkle.className = "landing-sparkle";
+    sparkle.textContent = SPARKLES[Math.floor(Math.random() * SPARKLES.length)];
+    sparkle.style.left = `${x + (Math.random() - 0.5) * 50}px`;
+    sparkle.style.top = `${y + (Math.random() - 0.5) * 30}px`;
+    landingDragon.parentElement.appendChild(sparkle);
+    sparkle.addEventListener("animationend", () => sparkle.remove());
+  }
+});
+
 document.getElementById("btn-home").addEventListener("click", () => {
   renderLanding();
   showView("landing");
