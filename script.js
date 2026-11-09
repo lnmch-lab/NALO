@@ -417,15 +417,17 @@ document.getElementById("landing-profil").addEventListener("click", () => {
 
 document.getElementById("landing-camera").addEventListener("click", startNewCard);
 
-const landingDragon = document.getElementById("landing-dragon");
+const landingScene = document.getElementById("landing-scene");
+const dragonBody = document.getElementById("dragon-body");
 const SPARKLES = ["✨", "⭐", "💫"];
 
-landingDragon.addEventListener("click", (e) => {
-  landingDragon.classList.remove("bounce");
-  void landingDragon.offsetWidth;
-  landingDragon.classList.add("bounce");
+landingScene.addEventListener("click", (e) => {
+  dragonBody.classList.remove("jump");
+  void dragonBody.getBoundingClientRect();
+  dragonBody.classList.add("jump");
+  dragonBody.addEventListener("animationend", () => dragonBody.classList.remove("jump"), { once: true });
 
-  const rect = landingDragon.getBoundingClientRect();
+  const rect = landingScene.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
   for (let i = 0; i < 4; i++) {
@@ -434,7 +436,7 @@ landingDragon.addEventListener("click", (e) => {
     sparkle.textContent = SPARKLES[Math.floor(Math.random() * SPARKLES.length)];
     sparkle.style.left = `${x + (Math.random() - 0.5) * 50}px`;
     sparkle.style.top = `${y + (Math.random() - 0.5) * 30}px`;
-    landingDragon.parentElement.appendChild(sparkle);
+    landingScene.parentElement.appendChild(sparkle);
     sparkle.addEventListener("animationend", () => sparkle.remove());
   }
 });

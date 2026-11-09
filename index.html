@@ -6,7 +6,7 @@
   <title>Nalo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
   <link rel="stylesheet" href="legal.css">
 </head>
 <body>
@@ -15,9 +15,69 @@
 
       <!-- ACCUEIL : AVATAR DANS SON MONDE -->
       <section id="view-landing" class="view-landing">
-        <img class="landing-bg" src="assets/landing-avatar-dragon.png" alt="" aria-hidden="true">
-        <img class="landing-dragon" id="landing-dragon" src="assets/landing-avatar-dragon.png" alt="Ton avatar, un jeune dragon, dans son monde">
-        <div class="landing-veil" aria-hidden="true"></div>
+        <svg class="landing-scene" id="landing-scene" viewBox="0 0 400 700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ton avatar, un jeune dragon, dans son monde">
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#141c33"/>
+              <stop offset="100%" stop-color="#2B3A67"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="700" fill="url(#skyGrad)"/>
+          <circle class="star" cx="60" cy="90" r="2.5" fill="#FFFBF2"/>
+          <circle class="star star-b" cx="120" cy="180" r="1.8" fill="#FFFBF2"/>
+          <circle class="star" cx="340" cy="60" r="2" fill="#FFFBF2"/>
+          <circle class="star star-b" cx="40" cy="260" r="1.5" fill="#FFFBF2"/>
+          <circle class="star" cx="255" cy="40" r="1.8" fill="#FFFBF2"/>
+          <circle class="star star-b" cx="370" cy="220" r="2.2" fill="#FFFBF2"/>
+          <circle cx="290" cy="130" r="95" fill="#FFE08A" opacity="0.18"/>
+          <circle cx="290" cy="130" r="60" fill="#FFE08A"/>
+          <ellipse cx="200" cy="645" rx="190" ry="90" fill="#23305a"/>
+          <ellipse class="landing-cloud" cx="200" cy="605" rx="170" ry="58" fill="#FFFBF2" opacity="0.92"/>
+
+          <g transform="translate(90,565)">
+            <ellipse rx="22" ry="12" fill="#F7A8C4" transform="rotate(0)"/>
+            <ellipse rx="22" ry="12" fill="#F7A8C4" transform="rotate(60)"/>
+            <ellipse rx="22" ry="12" fill="#F7A8C4" transform="rotate(120)"/>
+            <circle r="9" fill="#E8B545"/>
+          </g>
+          <g transform="translate(308,585) scale(0.8)">
+            <ellipse rx="22" ry="12" fill="#F7A8C4" transform="rotate(0)"/>
+            <ellipse rx="22" ry="12" fill="#F7A8C4" transform="rotate(60)"/>
+            <ellipse rx="22" ry="12" fill="#F7A8C4" transform="rotate(120)"/>
+            <circle r="9" fill="#E8B545"/>
+          </g>
+
+          <g id="dragon-tail">
+            <path d="M280,470 C332,458 352,512 320,542 C300,562 268,546 274,520 C278,500 270,486 280,470 Z" fill="#F7A8C4" stroke="#DD6F98" stroke-width="3"/>
+          </g>
+
+          <g id="dragon-body">
+            <ellipse cx="165" cy="585" rx="22" ry="16" fill="#6CC3AE"/>
+            <ellipse cx="235" cy="585" rx="22" ry="16" fill="#6CC3AE"/>
+            <ellipse cx="200" cy="480" rx="105" ry="120" fill="#6CC3AE"/>
+            <ellipse cx="200" cy="518" rx="55" ry="75" fill="#FFFBF2"/>
+            <path d="M140,260 C108,240 108,198 140,188 C128,220 145,240 162,250 Z" fill="#9EDFD6"/>
+            <path d="M260,260 C292,240 292,198 260,188 C272,220 255,240 238,250 Z" fill="#9EDFD6"/>
+            <path d="M175,215 C163,178 180,148 200,154 C189,180 195,206 190,221 Z" fill="#E8B545"/>
+            <path d="M225,215 C237,178 220,148 200,154 C211,180 205,206 210,221 Z" fill="#E8B545"/>
+            <circle cx="200" cy="290" r="92" fill="#6CC3AE"/>
+            <ellipse cx="200" cy="325" rx="58" ry="42" fill="#FFFBF2"/>
+            <ellipse cx="150" cy="320" rx="13" ry="9" fill="#F7A8C4" opacity="0.85"/>
+            <ellipse cx="250" cy="320" rx="13" ry="9" fill="#F7A8C4" opacity="0.85"/>
+            <path d="M180,335 Q200,350 220,335" stroke="#3B2A20" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M150,330 C128,335 112,345 96,340" stroke="#E8B545" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M250,330 C272,335 288,345 304,340" stroke="#E8B545" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <g id="dragon-eyes">
+            <circle cx="168" cy="285" r="16" fill="#FFFBF2"/>
+            <circle cx="232" cy="285" r="16" fill="#FFFBF2"/>
+            <circle cx="171" cy="288" r="9" fill="#3B2A20"/>
+            <circle cx="235" cy="288" r="9" fill="#3B2A20"/>
+            <circle cx="174" cy="284" r="3" fill="#fff"/>
+            <circle cx="238" cy="284" r="3" fill="#fff"/>
+          </g>
+        </svg>
         <span class="landing-chip" id="landing-chip">🐉 Jeune dragon</span>
         <div class="landing-dock">
           <button class="landing-icon" id="landing-profil" aria-label="Ma collection">
@@ -189,6 +249,6 @@
   </div>
 
   <script src="data.js"></script>
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>
